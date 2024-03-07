@@ -10,11 +10,18 @@ const assoSection = document.getElementById("Assos");
 const actusBtn = document.getElementById("actusBtn");
 const actusSection = document.getElementById("Actus");
 
+var connexionBtn = document.getElementById("connexionBtn");
+var homeBtn = document.getElementById("homeBtn");
+var newsBtn = document.getElementById("newsBtn");
 
 openBtn.onclick = openNav;
 closeBtn.onclick = closeNav;
 assoBtn.onclick = goToAssoSection;
 actusBtn.onclick = goToAssoSection;
+connexionBtn.onclick = openConnexionPage;
+homeBtn.onclick = openHomePage;
+newsBtn.onclick = openNewsPage;
+
 
 function openNav()
 {
@@ -54,7 +61,19 @@ actusBtn.addEventListener('click', function() {
     goToAssoSection("actusBtn");
 });
 
-/*assoBtn.addEventListener('click', function() {
-    console.log("function go to asso");
-    assoSection.scrollIntoView({ behavior: 'smooth' });
-});*/
+
+function openConnexionPage()
+{
+    window.location.href = "connexion.html";
+}
+
+function openHomePage()
+{
+    window.location.href = "index.html";
+}
+
+
+function openNewsPage()
+{
+    window.location.href = "news.html"
+}
