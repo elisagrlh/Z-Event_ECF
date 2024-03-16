@@ -12,27 +12,81 @@
 
 <body>
         
-    
+  <div id="app">
     <header>
             
          
     </header>
 
-    <div class="login-container">
-        <h2>Connexion</h2>
-        <form id="login-form">
-          <div class="form-group">
-            <label for="username">Nom d'utilisateur :</label>
-            <input type="text" id="username" name="username" required>
-          </div>
-          <div class="form-group">
-            <label for="password">Mot de passe :</label>
-            <input type="password" id="password" name="password" required>
-          </div>
-          <button type="submit">Se connecter</button>
-        </form>
+
+    
+
+
+      <!-- <div class="login-container">
+          <h2>Connexion</h2>
+          <form id="login-form">
+            <div class="form-group">
+              <label for="username">Nom d'utilisateur :</label>
+              <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Mot de passe :</label>
+              <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Se connecter</button>
+          </form>  -->
+
+          <login-form class="login-container" />
+      
+      </div>
+
     </div>
-  
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      let app = Vue.createApp({
+          data: function(){
+              return{
+                  
+              }
+          },
+
+          methods: {
+            scrollToActus(){
+              //const assoElement = getElementById("Assos");
+              const actusPosition = this.$refs.actus.offsetTop;
+              window.scrollTo({
+                top: actusPosition,
+                behavior: 'smooth'
+              })
+            }
+              
+          }
+      
+      })
+
+      app.component('login-form',{
+        template : `
+
+          <div>
+            <label for="username">{{username}}</label>
+            <input type="email"/>
+            <label for="password">{{password}}</label>
+            <input type="password"/>
+            <button type="submit">Se connecter</button>
+          </div>
+        `,
+        data() {
+          return{
+            username: 'Email',
+            password: 'Mot de passe'
+          }
+        }
+      })
+      app.mount('#app')
+  </script>
+
+
         <script src="../script.js"></script>
 
 </body>
