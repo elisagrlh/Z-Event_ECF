@@ -67,19 +67,28 @@
 
       app.component('login-form',{
         template : `
-
-          <div>
-            <label for="username">{{username}}</label>
-            <input type="email"/>
+          
+          <form @submit.prevent="handleSubmit">
+            <h1>{{title}}</h1>
+            <label for="username">{{email}}</label>
+            <input type="email" v-model="emailInput"/>
             <label for="password">{{password}}</label>
-            <input type="password"/>
-            <button type="submit">Se connecter</button>
-          </div>
+            <input type="password" v-model="passwordInput"/>
+            <button>Se connecter</button>
+          </form>
         `,
         data() {
           return{
-            username: 'Email',
-            password: 'Mot de passe'
+            title: 'Connexion',
+            email: 'Email',
+            password: 'Mot de passe',
+            emailInput: '',
+            passwordInput: ""
+          }
+        },
+        methods:{
+          handleSubmit(){
+            console.log(this.emailInput, this.passwordInput);
           }
         }
       })
