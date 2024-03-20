@@ -5,4 +5,6 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    f = open("C:/xampp/htdocs/ECF/SiteWeb/ZEvent/ZEvent/business/index.html", "r")
+    resp = f.read()
+    return HttpResponse(f"{resp}")
