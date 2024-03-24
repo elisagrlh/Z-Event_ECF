@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -7,7 +8,8 @@
   <title>Zevent</title>
  <!-- <link href="style.css" rel="stylesheet" type="text/css" />-->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <link rel="stylesheet" href= "../css/style.css">
+  {% load static %}
+  <link rel="stylesheet" href= "{% static 'business/style.css' %}"> 
 </head>
 
 
@@ -45,7 +47,7 @@
                                 <li><a id="homeBtn" href="index.html">Accueil</a></li>
                                 <li><a id="newsBtn" href="news.html">Fil d'actualités</a></li>
                                 <li><a id="streamersBtn" href="streamers.html">Streamers</a></li>
-                                <li><a id="connexionBtn" href="connexion.html">Connexion</a></li>
+                                <li><a id="connexionBtn" href="connexion">Connexion</a></li>
                             </ul>
                         </div>
 
@@ -88,7 +90,7 @@
                             
                         </p>
                         
-                        <img src="../images/1200px-WWF_logo_2000.svg.png">
+                        <img src="../../static/business/images/1200px-WWF_logo_2000.svg.png">
                         
                         
 

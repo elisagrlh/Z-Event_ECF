@@ -34,9 +34,20 @@
               <input type="password" id="password" name="password" required>
             </div>
             <button type="submit">Se connecter</button>
-          </form>  -->
+          </form>  
 
-          <login-form class="login-container" />
+          <login-form class="login-container" /> 
+
+
+          <div class="login-container">
+            <object type="text/html" data="login-form.html"></object>
+        </div>  -->
+
+        <div class="login-container" id="login-container">
+          <!-- Le contenu du formulaire de connexion sera chargé ici 
+          <object type="text/html" data="login-form.html"></object> -->
+        </div>
+    
       
       </div>
 
@@ -65,7 +76,7 @@
       
       })
 
-      app.component('login-form',{
+      /*app.component('login-form',{
         template : `
           
           <form @submit.prevent="handleSubmit">
@@ -91,8 +102,18 @@
             console.log(this.emailInput, this.passwordInput);
           }
         }
-      })
+      })*/
       app.mount('#app')
+
+
+      // Charger dynamiquement le contenu du formulaire de connexion
+    fetch('http://127.0.0.1:8000/static/login-form.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('login-container').innerHTML = html;
+      });
+
+
   </script>
 
 
