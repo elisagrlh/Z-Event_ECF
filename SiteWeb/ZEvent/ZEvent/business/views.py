@@ -25,10 +25,10 @@ def index(request):
 #class HiddenAdminLoginView(LoginView):
 def adminLogin(request):
     #template_name = 'admin_login.html'
-    f = open("C:/xampp/htdocs/ECF/SiteWeb/ZEvent/ZEvent/business/templates/business/admin_login.html", "r")
+    f = open("C:/xampp/htdocs/ECF/SiteWeb/ZEvent/ZEvent/business/templates/business/adminlogin.html", "r")
     resp = f.read()
     return HttpResponse(f"{resp}")
 
 
 class ConnexionView(TemplateView):
-    template_name = 'business/connexion.html'
+    template_name = 'business/login.html'

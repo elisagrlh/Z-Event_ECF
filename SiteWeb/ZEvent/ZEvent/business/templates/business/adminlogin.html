@@ -7,7 +7,8 @@
   <title>Connexion</title>
  <!-- <link href="style.css" rel="stylesheet" type="text/css" />-->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <link rel="stylesheet" href= "../css/styleConnexion.css">
+  {% load static %}
+  <link rel="stylesheet" href= "{% static 'business/styleConnexion.css' %}">
 </head>
 
 <body>
@@ -18,8 +19,6 @@
          
     </header>
 
-
-    
 
 
       <!-- <div class="login-container">
@@ -36,44 +35,36 @@
             <button type="submit">Se connecter</button>
           </form>  
 
-          <login-form class="login-container" /> 
-
+         <login-form class="login-container" /> 
 
           <div class="login-container">
             <object type="text/html" data="login-form.html"></object>
         </div>  -->
 
         <div class="login-container" id="login-container">
-          <!-- Le contenu du formulaire de connexion sera chargé ici 
-          <object type="text/html" data="login-form.html"></object> -->
+          <object type="text/html" data="login-form.html"></object> 
+        </div> 
         </div>
-    
-      
-      </div>
 
+        <div v-html="loginFormHtml"></div>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    {% verbatim %}
     <script>
       let app = Vue.createApp({
+        //delimiters: ['[[', ']]'],
           data: function(){
               return{
-                  
+                
               }
           },
 
           methods: {
-            scrollToActus(){
-              //const assoElement = getElementById("Assos");
-              const actusPosition = this.$refs.actus.offsetTop;
-              window.scrollTo({
-                top: actusPosition,
-                behavior: 'smooth'
-              })
-            }
-              
-          }
-      
+            
+          },
+
       })
 
       /*app.component('login-form',{
@@ -103,10 +94,8 @@
           }
         }
       })*/
-      app.mount('#app')
 
-
-      // Charger dynamiquement le contenu du formulaire de connexion
+       // Charger dynamiquement le contenu du formulaire de connexion
     fetch('http://127.0.0.1:8000/static/login-form.html')
       .then(response => response.text())
       .then(html => {
@@ -114,8 +103,12 @@
       });
 
 
-  </script>
+      app.mount('#app')
 
+
+
+  </script>
+{% endverbatim %}
 
         <script src="../script.js"></script>
 
