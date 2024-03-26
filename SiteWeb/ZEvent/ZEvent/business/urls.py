@@ -10,6 +10,6 @@ urlpatterns = [
     path("", views.index, name="index"),
     #path("connexion/", views.connexion, name="connexion"),
     #path('admin/login/', HiddenAdminLoginView.as_view(), name='hidden_admin_login'),
-    path('connexion/', ConnexionView.as_view(), name='connexion'),
+    path('login/', ConnexionView.as_view(), name='login'),
     path('admin/login/', views.adminLogin, name='hidden_admin_login'),
 ]

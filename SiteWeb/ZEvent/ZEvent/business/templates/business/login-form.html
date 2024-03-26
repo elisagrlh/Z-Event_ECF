@@ -1,21 +1,26 @@
 <!-- login-form.html -->
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<!DOCTYPE html>
+
+{% block html %}
 <form @submit.prevent="handleSubmit">
-    <h1>{{ title }}</h1>
-    <label for="username">{{ email }}</label>
+{% block form %}
+    <h1>Connexion</h1>
+    <label for="username">Email</label>
     <input type="email" v-model="emailInput"/>
-    <label for="password">{{ password }}</label>
+    <label for="password">Mot de passe</label>
     <input type="password" v-model="passwordInput"/>
     <button>Se connecter</button>
+{% endblock %}   
 </form>
+{% endblock %}
 
 <script>
     const LoginForm = {
         data() {
             return {
-                title: 'Connexion',
-                email: 'Email',
-                password: 'Mot de passe',
+                //title: 'Connexion',
+                //email: 'Email',
+                //password: 'Mot de passe',
                 emailInput: '',
                 passwordInput: ''
             }
