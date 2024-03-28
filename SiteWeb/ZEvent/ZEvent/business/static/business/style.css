@@ -1,3 +1,8 @@
+/*------------------------------------------------------------------
+                          INDEX FILE
+-------------------------------------------------------------------*/
+
+
 /*body{
   margin: 0;
 }
@@ -38,19 +43,32 @@ header{
 
 }*/
 
+header{
+  width:100%;
+  height: 20%;
+}
+.background{
+  width: 1903px;
+  height: 950px;
+  background-image: url("images/florian-olivo-Mf23RF8xArY-unsplash.jpg") ;
+  background-repeat: no-repeat;
+  background-size : cover;
+  background-color: #074f57; /*Security in case the image doesn't load*/
+
+}
+
 .hero {
     
-  width: 1903px;
-  height: 758px;
+ 
   display : flex;
-  background-color: #074f57; /*Security in case the image doesn't load*/
+  
   color : white;
   flex-direction: column;
   padding-top : 10px;
   padding-bottom: 150px;
-  background-image: url("images/florian-olivo-Mf23RF8xArY-unsplash.jpg") ;
+  /*background-image: url("images/florian-olivo-Mf23RF8xArY-unsplash.jpg") ;
   background-repeat: no-repeat;
-  background-size : cover;
+  background-size : cover;*/
 
     
 }
@@ -463,3 +481,43 @@ body {
   }
 
 }
+
+
+
+/*------------------------------------------------------------------
+                          LOGIN FILE
+-------------------------------------------------------------------*/
+/* body, html {
+  height: 100%; Assure que le body et le html prennent toute la hauteur de la fenêtre 
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}*/
+
+.login-container {
+  width: 100%;
+  height: 100%; /* Définit la hauteur du conteneur parent à 100% */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centre horizontalement */
+  justify-content: center; /* Centre verticalement */
+}
+
+
+/*input[type="text"], input[type="password"] {
+    border: 2px solid #3498db;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #2ecc71;
+  }*/
+
+  
+  
+  

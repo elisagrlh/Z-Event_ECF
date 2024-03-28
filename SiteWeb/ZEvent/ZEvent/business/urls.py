@@ -10,6 +10,11 @@ urlpatterns = [
     path("", views.index, name="index"),
     #path("connexion/", views.connexion, name="connexion"),
     #path('admin/login/', HiddenAdminLoginView.as_view(), name='hidden_admin_login'),
-    path('login/', ConnexionView.as_view(), name='login'),
-    path('admin/login/', views.adminLogin, name='hidden_admin_login'),
+    path('login1/', ConnexionView.as_view(), name='login'),
+    path('adminlogin/', views.adminLogin, name='hidden_admin_login'),
+
+    path('login/', views.login_user, name="login_user"),
+
+    path('news/', views.news, name='news'),
+    path('streamers/', views.streamers, name='streamers')
 ]
