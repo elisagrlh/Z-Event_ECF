@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html>
@@ -22,58 +23,70 @@
 
     <body>
         
-        <div id="app">
+        <div id="app" class="background">
             <header>
                 
                 
-                
-                
-                    <div  id= "hero" class="hero">
+                <div class="titre" style="display: block">
+                    <a @click="openBtn" > <!--href="#" id="openBtn"-->
+                        <span class="burger-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>    
                         
-            
-                        <a @click="openBtn" > <!--href="#" id="openBtn"-->
-                            <span class="burger-icon">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </span>    
-                            
-                        </a>
+                    </a>
+                
+                </div>
 
-
-                        <div class="menu" :class="{ 'active': hasNewClassMenu }"> <!-- v-if="isVisibleSideMenu" id="sideMenu" class="menu"   :class="{ 'scroll': hasNewClassScroll }"-->
-                            <a @click="closeBtn" href="#" class="close">x</a>
-                            <ul>
-                                <li><a id="homeBtn" href="index.html">Accueil</a></li>
-                                <li><a id="newsBtn" href="news.html">Fil d'actualités</a></li>
-                                <li><a id="streamersBtn" href="streamers.html">Streamers</a></li>
-                                <li><a id="connexionBtn" href="connexion">Connexion</a></li>
-                            </ul>
-                        </div>
-
-
-                        <div class="titre" style="display: block"></div>
-                        <div id="presentation" class="presentation" :class="{ 'active': hasNewClassPresentation }">
-                            <h1> Qu'est ce que le ZEvent ?</h1>
-                            <p>
-                                Z Event est un projet caritatif créé par Adrien Nougaret et Alexandre Dachary.
-                            Divisé en 2 parties, l'événement se compose d'un showcase qui fait office d'amorce et est suivi par un marathon de streaming jeux vidéo lors duquel de nombreux animateurs spécialisés se rassemblent tout au long du weekend.
-                            Pendant plus de 50h, les participants diffusent du contenu en direct tous ensemble et encouragent les spectateurs à se mobiliser pour soutenir une association caritative.
-                            </p> 
-                        </div>
-
-                        <div class="buttons">
-                            <button @click="scrollToAsso" id="assoButton" class="AssosButton" role="button">Association</button>
-                            <button @click="scrollToActus" id="actusBtn" class="AssosButton" role="button">Actualités</button>
-                        </div>
                         
+                
 
-                    </div>
+                {% verbatim %}
+                <div class="menu" :class="{ 'active': hasNewClassMenu }"> <!-- v-if="isVisibleSideMenu" id="sideMenu" class="menu"   :class="{ 'scroll': hasNewClassScroll }"-->
+                {% endverbatim %}    
+                    <a @click="closeBtn" href="#" class="close">x</a>
+                    <ul>
+                        <li><a id="homeBtn" href="">Accueil</a></li>
+                        <li><a id="newsBtn" href="news.html">Fil d'actualités</a></li>
+                        <li><a id="streamersBtn" href="streamers.html">Streamers</a></li>
+                        <li><a id="connexionBtn" href="login">Connexion</a></li>
+                    </ul>
+                </div>
 
+
+                
                     
-                
             </header>
             
+
+
+
+
+
+
+
+            <div  id= "hero" class="hero">
+                        
+                
+                
+                <div id="presentation" class="presentation" :class="{ 'active': hasNewClassPresentation }">
+                    <h1> Qu'est ce que le ZEvent ?</h1>
+                    <p>
+                        Z Event est un projet caritatif créé par Adrien Nougaret et Alexandre Dachary.
+                    Divisé en 2 parties, l'événement se compose d'un showcase qui fait office d'amorce et est suivi par un marathon de streaming jeux vidéo lors duquel de nombreux animateurs spécialisés se rassemblent tout au long du weekend.
+                    Pendant plus de 50h, les participants diffusent du contenu en direct tous ensemble et encouragent les spectateurs à se mobiliser pour soutenir une association caritative.
+                    </p> 
+                </div>
+
+                <div class="buttons">
+                    <button @click="scrollToAsso" id="assoButton" class="AssosButton" role="button">Association</button>
+                    <button @click="scrollToActus" id="actusBtn" class="AssosButton" role="button">Actualités</button>
+                </div>
+                
+
+            </div>
+
             
             <div class="contenu">
                 <h2 class="assoTitre">Association choisie</h2>
@@ -179,7 +192,7 @@
                     }
                 
                 })
-                app.mount('#app')
+                //app.mount('#app')
             </script>
 
         <script src="../script.js"></script>

@@ -1,4 +1,7 @@
+{% extends "business/login-form.html" %}
+
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -43,6 +46,7 @@
 
         <div class="login-container" id="login-container">
           <object type="text/html" data="login-form.html"></object> 
+          {{ block.super }}
         </div> 
         </div>
 

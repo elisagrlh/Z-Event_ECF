@@ -2,36 +2,25 @@
 <!DOCTYPE html>
 
 {% block html %}
-<form @submit.prevent="handleSubmit">
+
+<form class="login-container" method="POST">
 {% block form %}
+{% csrf_token %}
     <h1>Connexion</h1>
     <label for="username">Email</label>
-    <input type="email" v-model="emailInput"/>
+    <input type="username" name='username' id='username'v-model="emailInput"/>
     <label for="password">Mot de passe</label>
-    <input type="password" v-model="passwordInput"/>
+    <input type="password" name='password' id='password' v-model="passwordInput"/>
     <button>Se connecter</button>
 {% endblock %}   
 </form>
 {% endblock %}
 
-<script>
-    const LoginForm = {
-        data() {
-            return {
-                //title: 'Connexion',
-                //email: 'Email',
-                //password: 'Mot de passe',
-                emailInput: '',
-                passwordInput: ''
-            }
-        },
-        methods: {
-            handleSubmit() {
-                console.log(this.emailInput, this.passwordInput);
-                // Logique de traitement du formulaire ici
-            }
-        }
-    };
+<div class='container'>
+    {% if messages %}
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    {% endif %}
 
-    export default LoginForm;
-</script>
+</div>
