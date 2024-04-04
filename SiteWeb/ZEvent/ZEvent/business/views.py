@@ -1,6 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib. auth import authenticate, login, logout
 from django.contrib import messages 
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+from .forms import CreateUserForm
+from django.core.mail import send_mail
+import secrets
+import string
+from mailjet_rest import Client
 
 # Create your views here.
 from django.http import HttpResponse
@@ -27,33 +34,72 @@ def index(request):
 #class HiddenAdminLoginView(LoginView):
 def adminLogin(request):
     #template_name = 'admin_login.html'
-    if request.method == 'POST':
+    if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('index')
+            return redirect("index")
         else:
             messages.success(request, "there was an error loggin in, try again")
             return redirect("hidden_admin_login")
             
     else:
-        return render(request, 'business/adminlogin.html')
+        return render(request, "business/adminlogin.html")
 
 def loginForm(request):
     return render(request, "business/login-form.html")
 
 
 class ConnexionView(TemplateView):
-    template_name = 'business/registration/login.html'
+    template_name = "business/registration/login.html"
 
 
 def login_user(request):
     return render (request, "business/login1.html")
 
 def news(request):
-    return render (request, 'business/news.html')
+    return render (request, "business/news.html")
 
 def streamers(request):
-    return render(request, 'business/streamers.html')
+    return render(request, "business/streamers.html")
+
+#def profile(request):
+#    return render(request, "business/profile.html")
+
+def globalLives(request):
+    return render(request, "business/global-lives.html")
+
+def logout_user(request):
+    logout(request)
+    #messages.success(request, ("You were logged out"))
+    return redirect("index")
+
+
+def profile(request):
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            if User.objects.filter(email=email).exists():
+                messages.error(request, 'Un compte avec cette adresse e-mail existe déjà.')
+                return render(request, 'business/profile.html', {'form': form})
+
+            else:
+                # Générer un mot de passe aléatoire
+                password = ''.join(secrets.choice(string.ascii_letters + string.digits) for i in range(15))
+                # Créer un nouvel utilisateur
+                user = User.objects.create_user(username=email, email=email, password=password)
+                # Envoyer l'e-mail
+                send_mail(
+                    'Vos informations de connexion',
+                    f'Votre nom d\'utilisateur est: {email}\nVotre mot de passe est: {password}\nVous pouvez vous connecter via: http://votreapplicationweb.com/login',
+                    'elisa.gerlach@efrei.net',  # Expéditeur
+                    [email],  # Destinataire
+                    fail_silently=False,
+                )
+ 
+    else:
+        form = CreateUserForm()
+    return render(request, 'business/profile.html', {'form': form})

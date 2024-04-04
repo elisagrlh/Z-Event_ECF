@@ -16,5 +16,8 @@ urlpatterns = [
     path('login/', views.login_user, name="login_user"),
 
     path('news/', views.news, name='news'),
-    path('streamers/', views.streamers, name='streamers')
+    path('streamers/', views.streamers, name='streamers'),
+    path("profile/", views.profile, name="profile"),
+    path("globalLives/", views.globalLives, name="globalLives"),
+    path("logout/", views.logout_user, name="logout"),
 ]

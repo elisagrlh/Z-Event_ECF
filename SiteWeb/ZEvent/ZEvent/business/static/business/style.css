@@ -518,6 +518,19 @@ body {
     border-color: #2ecc71;
   }*/
 
+
+
+
+
+
   
-  
-  
+  /*------------------------------------------------------------------
+                          PROFILE FILE
+-------------------------------------------------------------------*/
+.streamerCreationForm{
+  display:block !important;
+}
+
+input{
+  display: block;
+}

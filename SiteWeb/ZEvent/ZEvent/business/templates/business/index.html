@@ -1,3 +1,4 @@
+{% extends "business/base.html" %}
 <!DOCTYPE html>
 
 <html>
@@ -22,38 +23,12 @@
 
     <body>
         
+        {% block background %}
         <div id="app" class="background">
+        {% endblock %}
             <header>
                 
-                
-                <div class="titre" style="display: block">
-                    <a @click="openBtn" > <!--href="#" id="openBtn"-->
-                        <span class="burger-icon">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </span>    
-                        
-                    </a>
-                
-                </div>
-
-                        
-                
-
-                {% verbatim %}
-                <div class="menu" :class="{ 'active': hasNewClassMenu }"> <!-- v-if="isVisibleSideMenu" id="sideMenu" class="menu"   :class="{ 'scroll': hasNewClassScroll }"-->
-                {% endverbatim %}    
-                    <a @click="closeBtn" href="#" class="close">x</a>
-                    <ul>
-                        <li><a id="homeBtn" href="">Accueil</a></li>
-                        <li><a id="newsBtn" href="news.html">Fil d'actualités</a></li>
-                        <li><a id="streamersBtn" href="streamers.html">Streamers</a></li>
-                        <li><a id="connexionBtn" href="login">Connexion</a></li>
-                    </ul>
-                </div>
-
-
+  
                 
                     
             </header>
@@ -63,6 +38,7 @@
 
 
 
+            {% block content %}
 
 
             <div  id= "hero" class="hero">
@@ -127,6 +103,8 @@
                         </p>
                 </section>
             </div>
+            {% endblock %}
+
         </div>
 
 
