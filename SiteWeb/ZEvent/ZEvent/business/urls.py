@@ -17,7 +17,8 @@ urlpatterns = [
 
     path('news/', views.news, name='news'),
     path('streamers/', views.streamers, name='streamers'),
-    path("profile/", views.profile, name="profile"),
+    path("admindashboard/", views.admindashboard, name="admindashboard"),
+    path("streamerdashboard/", views.streamerdashboard, name="streamerdashboard"),
     path("globalLives/", views.globalLives, name="globalLives"),
     path("logout/", views.logout_user, name="logout"),
 ]

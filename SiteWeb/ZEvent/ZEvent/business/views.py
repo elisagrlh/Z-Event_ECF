@@ -57,7 +57,21 @@ class ConnexionView(TemplateView):
 
 
 def login_user(request):
-    return render (request, "business/login1.html")
+    if request.method == "POST":
+            username = request.POST["username"]
+            password = request.POST["password"]
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                # Redirection vers la page d'accueil après la connexion réussie
+                return redirect("index")
+            else:
+                # Retourner une erreur de connexion invalide
+                messages.error(request, "Identifiants incorrects")
+                return render(request, "business/streamerlogin.html", {'error': 'Identifiants incorrects'})
+    else:
+        return render(request, "business/streamerlogin.html")
+    
 
 def news(request):
     return render (request, "business/news.html")
@@ -77,14 +91,14 @@ def logout_user(request):
     return redirect("index")
 
 
-def profile(request):
-    if request.method == 'POST':
+def admindashboard(request):
+    if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
+            email = form.cleaned_data["email"]
             if User.objects.filter(email=email).exists():
-                messages.error(request, 'Un compte avec cette adresse e-mail existe déjà.')
-                return render(request, 'business/profile.html', {'form': form})
+                messages.error(request, "Un compte avec cette adresse e-mail existe déjà.")
+                return render(request, "business/admindashboard.html", {"form": form})
 
             else:
                 # Générer un mot de passe aléatoire
@@ -93,13 +107,17 @@ def profile(request):
                 user = User.objects.create_user(username=email, email=email, password=password)
                 # Envoyer l'e-mail
                 send_mail(
-                    'Vos informations de connexion',
-                    f'Votre nom d\'utilisateur est: {email}\nVotre mot de passe est: {password}\nVous pouvez vous connecter via: http://votreapplicationweb.com/login',
-                    'elisa.gerlach@efrei.net',  # Expéditeur
+                    "Vos informations de connexion",
+                    f"Votre nom d\'utilisateur est: {email}\nVotre mot de passe est: {password}\nVous pouvez vous connecter via: http://127.0.0.1:8000/login/",
+                    "elisa.gerlach@efrei.net",  # Expéditeur
                     [email],  # Destinataire
                     fail_silently=False,
                 )
  
     else:
         form = CreateUserForm()
-    return render(request, 'business/profile.html', {'form': form})
+    return render(request, "business/admindashboard.html", {"form": form})
+
+
+def streamerdashboard(request):
+    return render(request, "business/streamerdashboard.html")

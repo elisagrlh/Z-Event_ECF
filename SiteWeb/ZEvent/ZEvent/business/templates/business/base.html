@@ -62,9 +62,13 @@
                     <li><a id="streamersBtn" href="{% url 'streamers' %}">Streamers</a></li>
                     <li><a id="livesBtn" href="{% url 'globalLives' %}">Lives</a></li>
                     {% if user.is_authenticated %}
-                        <a id="profileBtn" href="{% url 'profile' %}">Mon espace</a>
-                        <a id="logoutBtn" href="{% url 'logout' %}">Déconnexion</a>
-
+                        {% if user.is_superuser %}
+                            <a id="dashboardBtn" href="{% url 'admindashboard' %}">Mon espace</a>
+                            <a id="logoutBtn" href="{% url 'logout' %}">Déconnexion</a>
+                        {% else %}
+                            <a id="dashboardBtn" href="{% url 'streamerdashboard' %}">Mon espace</a>
+                            <a id="logoutBtn" href="{% url 'logout' %}">Déconnexion</a>
+                        {% endif %}
                     {% else %}
                         <a id="connexionBtn" href="{% url 'login' %}">Connexion</a>
                     {% endif %}
