@@ -90,59 +90,10 @@
             {% endblock %}
         </main>
     </div>
-
+    {% block javascript %}
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-            
-        <script>
-           let app = Vue.createApp({
-                data: function(){
-                    return{
-                       hasNewClassMenu: false,
-                       emailInput: '',
-                       passwordInput: ''
-                    }
-                },
-                methods: {
-                    openBtn() {
-                    this.hasNewClassMenu = true;
-                    },
-                        
-                    closeBtn(){
-                        this.hasNewClassMenu = false;
-                    },
+    <script src="../static/business/js/script.js"></script>
+    {% endblock %}
 
-                    scrollToAsso(){
-                            //const assoElement = getElementById("Assos");
-                            const assoPosition = this.$refs.asso.offsetTop;
-                            window.scrollTo({
-                                top: assoPosition,
-                                behavior: 'smooth'
-                            })
-                        },
-
-                        scrollToActus(){
-                            //const assoElement = getElementById("Assos");
-                            const actusPosition = this.$refs.actus.offsetTop;
-                            window.scrollTo({
-                                top: actusPosition,
-                                behavior: 'smooth'
-                            })
-                        },
-
-                        redirectWWF(){
-                            window.open("https://www.wwf.fr/", "_blank");
-                        }
-
-                        /*handleScroll() {
-                            this.hasNewClassScroll = window.scrollY > 100; // Exemple de position de défilement à partir de laquelle la classe est ajoutée
-                        },
-
-                        beforeUnmount() {
-                            window.removeEventListener('scroll', this.handleScroll);
-                        }*/
-                }    
-                })
-                app.mount('#app')
-        </script>
 </body>
 </html>

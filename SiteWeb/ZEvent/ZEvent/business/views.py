@@ -8,6 +8,8 @@ from django.core.mail import send_mail
 import secrets
 import string
 from mailjet_rest import Client
+from django.http import HttpResponseForbidden
+from .models import UserData
 
 # Create your views here.
 from django.http import HttpResponse
@@ -96,6 +98,9 @@ def admindashboard(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data["email"]
+            age = form.cleaned_data['age']
+            print("Age : ")
+            print(age)
             if User.objects.filter(email=email).exists():
                 messages.error(request, "Un compte avec cette adresse e-mail existe déjà.")
                 return render(request, "business/admindashboard.html", {"form": form})
@@ -104,7 +109,32 @@ def admindashboard(request):
                 # Générer un mot de passe aléatoire
                 password = ''.join(secrets.choice(string.ascii_letters + string.digits) for i in range(15))
                 # Créer un nouvel utilisateur
-                user = User.objects.create_user(username=email, email=email, password=password)
+                #user = User.objects.create_user(username=email, email=email, password=password)
+
+
+
+
+                user = User.objects.create_user(
+                    username=form.cleaned_data['username'],
+                    email=email,
+                    first_name=form.cleaned_data['first_name'],
+                    last_name=form.cleaned_data['last_name'],
+                )
+                # Générer un mot de passe aléatoire
+                password = User.objects.make_random_password()
+                user.set_password(password)
+                user.save()
+
+                # Ajouter les données supplémentaires dans UserData
+                user_data = UserData(user=user, age=form.cleaned_data['age'])
+                user_data.save()
+
+
+
+
+
+
+
                 # Envoyer l'e-mail
                 send_mail(
                     "Vos informations de connexion",
@@ -113,10 +143,15 @@ def admindashboard(request):
                     [email],  # Destinataire
                     fail_silently=False,
                 )
+                messages.success(request, "Utilisateur créé avec succès.")
  
     else:
         form = CreateUserForm()
-    return render(request, "business/admindashboard.html", {"form": form})
+    
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
+    else:
+        return render(request, "business/admindashboard.html", {"form": form})
 
 
 def streamerdashboard(request):
