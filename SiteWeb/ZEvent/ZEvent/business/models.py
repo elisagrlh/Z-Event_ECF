@@ -3,7 +3,30 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+
 # Create your models here
+
+
+class UserData(models.Model):
+   user = models.OneToOneField(User, on_delete=models.CASCADE)
+   age = models.PositiveIntegerField()
+
+
+
+'''
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    #image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    #confirmed = models.BooleanField("Confirmed", default=False)
+
+    age = models.IntegerField("age")
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+'''
 
 
 class Question(models.Model):
