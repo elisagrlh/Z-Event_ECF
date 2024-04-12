@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib. auth import authenticate, login, logout
 from django.contrib import messages 
 from django.contrib.auth.models import User
+#from django.conf import settings
+
 from django.contrib.auth.hashers import make_password
 from .forms import CreateUserForm
 from django.core.mail import send_mail
@@ -94,20 +96,20 @@ def logout_user(request):
 
 
 def admindashboard(request):
+    #User = settings.AUTH_USER_MODEL
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data["email"]
-            age = form.cleaned_data['age']
-            print("Age : ")
-            print(age)
+            #age = form.cleaned_data['age']
+            username = form.cleaned_data["username"]
             if User.objects.filter(email=email).exists():
                 messages.error(request, "Un compte avec cette adresse e-mail existe déjà.")
                 return render(request, "business/admindashboard.html", {"form": form})
 
             else:
                 # Générer un mot de passe aléatoire
-                password = ''.join(secrets.choice(string.ascii_letters + string.digits) for i in range(15))
+                #password = ''.join(secrets.choice(string.ascii_letters + string.digits) for i in range(15))
                 # Créer un nouvel utilisateur
                 #user = User.objects.create_user(username=email, email=email, password=password)
 
@@ -119,16 +121,19 @@ def admindashboard(request):
                     email=email,
                     first_name=form.cleaned_data['first_name'],
                     last_name=form.cleaned_data['last_name'],
+                    age=form.cleaned_data["age"]
                 )
+                
                 # Générer un mot de passe aléatoire
                 password = User.objects.make_random_password()
                 user.set_password(password)
-                user.save()
+                #user.save()
 
                 # Ajouter les données supplémentaires dans UserData
                 user_data = UserData(user=user, age=form.cleaned_data['age'])
-                user_data.save()
+                #user_data = UserData(user= user, username=form.cleaned_data['username'], email=email, first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'], age=form.cleaned_data['age'])
 
+                user_data.save()
 
 
 
@@ -138,7 +143,7 @@ def admindashboard(request):
                 # Envoyer l'e-mail
                 send_mail(
                     "Vos informations de connexion",
-                    f"Votre nom d\'utilisateur est: {email}\nVotre mot de passe est: {password}\nVous pouvez vous connecter via: http://127.0.0.1:8000/login/",
+                    f"Votre nom d\'utilisateur est: {username}\nVotre mot de passe est: {password}\nVous pouvez vous connecter via: http://127.0.0.1:8000/login/",
                     "elisa.gerlach@efrei.net",  # Expéditeur
                     [email],  # Destinataire
                     fail_silently=False,
