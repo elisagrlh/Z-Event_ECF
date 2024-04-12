@@ -2,14 +2,21 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
-
+#from django.contrib.auth.models import User
+from django.conf import settings
 # Create your models here
 
 
+#class UserData(User):
 class UserData(models.Model):
-   user = models.OneToOneField(User, on_delete=models.CASCADE)
+   #user = models.OneToOneField(User, on_delete=models.CASCADE)
+   user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
    age = models.PositiveIntegerField()
+   username = models.CharField(max_length=140, default='none')
+   email = models.CharField(max_length=140, default='none')
+   first_name= models.CharField(max_length=140, default='none')
+   last_name= models.CharField(max_length=140, default='none')
+
 
 
 

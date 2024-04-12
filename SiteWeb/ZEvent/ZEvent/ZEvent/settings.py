@@ -35,7 +35,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "business.apps.BusinessConfig",
+    #"business.apps.BusinessConfig",
+    "business",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     "crispy_bootstrap4",
+    
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -142,6 +144,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'business/templates/business'),]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "/"
+
+
+
+#AUTH_USER_MODEL = 'business.UserData'
+
 
 
 load_dotenv()
