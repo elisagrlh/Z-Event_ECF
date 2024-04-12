@@ -12,10 +12,10 @@ class UserData(models.Model):
    #user = models.OneToOneField(User, on_delete=models.CASCADE)
    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
    age = models.PositiveIntegerField()
-   username = models.CharField(max_length=140, default='none')
-   email = models.CharField(max_length=140, default='none')
-   first_name= models.CharField(max_length=140, default='none')
-   last_name= models.CharField(max_length=140, default='none')
+   username = models.CharField(max_length=140)
+   email = models.CharField(max_length=140)
+   first_name= models.CharField(max_length=140)
+   last_name= models.CharField(max_length=140)
 
 
 

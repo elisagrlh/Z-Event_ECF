@@ -121,7 +121,6 @@ def admindashboard(request):
                     email=email,
                     first_name=form.cleaned_data['first_name'],
                     last_name=form.cleaned_data['last_name'],
-                    age=form.cleaned_data["age"]
                 )
                 
                 # Générer un mot de passe aléatoire
