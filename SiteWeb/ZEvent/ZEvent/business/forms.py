@@ -8,7 +8,7 @@ from .models import UserData
 
 
 class CreateUserForm(forms.ModelForm):
-    age = forms.IntegerField(min_value=0)
+    #age = forms.IntegerField(min_value=0)
 
     class Meta:
         model = User    
@@ -19,8 +19,16 @@ class CreateUserForm(forms.ModelForm):
             'first_name': 'Prénom',
             'last_name': 'Nom',
             'username': 'Nom d’utilisateur',
-            'age': 'Age',
+            #'age': 'Age',
         }
+
+
+class AgeForm(forms.ModelForm):
+    class Meta:
+        model = UserData
+        fields = ['age']
+
+        labels = {'age': 'age'}
 
 
 '''
