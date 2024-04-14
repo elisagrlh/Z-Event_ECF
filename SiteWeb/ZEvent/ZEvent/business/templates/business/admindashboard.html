@@ -4,11 +4,15 @@
 
 <div id="app">
     <!-- Section de création de compte Streamer -->
-    <div>
+    <div class="content">
+        
+        <div class="buttons-group">
 
-        <button @click="currentTab = 'streamerCreation'">Créer un compte Streamer</button>
-        <button @click="currentTab = 'materialList'">Liste de matériel demandé</button>
-        <button @click="currentTab = 'streamerCount'">Nombre de Streamers présents</button>
+            <button @click="currentTab = 'streamerCreation'">Créer un compte Streamer</button>
+            <button @click="currentTab = 'materialList'">Liste de matériel demandé</button>
+            <button @click="currentTab = 'streamerCount'">Nombre de Streamers présents</button>
+        </div>
+
 
 
 
@@ -38,7 +42,7 @@
 
     <!-- Section de la liste de matériel -->
 
-    <div v-show="currentTab === 'materialList'">
+    <div class="content" v-show="currentTab === 'materialList'">
         <ul id="materialList">
             <!-- Les éléments de la liste seront injectés ici par JavaScript -->
             pouet
@@ -47,7 +51,7 @@
 
     <!-- Section du nombre de Streamers présents -->
 
-    <div v-show="currentTab === 'streamerCount'">
+    <div class="content" v-show="currentTab === 'streamerCount'">
         <p id="streamersCount">Chargement...</p>
     </div>
     

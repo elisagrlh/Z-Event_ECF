@@ -10,7 +10,6 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 #class UserData(User):
 class UserData(models.Model):
-   #user = models.OneToOneField(User, on_delete=models.CASCADE)
    user = models.OneToOneField(User, on_delete=models.CASCADE)
    age = models.PositiveIntegerField()
 

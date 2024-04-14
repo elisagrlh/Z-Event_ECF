@@ -132,7 +132,7 @@ def admindashboard(request):
                 user_data.save()
 
                 '''
-                username=form.cleaned_data['username'],
+                username=form.cleaned_data['username']
 
                 new_user = form.save(commit=False)
                 password = User.objects.make_random_password()
@@ -143,12 +143,6 @@ def admindashboard(request):
                 user_data = ageForm.save(commit=False)
                 user_data.user = new_user
                 user_data.save()
-
-
-
-
-
-
 
                 # Envoyer l'e-mail
                 send_mail(
