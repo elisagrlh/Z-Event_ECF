@@ -21,7 +21,11 @@
         <div v-show="currentTab === 'HomeLives'">
             <form class="streamerCreationForm" method="POST">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {% verbatim %}
+                <!--{{ form.as_p }}-->
+                {% endverbatim %}
+
+                {{ ageForm.as_p }}
                 <button type="submit">Créer l'utilisateur</button>
                 {% if messages %}
                     <ul class="messages">

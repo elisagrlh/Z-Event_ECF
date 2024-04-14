@@ -21,6 +21,7 @@
             <form class="streamerCreationForm" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
+                {{ ageForm.as_p }}
                 <button type="submit">Créer l'utilisateur</button>
                 {% if messages %}
                     <ul class="messages">

@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth.hashers import make_password
 from .forms import CreateUserForm
+from .forms import AgeForm
 from django.core.mail import send_mail
 import secrets
 import string
@@ -99,23 +100,19 @@ def admindashboard(request):
     #User = settings.AUTH_USER_MODEL
     if request.method == "POST":
         form = CreateUserForm(request.POST)
-        if form.is_valid():
+        ageForm = AgeForm(request.POST)
+        if form.is_valid() and ageForm.is_valid():
             email = form.cleaned_data["email"]
-            #age = form.cleaned_data['age']
-            username = form.cleaned_data["username"]
             if User.objects.filter(email=email).exists():
                 messages.error(request, "Un compte avec cette adresse e-mail existe déjà.")
-                return render(request, "business/admindashboard.html", {"form": form})
+                return render(request, "business/admindashboard.html", {"form": form, "ageForm": ageForm})
 
             else:
                 # Générer un mot de passe aléatoire
                 #password = ''.join(secrets.choice(string.ascii_letters + string.digits) for i in range(15))
                 # Créer un nouvel utilisateur
                 #user = User.objects.create_user(username=email, email=email, password=password)
-
-
-
-
+                '''
                 user = User.objects.create_user(
                     username=form.cleaned_data['username'],
                     email=email,
@@ -134,6 +131,20 @@ def admindashboard(request):
 
                 user_data.save()
 
+                '''
+                username=form.cleaned_data['username'],
+
+                new_user = form.save(commit=False)
+                password = User.objects.make_random_password()
+                new_user.set_password(password)
+                new_user.save()
+
+                # Création du profil associé avec l'âge
+                user_data = ageForm.save(commit=False)
+                user_data.user = new_user
+                user_data.save()
+
+
 
 
 
@@ -151,11 +162,12 @@ def admindashboard(request):
  
     else:
         form = CreateUserForm()
+        ageForm = AgeForm()
     
     if not request.user.is_superuser:
         return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
     else:
-        return render(request, "business/admindashboard.html", {"form": form})
+        return render(request, "business/admindashboard.html", {"form": form, "ageForm": ageForm})
 
 
 def streamerdashboard(request):
