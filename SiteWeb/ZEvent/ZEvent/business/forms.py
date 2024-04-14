@@ -19,7 +19,6 @@ class CreateUserForm(forms.ModelForm):
             'first_name': 'Prénom',
             'last_name': 'Nom',
             'username': 'Nom d’utilisateur',
-            #'age': 'Age',
         }
 
 
@@ -28,7 +27,7 @@ class AgeForm(forms.ModelForm):
         model = UserData
         fields = ['age']
 
-        labels = {'age': 'age'}
+        labels = {'Age': 'age'}
 
 
 '''
