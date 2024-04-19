@@ -30,6 +30,19 @@ class AgeForm(forms.ModelForm):
         labels = {'Age': 'age'}
 
 
+class MultiSelectForm(forms.Form):
+    CHOICES = (
+        ('option1', 'Option 1'),
+        ('option2', 'Option 2'),
+        ('option3', 'Option 3'),
+    )
+    favorite_options = forms.MultipleChoiceField(
+        choices=CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        label="Select Multiple Options"
+    )
+
+
 '''
 class CreateUserForm(UserCreationForm):
     age = forms.IntegerField(min_value=0, label="Âge")

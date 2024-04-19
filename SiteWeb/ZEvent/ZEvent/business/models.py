@@ -50,3 +50,13 @@ class Choice(models.Model):
     def __str__(self):
         return self.choice_text
     
+
+class Live(models.Model):
+    label = models.CharField(max_length=50)
+    streamer_username = models.ForeignKey(UserData, on_delete=models.CASCADE)
+    theme = models.CharField(max_length=30)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    pegi = models.IntegerField(default=None)
+    material = models.CharField(max_length=100)
+    

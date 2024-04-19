@@ -3,7 +3,6 @@
 {% block content %}
 
 <div id="app">
-    <!-- Section de création de compte Streamer -->
     <div>
 
         <button @click="currentTab = 'HomeLives'">Page d'accueil</button>
@@ -43,10 +42,86 @@
     <!-- Section de la liste de matériel -->
 
     <div v-show="currentTab === 'LivesEntry'">
-        <ul id="materialList">
-            <!-- Les éléments de la liste seront injectés ici par JavaScript -->
-            pouet
-        </ul>
+        <!-- {% include "business/lives-registration.html" %} -->
+
+        
+        <div>
+            <label for="date">Date de début: </label>
+            <input type="date" v-model="selectedStartDate">
+
+            <label for="time">Heure de début:</label>
+            <input type="time" id="time" v-model="selectedStartTime">  
+        </div>
+
+        <div>
+            <label for="endDate">Date de fin: </label>
+            <input type="date" v-model="selectedEndDate">
+
+            <label for="time">Heure de fin:</label>
+            <input type="time" id="time" v-model="selectedEndTime">  
+        </div>
+        
+
+        <!-- <div class="dropdown" @click="toggleDropdown('pegi')">
+            <button class="dropbtn">PEGI</button>
+            <div class="dropdown-content" v-show="dropdowns.pegi">
+              <a href="#" tabindex="0">-12</a>
+              <a href="#" tabindex="0">-16</a>
+              <a href="#" tabindex="0">-18</a>
+            </div>
+        </div> -->
+
+        <!-- <div class="dropdown" @click="toggleDropdown('material')">
+            <button class="dropbtn">Matériel</button>
+            <div class="dropdown-content" v-show="dropdowns.material">
+              <a href="#">Moniteur</a>
+              <a href="#">Clavier</a>
+              <a href="#">Souris</a>
+            </div>
+        </div> -->
+
+
+        <!-- <div class="dropdown" @click="toggleDropdown('material')" @blur="closeDropdown('material')" tabindex="0">
+            <button class="dropbtn">Matériel</button>
+            <div class="dropdown-content" v-show="dropdowns.material">
+                <a href="#" tabindex="0">Moniteur</a>
+                <a href="#" tabindex="0">Clavier</a>
+                <a href="#" tabindex="0">Souris</a>
+            </div>
+            <div class="dropdown-content" v-show="dropdowns.material">
+              <label v-for="(item, index) in materials" :key="index">
+                <input type="checkbox" v-model="selectedMaterials" :value="item">
+                {{ item }}
+              </label>
+            </div>
+        </div> -->
+        
+        <form class="streamerCreationForm" method="POST"></form>
+            {% csrf_token %}
+            <div class="dropdown">
+                <button class="dropbtn" @click="toggleDropdown">
+                Sélectionner les éléments
+                </button>
+                <div class="dropdown-content" v-show="showDropdown">
+                <div v-for="option in options" :key="option.id">
+                    <input type="checkbox" :id="option.id" :value="option.value" v-model="selectedOptions">
+                    {% verbatim %}
+                    <label :for="option.id">{{ option.text }}</label>
+                    
+                </div>
+                </div>
+            
+                <div>
+                    Options sélectionnées: {{ selectedOptions }}
+                    {% endverbatim %}
+
+                    {{ form.as_p }}
+                </div>
+            
+            </div>
+            <button type="submit">Valider le formulaire</button>
+        </form>
+
     </div>
 
     <!-- Section du nombre de Streamers présents -->
