@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from .forms import CreateUserForm
 from .forms import AgeForm
+from .forms import MultiSelectForm
 from django.core.mail import send_mail
 import secrets
 import string
@@ -165,4 +166,6 @@ def admindashboard(request):
 
 
 def streamerdashboard(request):
-    return render(request, "business/streamerdashboard.html")
+    if request.method == "POST":
+        form = MultiSelectForm(request.POST)
+        return render(request, "business/streamerdashboard.html", {"form": form})
