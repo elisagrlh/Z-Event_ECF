@@ -8,31 +8,16 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 # Create your models here
 
 
-#class UserData(User):
 class UserData(models.Model):
    user = models.OneToOneField(User, on_delete=models.CASCADE)
    age = models.PositiveIntegerField()
+   def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
 
 
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.CharField(max_length=100)
-
-'''
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #image = models.ImageField(default='default.jpg', upload_to='profile_pics')
-    #confirmed = models.BooleanField("Confirmed", default=False)
-
-    age = models.IntegerField("age")
-    def __str__(self):
-        return f'{self.user.username} Profile'
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-'''
-
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
@@ -51,12 +36,33 @@ class Choice(models.Model):
         return self.choice_text
     
 
+class OptionsMaterial(models.Model):
+    name = models.CharField(max_length=300)
+    def __str__(self):
+        return self.name
+    
+class OptionsTheme(models.Model):
+    name = models.CharField(max_length=300)
+    def __str__(self):
+        return self.name
+
+
 class Live(models.Model):
+    PEGI_CHOICES = [
+        (12, '12'),
+        (16, '16'),
+        (18, '18'),
+    ]
     label = models.CharField(max_length=50)
-    streamer_username = models.ForeignKey(UserData, on_delete=models.CASCADE)
-    theme = models.CharField(max_length=30)
+    streamer_name = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    theme = models.ManyToManyField(OptionsTheme)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    pegi = models.IntegerField(default=None)
-    material = models.CharField(max_length=100)
-    
+    pegi = models.IntegerField(choices=PEGI_CHOICES, null=True, blank=True)
+    material = models.ManyToManyField(OptionsMaterial)
+    def __str__(self):
+        # Si streamer_name est None (pas d'utilisateur lié), afficher un texte par défaut
+        if self.streamer_name:
+            return f"{User.first_name} {User.last_name}"
+        else:
+            return "No streamer assigned"

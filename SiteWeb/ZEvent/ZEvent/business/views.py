@@ -20,6 +20,7 @@ from django.http import HttpResponse
 from django.template import loader
 #from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
+from django.views.decorators.cache import never_cache
 
 
 
@@ -96,12 +97,13 @@ def logout_user(request):
     #messages.success(request, ("You were logged out"))
     return redirect("index")
 
-
+@never_cache
 def admindashboard(request):
     #User = settings.AUTH_USER_MODEL
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         ageForm = AgeForm(request.POST)
+    
         if form.is_valid() and ageForm.is_valid():
             email = form.cleaned_data["email"]
             if User.objects.filter(email=email).exists():
@@ -109,30 +111,6 @@ def admindashboard(request):
                 return render(request, "business/admindashboard.html", {"form": form, "ageForm": ageForm})
 
             else:
-                # Générer un mot de passe aléatoire
-                #password = ''.join(secrets.choice(string.ascii_letters + string.digits) for i in range(15))
-                # Créer un nouvel utilisateur
-                #user = User.objects.create_user(username=email, email=email, password=password)
-                '''
-                user = User.objects.create_user(
-                    username=form.cleaned_data['username'],
-                    email=email,
-                    first_name=form.cleaned_data['first_name'],
-                    last_name=form.cleaned_data['last_name'],
-                )
-                
-                # Générer un mot de passe aléatoire
-                password = User.objects.make_random_password()
-                user.set_password(password)
-                #user.save()
-
-                # Ajouter les données supplémentaires dans UserData
-                user_data = UserData(user=user, age=form.cleaned_data['age'])
-                #user_data = UserData(user= user, username=form.cleaned_data['username'], email=email, first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'], age=form.cleaned_data['age'])
-
-                user_data.save()
-
-                '''
                 username=form.cleaned_data['username']
 
                 new_user = form.save(commit=False)
@@ -164,8 +142,15 @@ def admindashboard(request):
     else:
         return render(request, "business/admindashboard.html", {"form": form, "ageForm": ageForm})
 
-
+#@never_cache
 def streamerdashboard(request):
     if request.method == "POST":
-        form = MultiSelectForm(request.POST)
+            form = MultiSelectForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect("index")    
+    else:
+        form = MultiSelectForm()
         return render(request, "business/streamerdashboard.html", {"form": form})
+    return render(request, "business/streamerdashboard.html", {"form": form})
+    
