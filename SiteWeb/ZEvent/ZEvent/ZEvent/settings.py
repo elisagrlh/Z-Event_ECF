@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'ZEvent.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
+        "NAME": "postgres2",
         "USER": "postgres",
         "PASSWORD": "user123",
         "HOST": "127.0.0.1",
@@ -147,7 +147,7 @@ LOGIN_REDIRECT_URL = "/"
 
 
 
-#AUTH_USER_MODEL = 'business.UserData'
+#AUTH_USER_MODEL = 'Business.User'
 
 
 

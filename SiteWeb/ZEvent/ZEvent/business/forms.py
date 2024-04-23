@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from .models import UserData
+from .models import Live
 
 
 
@@ -30,17 +31,43 @@ class AgeForm(forms.ModelForm):
         labels = {'Age': 'age'}
 
 
-class MultiSelectForm(forms.Form):
-    CHOICES = (
-        ('option1', 'Option 1'),
-        ('option2', 'Option 2'),
-        ('option3', 'Option 3'),
-    )
-    favorite_options = forms.MultipleChoiceField(
-        choices=CHOICES,
-        widget=forms.CheckboxSelectMultiple,
-        label="Select Multiple Options"
-    )
+
+
+
+class MultiSelectForm(forms.ModelForm):
+   class Meta:
+       model = Live
+       fields = ["label", "streamer_name", "theme", "start_date", "end_date", "pegi", "material"]
+       widgets = {
+           'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
+            'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
+            'options': forms.SelectMultiple(attrs={'class': 'my-multiselect-class'})
+        }
+       
+       labels = {
+            'label': 'Libellé',
+            'streamer_name': 'Streamer',
+            'theme': 'Thème',
+            'start_date': 'Date et heure de début',
+            'end_date': 'Date et heure de fin',
+            'pegi': 'PEGI',
+            'material': 'Matériel'
+        }
+       
+       def __init__(self, *args, **kwargs):
+        super(Live, self).__init__(*args, **kwargs)
+        self.fields['start_date'].input_formats = ('%Y-%m-%dT%H:%M',)
+        self.fields['end_date'].input_formats = ('%Y-%m-%dT%H:%M',)
+
+
+
+
+
+
+
+
+
+
 
 
 '''
