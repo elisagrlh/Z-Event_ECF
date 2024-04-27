@@ -36,7 +36,7 @@ let app = Vue.createApp({
             hasNewClassPresentation: false,
             emailInput: '',
             passwordInput: '',
-            currentTab: 'streamerCreation',
+            currentTab: "FirstTab",
             selectedStartDate: '',
             selectedStartTime: '',
             selectedEndDate: '',

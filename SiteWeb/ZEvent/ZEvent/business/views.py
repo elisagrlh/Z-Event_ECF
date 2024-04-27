@@ -131,6 +131,7 @@ def admindashboard(request):
                     [email],  # Destinataire
                     fail_silently=False,
                 )
+
                 messages.success(request, "Utilisateur créé avec succès.")
  
     else:
@@ -140,7 +141,11 @@ def admindashboard(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
     else:
-        return render(request, "business/admindashboard.html", {"form": form, "ageForm": ageForm})
+        return render(request, "business/admindashboard.html", {"form": form, "ageForm": ageForm, "users": User.objects.count()})
+
+def count_users(request):
+    user_count = User.objects.count()  # Compte tous les utilisateurs dans auth_user
+    return render(request, 'count_users.html', {'user_count': user_count})
 
 #@never_cache
 def streamerdashboard(request):
@@ -153,4 +158,11 @@ def streamerdashboard(request):
         form = MultiSelectForm()
         return render(request, "business/streamerdashboard.html", {"form": form})
     return render(request, "business/streamerdashboard.html", {"form": form})
+
+def some_view(request):
+    user_profile = UserData.objects.get(user=request.user)
+    login_count = user_profile.login_count
+    # Maintenant, vous pouvez passer `login_count` à votre template
+    return render(request, 'some_template.html', {'login_count': login_count})
+
     

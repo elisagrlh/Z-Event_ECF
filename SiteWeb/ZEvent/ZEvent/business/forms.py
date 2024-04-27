@@ -39,9 +39,11 @@ class MultiSelectForm(forms.ModelForm):
        model = Live
        fields = ["label", "streamer_name", "theme", "start_date", "end_date", "pegi", "material"]
        widgets = {
-           'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
+            'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
-            'options': forms.SelectMultiple(attrs={'class': 'my-multiselect-class'})
+            'options': forms.SelectMultiple(attrs={'class': 'my-multiselect-class'}),
+            'theme': forms.CheckboxSelectMultiple(attrs={'class': 'multiSelection'}),
+            'material': forms.CheckboxSelectMultiple(attrs={'class': 'multiSelection'}),
         }
        
        labels = {

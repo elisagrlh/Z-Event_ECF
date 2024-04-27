@@ -6,9 +6,9 @@
     <!-- Section de création de compte Streamer -->
     <div class="content">
         
-        <div class="buttons-group">
+        <div class="buttonsTab">
 
-            <button @click="currentTab = 'streamerCreation'">Créer un compte Streamer</button>
+            <button @click="currentTab = 'FirstTab'">Créer un compte Streamer</button>
             <button @click="currentTab = 'materialList'">Liste de matériel demandé</button>
             <button @click="currentTab = 'streamerCount'">Nombre de Streamers présents</button>
         </div>
@@ -21,8 +21,8 @@
             <input type="text" id="streamerName" placeholder="Nom du Streamer" required>
             <button type="submit">Créer</button>
         </form>-->
-        <div v-show="currentTab === 'streamerCreation'">
-            <form class="streamerCreationForm" method="POST">
+        <div v-show="currentTab === 'FirstTab'">
+            <form class="creationForm" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
                 {{ ageForm.as_p }}
@@ -38,22 +38,24 @@
             </form>
         </div>  
 
+
+        <!-- Section de la liste de matériel -->
+
+        <div v-show="currentTab === 'materialList'">
+            <ul id="materialList">
+                <!-- Les éléments de la liste seront injectés ici par JavaScript -->
+                pouet
+            </ul>
+        </div>
+
+        <!-- Section du nombre de Streamers présents -->
+
+        <div v-show="currentTab === 'streamerCount'">
+            <p id="streamersCount">Chargement...</p>
+            <p>Nombre de connexions: {{ users }}</p>
+        </div>
     </div>
 
-    <!-- Section de la liste de matériel -->
-
-    <div class="content" v-show="currentTab === 'materialList'">
-        <ul id="materialList">
-            <!-- Les éléments de la liste seront injectés ici par JavaScript -->
-            pouet
-        </ul>
-    </div>
-
-    <!-- Section du nombre de Streamers présents -->
-
-    <div class="content" v-show="currentTab === 'streamerCount'">
-        <p id="streamersCount">Chargement...</p>
-    </div>
     
 </div>
 {% endblock %}
