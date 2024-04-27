@@ -3,195 +3,53 @@
 {% block content %}
 
 <div id="app">
-    <div>
 
-        <button @click="currentTab = 'HomeLives'">Page d'accueil</button>
-        <button @click="currentTab = 'LivesEntry'">Saisie</button>
-        <button @click="currentTab = 'UserRegistration'">Inscriptions Utilisateurs</button>
-        <button @click="currentTab = 'Statistic'">Statistiques</button>
+    <div class="content">
 
+        <div class="buttonsTab">
+            <button @click="currentTab = 'FirstTab'">Saisie</button>
+            <button @click="currentTab = 'HomeLives'">Page d'accueil</button>
+            <button @click="currentTab = 'UserRegistration'">Inscriptions Utilisateurs</button>
+            <button @click="currentTab = 'Statistic'">Statistiques</button>
+        </div>
 
+            <div v-show="currentTab === 'HomeLives'">
+                <form class="creationForm" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Créer l'utilisateur</button>
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}<p>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}  
 
-        <!--<h2>Créer un compte Streamer</h2>
-        <form id="streamerForm">
-            <input type="text" id="streamerName" placeholder="Nom du Streamer" required>
-            <button type="submit">Créer</button>
-        </form>-->
-        <div v-show="currentTab === 'HomeLives'">
-            <form class="streamerCreationForm" method="POST">
+                </form>
+            </div>  
+
+        <div v-show="currentTab === 'FirstTab'" :class="{'is-active': currentTab === 'LivesEntry'}">
+            
+            <form class="creationForm" method="POST">
                 {% csrf_token %}
-                <button type="submit">Créer l'utilisateur</button>
-                {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                        <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}<p>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-
+                {{ form.as_p }}
+                <button type="submit">Valider le formulaire</button>
+                
             </form>
-        </div>  
 
-    </div>
-
-    <!-- Section de la liste de matériel -->
-
-    <div v-show="currentTab === 'LivesEntry'">
-        <!-- {% include "business/lives-registration.html" %} -->
-
-        <!--
-        <div>
-            <label for="date">Date de début: </label>
-            <input type="date" v-model="selectedStartDate">
-
-            <label for="time">Heure de début:</label>
-            <input type="time" id="time" v-model="selectedStartTime">  
         </div>
 
-        <div>
-            <label for="endDate">Date de fin: </label>
-            <input type="date" v-model="selectedEndDate">
-
-            <label for="time">Heure de fin:</label>
-            <input type="time" id="time" v-model="selectedEndTime">  
+        <div v-show="currentTab === 'UserRegistration'">
+            <p id="streamersCount">Chargement...</p>
         </div>
         
 
-         <div class="dropdown" @click="toggleDropdown('pegi')">
-            <button class="dropbtn">PEGI</button>
-            <div class="dropdown-content" v-show="dropdowns.pegi">
-              <a href="#" tabindex="0">-12</a>
-              <a href="#" tabindex="0">-16</a>
-              <a href="#" tabindex="0">-18</a>
-            </div>
-        </div> -->
-
-        <!-- <div class="dropdown" @click="toggleDropdown('material')">
-            <button class="dropbtn">Matériel</button>
-            <div class="dropdown-content" v-show="dropdowns.material">
-              <a href="#">Moniteur</a>
-              <a href="#">Clavier</a>
-              <a href="#">Souris</a>
-            </div>
-        </div> -->
-
-
-        <!-- <div class="dropdown" @click="toggleDropdown('material')" @blur="closeDropdown('material')" tabindex="0">
-            <button class="dropbtn">Matériel</button>
-            <div class="dropdown-content" v-show="dropdowns.material">
-                <a href="#" tabindex="0">Moniteur</a>
-                <a href="#" tabindex="0">Clavier</a>
-                <a href="#" tabindex="0">Souris</a>
-            </div>
-            <div class="dropdown-content" v-show="dropdowns.material">
-              <label v-for="(item, index) in materials" :key="index">
-                <input type="checkbox" v-model="selectedMaterials" :value="item">
-                {{ item }}
-              </label>
-            </div>
-        </div> -->
-        
-        <form class="streamerCreationForm" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Valider le formulaire</button>
-            
-        </form>
-        {% verbatim %}
-            <!--<div class="dropdown">
-                <button class="dropbtn" @click="toggleDropdown">
-                Sélectionner les éléments
-                </button>
-                <div class="dropdown-content" v-show="showDropdown">
-                <div v-for="option in options" :key="option.id">
-                    <input type="checkbox" :id="option.id" :value="option.value" v-model="selectedOptions">
-                    <label :for="option.id">{{ option.text }}</label>
-                    
-                </div>
-                </div>
-            
-                <div>
-                    Options sélectionnées: {{ selectedOptions }}
-
-
-                    
-                </div>
-            
-            </div>-->
-            {% endverbatim %}
-
-        
+        <div v-show="currentTab === 'Statistic'">
+            <p id="streamersCount">Chargement...</p>
+        </div>
 
     </div>
-
-    <!-- Section du nombre de Streamers présents -->
-
-    <div v-show="currentTab === 'UserRegistration'">
-        <p id="streamersCount">Chargement...</p>
-    </div>
-    
-
-    <div v-show="currentTab === 'Statistic'">
-        <p id="streamersCount">Chargement...</p>
-    </div>
-    
+ 
 </div>
+
 {% endblock %}
-
-{% verbatim %}
-<!-- 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    // Fetch initial data
-    fetchMaterialList();
-    fetchStreamersCount();
-
-    // Handle form submission for new streamer
-    $('#streamerForm').submit(function(e) {
-        e.preventDefault();
-        var streamerName = $('#streamerName').val();
-        $.ajax({
-            url: '{% url "login" %}',
-            type: 'post',
-            data: {
-                name: streamerName,
-                // Include other data as necessary
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            },
-            success: function() {
-                // Reset form, fetch updated data
-                $('#streamerName').val('');
-                fetchMaterialList();
-                fetchStreamersCount();
-            }
-        });
-    });
-});
-
-function fetchMaterialList() {
-    $.ajax({
-        url: '{% url "login" %}',
-        type: 'get',
-        success: function(data) {
-            var listItems = '';
-            $.each(data, function(i, item) {
-                listItems += '<li>' + item.name + ': ' + item.quantity + ' nécessaire(s)</li>';
-            });
-            $('#materialList').html(listItems);
-        }
-    });
-}
-
-function fetchStreamersCount() {
-    $.ajax({
-        url: '{% url "login" %}',
-        type: 'get',
-        success: function(count) {
-            $('#streamersCount').text('Il y a actuellement ' + count + ' streamer(s) à l\'événement.');
-        }
-    });
-}
-</script>
--->
-{% endverbatim %}

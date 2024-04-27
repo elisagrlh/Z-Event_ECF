@@ -5,6 +5,11 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+#from django.db.models.signals import user_logged_in
+from django.dispatch import receiver
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+
 # Create your models here
 
 
@@ -13,29 +18,13 @@ class UserData(models.Model):
    age = models.PositiveIntegerField()
    def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
-
-
-class Employee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    department = models.CharField(max_length=100)
-
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField("date published")
-    def __str__(self):
-        return self.question_text
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
-
-
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
-    def __str__(self):
-        return self.choice_text
     
 
+def validate_future_date(value):
+    if value <= timezone.now():
+        raise ValidationError('La date doit être dans le futur.')
+    
+    
 class OptionsMaterial(models.Model):
     name = models.CharField(max_length=300)
     def __str__(self):
@@ -56,8 +45,8 @@ class Live(models.Model):
     label = models.CharField(max_length=50)
     streamer_name = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     theme = models.ManyToManyField(OptionsTheme)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date = models.DateTimeField(validators=[validate_future_date])
+    end_date = models.DateTimeField(validators=[validate_future_date])
     pegi = models.IntegerField(choices=PEGI_CHOICES, null=True, blank=True)
     material = models.ManyToManyField(OptionsMaterial)
     def __str__(self):
