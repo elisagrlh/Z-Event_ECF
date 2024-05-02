@@ -2,47 +2,6 @@
                           INDEX FILE
 -------------------------------------------------------------------*/
 
-
-/*body{
-  margin: 0;
-}
-
-.wrapper{
-  height: 100vh;
-  overflow-y:auto;
-  overflow-x: hidden;
-  perspective: 10px;
-  
-}
-
-header{
-  position: relative;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  transform-style: preserve-3d;
-  
-  z-index: -1;
-
-}
-
-.background{
-  /*width: 1903px;
-  height: 100%;
-  width: 100%;
-  /*height: 758px;
-  
-  object-fit: cover;
-  background-repeat: no-repeat;
-  /*background-size : cover;
-  background-color: #074f57; /*Security in case the image doesn't load
-  transform: translateZ(-10px) scale(2);
-
-
-}*/
-
 header{
   width:100%;
   height: 20%;
@@ -487,14 +446,6 @@ body {
 /*------------------------------------------------------------------
                           LOGIN FILE
 -------------------------------------------------------------------*/
-/* body, html {
-  height: 100%; Assure que le body et le html prennent toute la hauteur de la fenêtre 
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-}*/
 
 .login-container {
   width: 100%;
@@ -504,24 +455,6 @@ body {
   align-items: center; /* Centre horizontalement */
   justify-content: center; /* Centre verticalement */
 }
-
-
-/*input[type="text"], input[type="password"] {
-    border: 2px solid #3498db;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 5px;
-    outline: none;
-  }
-  
-  input[type="text"]:focus, input[type="password"]:focus {
-    border-color: #2ecc71;
-  }*/
-
-
-
-
-
 
   
   /*------------------------------------------------------------------

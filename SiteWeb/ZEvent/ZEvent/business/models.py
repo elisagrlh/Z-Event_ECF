@@ -43,7 +43,7 @@ class Live(models.Model):
         (18, '18'),
     ]
     label = models.CharField(max_length=50)
-    streamer_name = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    streamer_name = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
     theme = models.ManyToManyField(OptionsTheme)
     start_date = models.DateTimeField(validators=[validate_future_date])
     end_date = models.DateTimeField(validators=[validate_future_date])

@@ -1,0 +1,14 @@
+{% extends "business/base.html" %}
+
+{% block content %}
+
+<div class="content">
+    {% for live in lives %}
+    <li>
+        <a href="{% url 'detailLive' live.id %}">{{ live.label }}</a> par {{ live.streamer_name.first_name }}
+        <br> </br>
+    </li>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -14,13 +14,6 @@
         </div>
 
 
-
-
-        <!--<h2>Créer un compte Streamer</h2>
-        <form id="streamerForm">
-            <input type="text" id="streamerName" placeholder="Nom du Streamer" required>
-            <button type="submit">Créer</button>
-        </form>-->
         <div v-show="currentTab === 'FirstTab'">
             <form class="creationForm" method="POST">
                 {% csrf_token %}
@@ -51,7 +44,6 @@
         <!-- Section du nombre de Streamers présents -->
 
         <div v-show="currentTab === 'streamerCount'">
-            <p id="streamersCount">Chargement...</p>
             <p>Nombre de connexions: {{ users }}</p>
         </div>
     </div>
@@ -59,61 +51,3 @@
     
 </div>
 {% endblock %}
-
-{% verbatim %}
-<!-- 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    // Fetch initial data
-    fetchMaterialList();
-    fetchStreamersCount();
-
-    // Handle form submission for new streamer
-    $('#streamerForm').submit(function(e) {
-        e.preventDefault();
-        var streamerName = $('#streamerName').val();
-        $.ajax({
-            url: '{% url "login" %}',
-            type: 'post',
-            data: {
-                name: streamerName,
-                // Include other data as necessary
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            },
-            success: function() {
-                // Reset form, fetch updated data
-                $('#streamerName').val('');
-                fetchMaterialList();
-                fetchStreamersCount();
-            }
-        });
-    });
-});
-
-function fetchMaterialList() {
-    $.ajax({
-        url: '{% url "login" %}',
-        type: 'get',
-        success: function(data) {
-            var listItems = '';
-            $.each(data, function(i, item) {
-                listItems += '<li>' + item.name + ': ' + item.quantity + ' nécessaire(s)</li>';
-            });
-            $('#materialList').html(listItems);
-        }
-    });
-}
-
-function fetchStreamersCount() {
-    $.ajax({
-        url: '{% url "login" %}',
-        type: 'get',
-        success: function(count) {
-            $('#streamersCount').text('Il y a actuellement ' + count + ' streamer(s) à l\'événement.');
-        }
-    });
-}
-</script>
--->
-{% endverbatim %}

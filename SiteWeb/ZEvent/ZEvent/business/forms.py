@@ -10,7 +10,8 @@ from .models import Live
 
 class CreateUserForm(forms.ModelForm):
     #age = forms.IntegerField(min_value=0)
-
+    first_name = forms.CharField(required=True, max_length=60)
+    last_name = forms.CharField(required=True, max_length=60)
     class Meta:
         model = User    
         fields = ['email', 'first_name', 'last_name', "username"]
@@ -27,7 +28,6 @@ class AgeForm(forms.ModelForm):
     class Meta:
         model = UserData
         fields = ['age']
-
         labels = {'Age': 'age'}
 
 

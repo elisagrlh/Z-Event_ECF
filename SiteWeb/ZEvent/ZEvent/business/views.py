@@ -14,6 +14,7 @@ import string
 from mailjet_rest import Client
 from django.http import HttpResponseForbidden
 from .models import UserData
+from .models import Live
 
 # Create your views here.
 from django.http import HttpResponse
@@ -21,24 +22,14 @@ from django.template import loader
 #from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
+from django.shortcuts import get_object_or_404
+
 
 
 
 def index(request):
-    #f = open("C:/xampp/htdocs/ECF/SiteWeb/ZEvent/ZEvent/business/templates/business/index.html", "r")
-    #resp = f.read()
-    #template = loader.get_template("business/index.html")
-    #return HttpResponse(f"{resp}")
-    #return HttpResponse(template.render(request=request))
     return render(request, "business/index.html")
 
-#def connexion(request):
-    #f = open("C:/xampp/htdocs/ECF/SiteWeb/ZEvent/ZEvent/business/templates/business/connexion.html", "r")
-    #resp = f.read()
-    #return HttpResponse(f"{resp}")
-    #return render(request, "business/connexion.html")
-
-#class HiddenAdminLoginView(LoginView):
 def adminLogin(request):
     #template_name = 'admin_login.html'
     if request.method == "POST":
@@ -86,11 +77,17 @@ def news(request):
 def streamers(request):
     return render(request, "business/streamers.html")
 
-#def profile(request):
-#    return render(request, "business/profile.html")
 
 def globalLives(request):
-    return render(request, "business/global-lives.html")
+    lives = Live.objects.all()
+    #lives = Live.objects.select_related('streamer_name').all() # select_related est utilisé pour optimiser la requête
+    #user = User.objects.all()
+    return render(request, "business/global-lives.html", {"lives": lives})
+
+def detailLive(request, id):
+    live = get_object_or_404(Live, id=id)
+    #user = User.objects.all()
+    return render(request, 'business/detail-live.html', {'live': live})
 
 def logout_user(request):
     logout(request)
@@ -159,10 +156,12 @@ def streamerdashboard(request):
         return render(request, "business/streamerdashboard.html", {"form": form})
     return render(request, "business/streamerdashboard.html", {"form": form})
 
+'''
 def some_view(request):
     user_profile = UserData.objects.get(user=request.user)
     login_count = user_profile.login_count
     # Maintenant, vous pouvez passer `login_count` à votre template
     return render(request, 'some_template.html', {'login_count': login_count})
+'''
 
     
