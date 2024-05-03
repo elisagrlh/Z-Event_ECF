@@ -48,8 +48,15 @@ let app = Vue.createApp({
             { id: 'mouse', text: 'Souris', value: 'mouse' },
             { id: 'keyboard', text: 'Clavier', value: 'keyboard' }
             ],
-            selectedOptions: []
+            selectedOptions: [],
+
+            lives: []
+
         }
+    },
+
+    mounted() {
+        this.fetchLives();
     },
     methods: {
         openBtn() {
@@ -95,6 +102,18 @@ let app = Vue.createApp({
         toggleDropdown() {
             this.showDropdown = !this.showDropdown;
         },
+
+
+        fetchLives() {
+            fetch('streamerdashboard/')
+                .then(response => response.json())
+                .then(data => {
+                    this.lives = data;
+                })
+                .catch(err => console.error(err));
+        }
+
+
     }    
     })
     app.mount('#app')

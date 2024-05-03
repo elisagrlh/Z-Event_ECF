@@ -14,13 +14,9 @@
         </div>
 
             <div v-show="currentTab === 'HomeLives'">
-                {% for live in lives %}
-                    <h1>{{ live.label }}</h1>
-                    <p>Streamer: {{ live.streamer_name.first_name }} {{ live.streamer_name.last_name }}</p>
-                    <p>Date de début: {{ live.start_date }}</p>
-                    <p>Date de fin: {{ live.end_date }}</p>
-                    <p>PEGI: {{ live.pegi }}</p>
-                {% endfor %}
+                <div v-for="live in lives" :key="live.id">
+                    {{ live.label }} - {{ live.streamer_name }}
+                </div>
 
             </div>  
 

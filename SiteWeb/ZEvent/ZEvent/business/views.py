@@ -27,6 +27,10 @@ from .utils import get_specific_live
 from .utils import get_lives
 from django.http import Http404
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Live
+from .serializers import LiveSerializer
 
 
 def index(request):
@@ -147,15 +151,12 @@ def count_users(request):
     return render(request, 'count_users.html', {'user_count': user_count})
 
 #@never_cache
-def streamerdashboard(request, id):
-    try:
-        # Convertir id en int, cela lève une ValueError si ce n'est pas possible
-        live_id = int(id)
-    except ValueError:
-        raise Http404("ID non valide")
-
-    lives = get_lives()
-    live = get_specific_live(live_id)
+@api_view(['GET'])
+def streamerdashboard(request):
+    if request.method == 'GET':
+        lives = get_lives()
+        serializer = LiveSerializer(lives, many=True)
+        return Response(serializer.data)
 
     if request.method == "POST":
         form = MultiSelectForm(request.POST)
@@ -164,8 +165,8 @@ def streamerdashboard(request, id):
             return redirect("index")    
     else:
         form = MultiSelectForm()
-        return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives, "live": live})
-    return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives, "live": live})
+        return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives})
+    return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives})
 
 '''
 def some_view(request):
