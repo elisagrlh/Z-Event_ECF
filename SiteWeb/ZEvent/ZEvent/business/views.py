@@ -147,7 +147,8 @@ def count_users(request):
     return render(request, 'count_users.html', {'user_count': user_count})
 
 #@never_cache
-def streamerdashboard(request, id):
+def streamerdashboard(request):
+    '''
     try:
         # Convertir id en int, cela lève une ValueError si ce n'est pas possible
         live_id = int(id)
@@ -156,7 +157,7 @@ def streamerdashboard(request, id):
 
     lives = get_lives()
     live = get_specific_live(live_id)
-
+'''
     if request.method == "POST":
         form = MultiSelectForm(request.POST)
         if form.is_valid():
@@ -164,8 +165,8 @@ def streamerdashboard(request, id):
             return redirect("index")    
     else:
         form = MultiSelectForm()
-        return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives, "live": live})
-    return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives, "live": live})
+        return render(request, "business/streamerdashboard.html", {"form": form})
+    return render(request, "business/streamerdashboard.html", {"form": form})
 
 '''
 def some_view(request):
