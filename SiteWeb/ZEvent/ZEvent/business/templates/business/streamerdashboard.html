@@ -14,18 +14,14 @@
         </div>
 
             <div v-show="currentTab === 'HomeLives'">
-                <form class="creationForm" method="POST">
-                    {% csrf_token %}
-                    <button type="submit">Créer l'utilisateur</button>
-                    {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}<p>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}  
+                {% for live in lives %}
+                    <h1>{{ live.label }}</h1>
+                    <p>Streamer: {{ live.streamer_name.first_name }} {{ live.streamer_name.last_name }}</p>
+                    <p>Date de début: {{ live.start_date }}</p>
+                    <p>Date de fin: {{ live.end_date }}</p>
+                    <p>PEGI: {{ live.pegi }}</p>
+                {% endfor %}
 
-                </form>
             </div>  
 
         <div v-show="currentTab === 'FirstTab'" :class="{'is-active': currentTab === 'LivesEntry'}">

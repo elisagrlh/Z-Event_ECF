@@ -22,8 +22,10 @@ from django.template import loader
 #from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
-from django.shortcuts import get_object_or_404
-
+#from django.shortcuts import get_object_or_404
+from .utils import get_specific_live
+from .utils import get_lives
+from django.http import Http404
 
 
 
@@ -79,13 +81,13 @@ def streamers(request):
 
 
 def globalLives(request):
-    lives = Live.objects.all()
+    lives = get_lives()
     #lives = Live.objects.select_related('streamer_name').all() # select_related est utilisé pour optimiser la requête
     #user = User.objects.all()
     return render(request, "business/global-lives.html", {"lives": lives})
 
 def detailLive(request, id):
-    live = get_object_or_404(Live, id=id)
+    live = get_specific_live(id)
     #user = User.objects.all()
     return render(request, 'business/detail-live.html', {'live': live})
 
@@ -145,16 +147,25 @@ def count_users(request):
     return render(request, 'count_users.html', {'user_count': user_count})
 
 #@never_cache
-def streamerdashboard(request):
+def streamerdashboard(request, id):
+    try:
+        # Convertir id en int, cela lève une ValueError si ce n'est pas possible
+        live_id = int(id)
+    except ValueError:
+        raise Http404("ID non valide")
+
+    lives = get_lives()
+    live = get_specific_live(live_id)
+
     if request.method == "POST":
-            form = MultiSelectForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect("index")    
+        form = MultiSelectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("index")    
     else:
         form = MultiSelectForm()
-        return render(request, "business/streamerdashboard.html", {"form": form})
-    return render(request, "business/streamerdashboard.html", {"form": form})
+        return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives, "live": live})
+    return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives, "live": live})
 
 '''
 def some_view(request):
