@@ -5,7 +5,7 @@
 <div class="content">
     {% for live in lives %}
     <li>
-        <a href="{% url 'detailLive' live.id %}">{{ live.label }}</a> par {{ live.streamer_name.first_name }}
+        <a href="{% url 'detailLive' live.id %}">{{ live.label }}</a> par {{ live.streamer_pseudo.pseudo }}
         <br> </br>
     </li>
     {% endfor %}

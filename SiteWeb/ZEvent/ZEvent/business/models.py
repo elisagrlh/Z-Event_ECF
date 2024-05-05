@@ -16,6 +16,7 @@ from django.utils import timezone
 class UserData(models.Model):
    user = models.OneToOneField(User, on_delete=models.CASCADE)
    age = models.PositiveIntegerField()
+   pseudo = models.CharField(max_length=50)
    def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
     
@@ -43,15 +44,17 @@ class Live(models.Model):
         (18, '18'),
     ]
     label = models.CharField(max_length=50)
-    streamer_name = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
+    streamer_pseudo = models.ForeignKey(UserData, null=False, blank=False, on_delete=models.CASCADE)
     theme = models.ManyToManyField(OptionsTheme)
     start_date = models.DateTimeField(validators=[validate_future_date])
     end_date = models.DateTimeField(validators=[validate_future_date])
     pegi = models.IntegerField(choices=PEGI_CHOICES, null=True, blank=True)
     material = models.ManyToManyField(OptionsMaterial)
+    '''
     def __str__(self):
-        # Si streamer_name est None (pas d'utilisateur lié), afficher un texte par défaut
-        if self.streamer_name:
-            return f"{User.first_name} {User.last_name}"
+        # Si streamer_pseudo est None (pas d'utilisateur lié), afficher un texte par défaut
+        if self.streamer_pseudo:
+            return f"{UserData.pseudo}"
         else:
             return "No streamer assigned"
+    '''

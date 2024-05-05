@@ -27,8 +27,11 @@ class CreateUserForm(forms.ModelForm):
 class AgeForm(forms.ModelForm):
     class Meta:
         model = UserData
-        fields = ['age']
-        labels = {'Age': 'age'}
+        fields = ['age', "pseudo"]
+        labels = {
+           'Age': 'age',
+            'Pseudo': 'pseudo'
+        }
 
 
 
@@ -37,7 +40,7 @@ class AgeForm(forms.ModelForm):
 class MultiSelectForm(forms.ModelForm):
    class Meta:
        model = Live
-       fields = ["label", "streamer_name", "theme", "start_date", "end_date", "pegi", "material"]
+       fields = ["label", "streamer_pseudo", "theme", "start_date", "end_date", "pegi", "material"]
        widgets = {
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
@@ -48,7 +51,7 @@ class MultiSelectForm(forms.ModelForm):
        
        labels = {
             'label': 'Libellé',
-            'streamer_name': 'Streamer',
+            'streamer_pseudo': 'Streamer',
             'theme': 'Thème',
             'start_date': 'Date et heure de début',
             'end_date': 'Date et heure de fin',

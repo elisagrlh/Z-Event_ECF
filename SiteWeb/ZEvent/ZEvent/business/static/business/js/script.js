@@ -26,29 +26,16 @@ function openNewsPage()
 
 
 
-
             
 
 let app = Vue.createApp({
+    delimiters: ['[[', ']]'],
     data: function(){
         return{
             hasNewClassMenu: false,
             hasNewClassPresentation: false,
-            emailInput: '',
-            passwordInput: '',
             currentTab: "FirstTab",
-            selectedStartDate: '',
-            selectedStartTime: '',
-            selectedEndDate: '',
-            selectedEndTime: '',
-
             showDropdown: false,
-            options: [
-            { id: 'monitor', text: 'Moniteur', value: 'monitor' },
-            { id: 'mouse', text: 'Souris', value: 'mouse' },
-            { id: 'keyboard', text: 'Clavier', value: 'keyboard' }
-            ],
-            selectedOptions: [],
 
             lives: []
 
@@ -56,7 +43,10 @@ let app = Vue.createApp({
     },
 
     mounted() {
-        this.fetchLives();
+        if (this.currentTab === 'HomeLives')
+        {
+            this.fetchLives();
+        }
     },
     methods: {
         openBtn() {
@@ -92,9 +82,6 @@ let app = Vue.createApp({
             window.open("https://www.wwf.fr/", "_blank");
         },
 
-        /*toggleDropdown(dropdown) {
-            this.dropdowns[dropdown] = !this.dropdowns[dropdown];
-        },*/
 
         closeDropdown(dropdown) {
             this.dropdowns[dropdown] = false;
@@ -103,16 +90,23 @@ let app = Vue.createApp({
             this.showDropdown = !this.showDropdown;
         },
 
-
+        changeTab(tabName) {
+            console.log("Changing tab to:", tabName);
+            this.currentTab = tabName;
+            if (tabName === 'HomeLives') {
+                this.fetchLives();
+            }
+        },
         fetchLives() {
-            fetch('streamerdashboard/')
+            console.log("Fetching lives data...");
+            fetch('/api/streamerdashboard/')
                 .then(response => response.json())
                 .then(data => {
                     this.lives = data;
                 })
                 .catch(err => console.error(err));
-        }
-
+        },
+        
 
     }    
     })
