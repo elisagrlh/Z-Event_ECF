@@ -158,6 +158,8 @@ def streamerdashboard(request):
         serializer = LiveSerializer(lives, many=True)
         return Response(serializer.data)
 
+
+def streamer_dashboard_page(request):
     if request.method == "POST":
         form = MultiSelectForm(request.POST)
         if form.is_valid():
@@ -165,9 +167,8 @@ def streamerdashboard(request):
             return redirect("index")    
     else:
         form = MultiSelectForm()
-        return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives})
-    return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives})
-
+        return render(request, "business/streamerdashboard.html", {"form": form})
+    return render(request, "business/streamerdashboard.html", {"form": form})
 '''
 def some_view(request):
     user_profile = UserData.objects.get(user=request.user)

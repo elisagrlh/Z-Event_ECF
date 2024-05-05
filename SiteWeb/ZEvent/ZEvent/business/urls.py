@@ -18,8 +18,10 @@ urlpatterns = [
     path('news/', views.news, name='news'),
     path('streamers/', views.streamers, name='streamers'),
     path("admindashboard/", views.admindashboard, name="admindashboard"),
-    path("streamerdashboard/", views.streamerdashboard, name="streamerdashboard"),
+    path("streamerdashboard/", views.streamer_dashboard_page, name="streamerdashboard"),
     path("globalLives/", views.globalLives, name="globalLives"),
     path("detailLive/<int:id>/", views.detailLive, name="detailLive"),
     path("logout/", views.logout_user, name="logout"),
+    path('api/streamerdashboard/', views.streamerdashboard, name='streamerdashboard-api'),
+
 ]

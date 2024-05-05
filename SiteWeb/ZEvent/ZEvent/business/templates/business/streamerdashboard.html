@@ -7,20 +7,34 @@
     <div class="content">
 
         <div class="buttonsTab">
-            <button @click="currentTab = 'FirstTab'">Saisie</button>
-            <button @click="currentTab = 'HomeLives'">Page d'accueil</button>
-            <button @click="currentTab = 'UserRegistration'">Inscriptions Utilisateurs</button>
-            <button @click="currentTab = 'Statistic'">Statistiques</button>
+            <button @click="changeTab('FirstTab')">Saisie</button>
+            <button @click="changeTab('HomeLives')">Page d'accueil</button>
+            <button @click="changeTab('UserRegistration')">Inscriptions Utilisateurs</button>
+            <button @click="changeTab('Statistic')">Statistiques</button>
         </div>
 
-            <div v-show="currentTab === 'HomeLives'">
-                <div v-for="live in lives" :key="live.id">
-                    {{ live.label }} - {{ live.streamer_name }}
-                </div>
+        <div v-show="currentTab === 'HomeLives'">
+            <div v-for="live in lives" :key="live.id">
+                <div>
+                    <h1>[[ live.label ]]</h1>
+                    <h3>Streamer:</h3> 
+                        <p>[[ live.streamer_pseudo ]] [[ live.streamer_last_name ]]</p>
+                    <h3>Thème(s):</h3>
+                        <p v-for="theme in live.theme_char"> [[ theme.name ]] </p>
+                    <h3>Date de début:</h3>
+                        <p>[[ live.start_date ]]</p>
+                    <h3>Date de fin:</h3>
+                        <p>[[ live.end_date ]]</p>
+                    <h3>PEGI:</h3> 
+                        <p>[[ live.pegi ]]</p>
+                    <h3>Matériel:</h3>
+                        <p v-for="material in live.material_char"> [[ material.name ]] </p>
+                </div>            
+            </div>
 
-            </div>  
+        </div>  
 
-        <div v-show="currentTab === 'FirstTab'" :class="{'is-active': currentTab === 'LivesEntry'}">
+        <div v-show="currentTab === 'FirstTab'">
             
             <form class="creationForm" method="POST">
                 {% csrf_token %}
