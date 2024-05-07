@@ -23,5 +23,6 @@ urlpatterns = [
     path("detailLive/<int:id>/", views.detailLive, name="detailLive"),
     path("logout/", views.logout_user, name="logout"),
     path('api/streamerdashboard/', views.streamerdashboard, name='streamerdashboard-api'),
+    path('streamerdashboard/update/<int:live_id>/', views.edit_live, name='editLive'),
 
 ]

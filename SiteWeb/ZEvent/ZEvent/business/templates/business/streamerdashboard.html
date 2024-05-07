@@ -14,23 +14,37 @@
         </div>
 
         <div v-show="currentTab === 'HomeLives'">
-            <div v-for="live in lives" :key="live.id">
-                <div>
-                    <h1>[[ live.label ]]</h1>
-                    <h3>Streamer:</h3> 
-                        <p>[[ live.streamer_pseudo ]] [[ live.streamer_last_name ]]</p>
-                    <h3>Thème(s):</h3>
-                        <p v-for="theme in live.theme_char"> [[ theme.name ]] </p>
-                    <h3>Date de début:</h3>
-                        <p>[[ live.start_date ]]</p>
-                    <h3>Date de fin:</h3>
-                        <p>[[ live.end_date ]]</p>
-                    <h3>PEGI:</h3> 
-                        <p>[[ live.pegi ]]</p>
-                    <h3>Matériel:</h3>
-                        <p v-for="material in live.material_char"> [[ material.name ]] </p>
-                </div>            
-            </div>
+            
+                <div v-for="live in lives" :key="live.id">
+                    <div v-show="!live.editing">
+                        <h1>[[ live.label ]]</h1>
+                        <h3>Streamer:</h3> 
+                            <p>[[ live.streamer_pseudo ]] </p>
+                        <h3>Thème(s):</h3>
+                            <p v-for="theme in live.theme" :key="theme.id"> [[ theme.name ]] </p>
+                        <h3>Date de début:</h3>
+                            <p>[[ live.start_date ]]</p>
+                        <h3>Date de fin:</h3>
+                            <p>[[ live.end_date ]]</p>
+                        <h3>PEGI:</h3> 
+                            <p>[[ live.pegi ]]</p>
+                        <h3>Matériel:</h3> 
+                        <div v-for="material in live.material" :key="material.id">
+                            <p>[[ material.label ]] ([[ material.brand ]])</p>
+                        </div>
+                        <button v-if="new Date(live.start_date) > new Date(new Date().setDate(new Date().getDate() + 1))"
+                            @click="enableEditing(live)">
+                            Modifier le live
+                        </button>
+                        <h4 v-else> Live non modifiable, prévu dans moins d'un jour </h4>
+                    </div>
+                           
+                    <div v-show="live.editing">
+                        <input type="text" v-model="live.label">
+                        <input type="text" v-model="live.streamer_pseudo">
+                        <button @click="updateLive(live)">Sauvegarder</button>
+                    </div>
+                </div>
 
         </div>  
 

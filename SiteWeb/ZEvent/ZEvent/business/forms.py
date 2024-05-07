@@ -51,12 +51,13 @@ class MultiSelectForm(forms.ModelForm):
        
        labels = {
             'label': 'Libellé',
-            'streamer_pseudo': 'Streamer',
+            'streamer_pseudo': 'Streamer pseudo',
             'theme': 'Thème',
             'start_date': 'Date et heure de début',
             'end_date': 'Date et heure de fin',
             'pegi': 'PEGI',
-            'material': 'Matériel'
+            'material': 'Libellé matériel',
+
         }
        
        def __init__(self, *args, **kwargs):
