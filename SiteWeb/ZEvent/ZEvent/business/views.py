@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib. auth import authenticate, login, logout
 from django.contrib import messages 
 from django.contrib.auth.models import User
+import json
 #from django.conf import settings
 
 from django.contrib.auth.hashers import make_password
@@ -22,7 +23,7 @@ from django.template import loader
 #from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
-#from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404
 from .utils import get_specific_live
 from .utils import get_lives
 from django.http import Http404
@@ -31,6 +32,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Live
 from .serializers import LiveSerializer
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
@@ -169,6 +172,8 @@ def streamer_dashboard_page(request):
         form = MultiSelectForm()
         return render(request, "business/streamerdashboard.html", {"form": form})
     return render(request, "business/streamerdashboard.html", {"form": form})
+
+
 '''
 def some_view(request):
     user_profile = UserData.objects.get(user=request.user)
@@ -176,5 +181,25 @@ def some_view(request):
     # Maintenant, vous pouvez passer `login_count` à votre template
     return render(request, 'some_template.html', {'login_count': login_count})
 '''
+@csrf_exempt
+def edit_live(request, live_id):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        live = Live.objects.get(pk=live_id)
+        form = MultiSelectForm(data, instance=live)
+        if form.is_valid():
+            updated_live=form.save()
+            return JsonResponse({
+                'label': updated_live.label,
+                'streamer_pseudo': updated_live.streamer_pseudo,
+                'theme': updated_live.theme,
+                'start_date': updated_live.start_date,
+                'end_date': updated_live.end_date,
+                'pegi': updated_live.pegi,
+                'material' : updated_live.material
 
+                }, status=200)
+        else:
+            return JsonResponse(form.errors, status=400)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
     

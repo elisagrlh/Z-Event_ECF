@@ -490,7 +490,7 @@ input{
   flex-direction: row;
   justify-content: space-evenly;
   flex-wrap: nowrap;
-  gap: 20px;
+  gap: 40px;
 }
 
 /*.buttonTab {

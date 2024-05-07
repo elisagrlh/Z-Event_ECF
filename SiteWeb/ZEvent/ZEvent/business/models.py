@@ -18,7 +18,7 @@ class UserData(models.Model):
    age = models.PositiveIntegerField()
    pseudo = models.CharField(max_length=50)
    def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name}"
+        return self.pseudo
     
 
 def validate_future_date(value):
@@ -27,10 +27,13 @@ def validate_future_date(value):
     
     
 class OptionsMaterial(models.Model):
-    name = models.CharField(max_length=300)
+    label = models.CharField(max_length=300)
+    brand = models.CharField(max_length=100)
     def __str__(self):
-        return self.name
-    
+        return f"{self.label} ({self.brand})"
+
+
+
 class OptionsTheme(models.Model):
     name = models.CharField(max_length=300)
     def __str__(self):
@@ -49,7 +52,12 @@ class Live(models.Model):
     start_date = models.DateTimeField(validators=[validate_future_date])
     end_date = models.DateTimeField(validators=[validate_future_date])
     pegi = models.IntegerField(choices=PEGI_CHOICES, null=True, blank=True)
-    material = models.ManyToManyField(OptionsMaterial)
+    material = models.ManyToManyField(OptionsMaterial, blank=True)
+   
+   
+   
+   
+   
     '''
     def __str__(self):
         # Si streamer_pseudo est None (pas d'utilisateur lié), afficher un texte par défaut
