@@ -46,15 +46,15 @@ let app = Vue.createApp({
                 pegi: '',
                 material: []
             },
-            editing: false,
-            live_label: "[[ live.label ]]"
+            live_label: "[[ live.label ]]",
+            isEditMode: false,
+            live: {},
 
         }
     },
     mounted() {
-        if (this.currentTab === 'HomeLives'){
-            this.fetchLives();
-        }
+        this.fetchLives();
+        
     },
     methods: {
         openBtn() {
@@ -89,14 +89,12 @@ let app = Vue.createApp({
             this.showDropdown = !this.showDropdown;
         },
         changeTab(tabName) {
-            console.log("Changing tab to:", tabName);
             this.currentTab = tabName;
             if (tabName === 'HomeLives') {
                 this.fetchLives();
             }
         },
         fetchLives() {
-            console.log("Fetching lives data...");
             fetch('/api/streamerdashboard/')
                 .then(response => response.json())
                 .then(data => {
@@ -104,47 +102,95 @@ let app = Vue.createApp({
                 })
                 .catch(err => console.error(err));
         },
-        enableEditing(live) {
-            live.editing = true; // Active le mode édition pour ce live
+    
+
+
+        changeOptionByText(selectId, searchText) {
+            var select = document.getElementById(selectId);
+            for (var i = 0; i < select.options.length; i++) {
+                if (select.options[i].text === searchText) {
+                    document.getElementById('id_streamer_pseudo').value=select.options[i].value;
+                    return select.options[i]; // Return the matching option element
+                }
+            }
+            return null; // Return null if no matching option was found
         },
-        cancelEditing(live) {
-            live.editing = false; // Active le mode édition pour ce live            // Optionnel: Recharger les données originales si nécessaire
+
+        checkThemesCheckbox()
+        {
+            var themeLabels = document.querySelectorAll('#id_theme div > label');
+                themeLabels.forEach(function(label) {
+                    theme_labels = label.textContent.trim();
+                    for (var i = 0; i < document.getElementById('id_theme').value.length; i++) {
+                        var checkboxId = label.getAttribute('for');
+                        var checkbox = document.getElementById(checkboxId);
+                        if (theme_labels === document.getElementById('id_theme').value[i].name)
+                        {
+                            checkbox.checked = true;
+                        }
+                    }
+                });
         },
-        updateLive(live) {
-            console.log("Sending data to server:", { 
-                label: live.label,
-                streamer: live.streamer_pseudo,
-                theme: live.theme,
-                start_date: live.start_date,
-                end_date: live.end_date,
-                pegi: live.pegi,
-                material : live.material,
-                label : this.live_label
+        checkMaterialCheckbox()
+        {
+            var matLabels = document.querySelectorAll('#id_material div > label');
+            matLabels.forEach(function(label) {
+                mat_labels = label.textContent.trim();
+                for (var i = 0; i < document.getElementById('id_material').value.length; i++) {
+                    var checkboxId = label.getAttribute('for');
+                    var checkbox = document.getElementById(checkboxId);
+                    var labels = document.getElementById('id_material').value[i].label;
+                    var brand = document.getElementById('id_material').value[i].brand;
+                    var fullLabel = labels + " (" + brand + ")"; // Concaténation du label et de la marque
+                    if (mat_labels === fullLabel) {
+                        checkbox.checked = true;
+                    }
+                }
             });
-            fetch(`/streamerdashboard/update/${live.id}/`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ 
-                    label: live.label,
-                    streamer_pseudo: live.streamer_pseudo,
-                    theme: live.theme,
-                    start_date: live.start_date,
-                    end_date: live.end_date,
-                    pegi: live.pegi,
-                    material : live.material 
-                })
-              }).then(response => {
-                if (!response.ok) throw new Error('Failed to update');
-                return response.json();
-              }).then(data => {
-                this.editing = false;
-                this.live_label = data.label;  // Mise à jour avec la nouvelle valeur confirmée
-              }).catch(error => {
-                console.error('Error:', error);
-              });
+        },
+
+        uncheckCheckboxes(){
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.checked = false;
+                });
+        },
+
+
+        enableEditing(live) {
+            this.live = {...live};
+            this.isEditMode = true;
+            this.selectedLive = live;
+            console.log(live.id);
+            this.currentTab = 'FirstTab';  // Change l'onglet
+            this.$nextTick(() => { // Attend que VueJS ait fini de mettre à jour le DOM
+                document.getElementById('id_label').value = this.selectedLive.label;
+                document.getElementById('id_streamer_pseudo').value = this.selectedLive.streamer_pseudo;
+                document.getElementById('id_start_date').value = live.start_date.slice(0, 16);
+                document.getElementById('id_end_date').value = live.end_date.slice(0, 16); 
+                document.getElementById('id_theme').value = live.theme;
+                document.getElementById('id_pegi').value = live.pegi;
+                document.getElementById('id_material').value = live.material;
+
+                this.changeOptionByText('id_streamer_pseudo', this.selectedLive.streamer_pseudo);
+                this.checkThemesCheckbox();
+                this.checkMaterialCheckbox();
+            });
+                                                                                                                                                                                                                                        
+        },
+
+
+        cancelEditing() {
+            this.isEditMode = false; // Active le mode édition pour ce live 
+
+            document.getElementById('id_label').value = null;
+            document.getElementById('id_streamer_pseudo').value = null;
+            document.getElementById('id_start_date').value = null;
+            document.getElementById('id_end_date').value = null; 
+            document.getElementById('id_theme').value = null;
+            document.getElementById('id_pegi').value = null;
+            document.getElementById('id_material').value = null;
+            this.uncheckCheckboxes();
         },
 
     }    
