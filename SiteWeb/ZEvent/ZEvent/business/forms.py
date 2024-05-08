@@ -4,8 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from .models import UserData
 from .models import Live
-
-
+from .models import LiveRegistration
 
 
 class CreateUserForm(forms.ModelForm):
@@ -70,31 +69,10 @@ class MultiSelectForm(forms.ModelForm):
 
 
 
-
-
-
-
-
-
-'''
-class CreateUserForm(UserCreationForm):
-    age = forms.IntegerField(min_value=0, label="Âge")
-
+class LiveRegistrationForm(forms.ModelForm):
     class Meta:
-        model = User
-        fields = ['email', 'first_name', 'last_name', 'username', 'age']
-        labels = {
-            'email': 'Adresse email',
-            'first_name': 'Prénom',
-            'last_name': 'Nom',
-            'username': 'Nom d’utilisateur',
+      model = LiveRegistration
+      fields = ["email"]
+      labels = {
+       "email": "Adresse email"
         }
-
-    def save(self, commit=True):
-        user = super(CreateUserForm, self).save(commit=False)
-        User.age = self.cleaned_data["age"]
-        if commit:
-            user.save() 
-        return user
-
-'''

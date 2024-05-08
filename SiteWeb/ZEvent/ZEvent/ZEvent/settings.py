@@ -162,3 +162,5 @@ EMAIL_HOST_PASSWORD = os.getenv('SMTP_PASSWORD')
 API_KEY = os.getenv('API_KEY')
 API_SECRET = os.getenv('SECRET_KEY')
 mailjet = Client(auth=(API_KEY, API_SECRET), version='v3.1')
+
+

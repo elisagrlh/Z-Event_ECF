@@ -16,7 +16,6 @@
         <div v-show="currentTab === 'HomeLives'">
             
                 <div v-for="live in lives" :key="live.id">
-                    <div v-show="!live.editing">
                         <h1>[[ live.label ]]</h1>
                         <h3>Streamer:</h3> 
                             <p>[[ live.streamer_pseudo ]] </p>
@@ -32,18 +31,14 @@
                         <div v-for="material in live.material" :key="material.id">
                             <p>[[ material.label ]] ([[ material.brand ]])</p>
                         </div>
+
                         <button v-if="new Date(live.start_date) > new Date(new Date().setDate(new Date().getDate() + 1))"
                             @click="enableEditing(live)">
                             Modifier le live
                         </button>
                         <h4 v-else> Live non modifiable, prévu dans moins d'un jour </h4>
-                    </div>
                            
-                    <div v-show="live.editing">
-                        <input type="text" v-model="live.label">
-                        <input type="text" v-model="live.streamer_pseudo">
-                        <button @click="updateLive(live)">Sauvegarder</button>
-                    </div>
+                   
                 </div>
 
         </div>  
@@ -51,11 +46,21 @@
         <div v-show="currentTab === 'FirstTab'">
             
             <form class="creationForm" method="POST">
+                <input type="hidden" name="live_id" v-model="live.id">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit">Valider le formulaire</button>
+                <button type="submit">
+                    [[ isEditMode ? 'Modifier le formulaire' : 'Valider le formulaire' ]]
+                </button>
+                <div v-if="isEditMode" @click="cancelEditing()">
+                    <button>
+                        Annuler
+                    </button>
+                </div>
                 
             </form>
+            
+            
 
         </div>
 

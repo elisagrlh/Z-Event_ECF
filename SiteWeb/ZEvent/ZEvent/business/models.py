@@ -53,16 +53,8 @@ class Live(models.Model):
     end_date = models.DateTimeField(validators=[validate_future_date])
     pegi = models.IntegerField(choices=PEGI_CHOICES, null=True, blank=True)
     material = models.ManyToManyField(OptionsMaterial, blank=True)
-   
-   
-   
-   
-   
-    '''
-    def __str__(self):
-        # Si streamer_pseudo est None (pas d'utilisateur lié), afficher un texte par défaut
-        if self.streamer_pseudo:
-            return f"{UserData.pseudo}"
-        else:
-            return "No streamer assigned"
-    '''
+
+
+class LiveRegistration(models.Model):
+    email = models.EmailField(max_length=254, unique=True)
+    live = models.ForeignKey(Live, on_delete=models.CASCADE)

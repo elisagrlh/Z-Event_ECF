@@ -31,6 +31,7 @@ from django.http import Http404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Live
+from .forms import LiveRegistrationForm
 from .serializers import LiveSerializer
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -95,8 +96,25 @@ def globalLives(request):
 
 def detailLive(request, id):
     live = get_specific_live(id)
-    #user = User.objects.all()
-    return render(request, 'business/detail-live.html', {'live': live})
+    form = LiveRegistrationForm()
+    if request.method == "POST":
+        form = LiveRegistrationForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            registration = form.save(commit=False)
+            registration.live = live 
+            registration.save()
+            send_mail(
+                    "Inscription Live",
+                    f"Vous vous êtes inscrit.e au live {live}",
+                    "elisa.gerlach@efrei.net",  # Expéditeur
+                    [email],  # Destinataire
+                    fail_silently=False,
+                )
+            return redirect("index")    
+        return render(request, 'business/detail-live.html', {'live': live, "form": form})
+    return render(request, 'business/detail-live.html', {'live': live, "form": form})
+
 
 def logout_user(request):
     logout(request)
@@ -105,7 +123,6 @@ def logout_user(request):
 
 @never_cache
 def admindashboard(request):
-    #User = settings.AUTH_USER_MODEL
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         ageForm = AgeForm(request.POST)
@@ -164,42 +181,22 @@ def streamerdashboard(request):
 
 def streamer_dashboard_page(request):
     if request.method == "POST":
-        form = MultiSelectForm(request.POST)
+        live_id = request.POST.get('live_id')
+        if live_id:
+            live = Live.objects.get(id=live_id)
+            form = MultiSelectForm(request.POST, instance=live)
+        else:
+            form = MultiSelectForm(request.POST)
+
         if form.is_valid():
             form.save()
             return redirect("index")    
     else:
         form = MultiSelectForm()
-        return render(request, "business/streamerdashboard.html", {"form": form})
+        live_id = request.GET.get('live_id')
+        if live_id:
+            live = Live.objects.get(id=live_id)
+            form = MultiSelectForm(instance=live)
+        #return render(request, "business/streamerdashboard.html", {"form": form})
     return render(request, "business/streamerdashboard.html", {"form": form})
 
-
-'''
-def some_view(request):
-    user_profile = UserData.objects.get(user=request.user)
-    login_count = user_profile.login_count
-    # Maintenant, vous pouvez passer `login_count` à votre template
-    return render(request, 'some_template.html', {'login_count': login_count})
-'''
-@csrf_exempt
-def edit_live(request, live_id):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        live = Live.objects.get(pk=live_id)
-        form = MultiSelectForm(data, instance=live)
-        if form.is_valid():
-            updated_live=form.save()
-            return JsonResponse({
-                'label': updated_live.label,
-                'streamer_pseudo': updated_live.streamer_pseudo,
-                'theme': updated_live.theme,
-                'start_date': updated_live.start_date,
-                'end_date': updated_live.end_date,
-                'pegi': updated_live.pegi,
-                'material' : updated_live.material
-
-                }, status=200)
-        else:
-            return JsonResponse(form.errors, status=400)
-    return JsonResponse({'error': 'Invalid request'}, status=400)
-    
