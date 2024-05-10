@@ -1,35 +1,6 @@
-/*var openBtn = document.getElementById("openBtn");
-var closeBtn = document.getElementById("closeBtn");
-var hero = document.getElementById("hero");
-var presentation = document.getElementById("presentation");
-
-
-var homeBtn = document.getElementById("homeBtn");
-var newsBtn = document.getElementById("newsBtn");
-
-
-homeBtn.onclick = openHomePage;
-newsBtn.onclick = openNewsPage;
-
-
-function openHomePage()
-{
-    window.location.href = "index.html";
-}
-
-
-function openNewsPage()
-{
-    window.location.href = "news.html"
-}*/
-
-
-
-
-            
-
 let app = Vue.createApp({
     delimiters: ['[[', ']]'],
+    //name: 'ChartComponent',
     data: function(){
         return{
             hasNewClassMenu: false,
@@ -49,12 +20,21 @@ let app = Vue.createApp({
             live_label: "[[ live.label ]]",
             isEditMode: false,
             live: {},
+            chart: null,
 
         }
     },
     mounted() {
         this.fetchLives();
-        
+    },
+    watch: {
+        currentTab(newVal) {
+          if (newVal === 'UserRegistration') {
+            this.$nextTick().then(() => {
+              this.fetchLivesReg();
+            });
+          }
+        }
     },
     methods: {
         openBtn() {
@@ -94,6 +74,7 @@ let app = Vue.createApp({
                 this.fetchLives();
             }
         },
+
         fetchLives() {
             fetch('/api/streamerdashboard/')
                 .then(response => response.json())
@@ -102,8 +83,15 @@ let app = Vue.createApp({
                 })
                 .catch(err => console.error(err));
         },
-    
 
+        fetchLivesReg() {
+            fetch('/api/registration/')
+                .then(response => response.json())
+                .then(data => {
+                    this.displayChart(data);
+                })
+                .catch(err => console.error(err));
+        },
 
         changeOptionByText(selectId, searchText) {
             var select = document.getElementById(selectId);
@@ -131,6 +119,7 @@ let app = Vue.createApp({
                     }
                 });
         },
+
         checkMaterialCheckbox()
         {
             var matLabels = document.querySelectorAll('#id_material div > label');
@@ -156,7 +145,6 @@ let app = Vue.createApp({
                 });
         },
 
-
         enableEditing(live) {
             this.live = {...live};
             this.isEditMode = true;
@@ -175,13 +163,11 @@ let app = Vue.createApp({
                 this.changeOptionByText('id_streamer_pseudo', this.selectedLive.streamer_pseudo);
                 this.checkThemesCheckbox();
                 this.checkMaterialCheckbox();
-            });
-                                                                                                                                                                                                                                        
+            });                                                                                                                                                                                                                          
         },
 
-
         cancelEditing() {
-            this.isEditMode = false; // Active le mode édition pour ce live 
+            this.isEditMode = false; // Désactive le mode édition pour ce live 
 
             document.getElementById('id_label').value = null;
             document.getElementById('id_streamer_pseudo').value = null;
@@ -192,6 +178,58 @@ let app = Vue.createApp({
             document.getElementById('id_material').value = null;
             this.uncheckCheckboxes();
         },
+
+        displayChart(data) {
+            this.$nextTick(() => {
+              const ctx = document.getElementById('myChart');
+              if (ctx && !this.chart) {
+                const dates = data.data.map(item => item.date);   // Extraction des dates
+                const userCounts = data.data.map(item => item.user_count);  // Extraction des comptes d'utilisateurs
+                this.initializeChart(ctx, dates, userCounts);
+              }
+            });
+          },
+          initializeChart(ctx, dates, userCounts) { 
+            if (this.chart) {
+              this.chart.destroy();
+            }
+
+            const maxValue = Math.max(...userCounts);
+            let stepSize;
+            if (maxValue <= 10) {
+                stepSize = 1;
+            } else if (maxValue <= 100) {
+                stepSize = 10;
+            } else {
+                stepSize = 100;
+            }
+
+            this.chart = new Chart(ctx.getContext('2d'), {
+              type: 'bar',
+              data: {
+                labels: dates,
+                datasets: [{
+                  label: "Nombres d'inscriptions",
+                  data: userCounts,
+                  //borderWidth: 1,
+                  //fill: false
+                }]
+              },
+              options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            // Ajuster stepSize selon les besoins
+                            stepSize: stepSize
+                        }
+                    }
+                }
+
+              }
+              
+            });
+        }
 
     }    
     })

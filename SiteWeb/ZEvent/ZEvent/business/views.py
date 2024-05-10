@@ -15,7 +15,7 @@ import string
 from mailjet_rest import Client
 from django.http import HttpResponseForbidden
 from .models import UserData
-from .models import Live
+from .models import Live, LiveRegistration
 
 # Create your views here.
 from django.http import HttpResponse
@@ -25,7 +25,7 @@ from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
 from django.shortcuts import get_object_or_404
 from .utils import get_specific_live
-from .utils import get_lives
+from .utils import get_lives, get_registration_lives
 from django.http import Http404
 
 from rest_framework.decorators import api_view
@@ -35,6 +35,8 @@ from .forms import LiveRegistrationForm
 from .serializers import LiveSerializer
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Count, DateField
+from django.db.models.functions import Trunc
 
 
 def index(request):
@@ -175,8 +177,26 @@ def count_users(request):
 def streamerdashboard(request):
     if request.method == 'GET':
         lives = get_lives()
+        registrations = get_registration_lives()
+        
+        live_reg_data = []
         serializer = LiveSerializer(lives, many=True)
         return Response(serializer.data)
+    
+@api_view(['GET'])
+def registration_live(request):
+    live_reg_data = (
+        LiveRegistration.objects
+        .annotate(date=Trunc('live__start_date', 'day', output_field=DateField()))
+        .values('date')
+        .annotate(user_count=Count('id'))
+        .order_by('date')
+    )
+    data = [
+        {'date': reg['date'].strftime('%Y-%m-%d'), 'user_count': reg['user_count']}
+        for reg in live_reg_data
+    ]
+    return JsonResponse({'data': data})
 
 
 def streamer_dashboard_page(request):

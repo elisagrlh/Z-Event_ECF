@@ -3,9 +3,7 @@
 {% block content %}
 
 <div id="app">
-
     <div class="content">
-
         <div class="buttonsTab">
             <button @click="changeTab('FirstTab')">Saisie</button>
             <button @click="changeTab('HomeLives')">Page d'accueil</button>
@@ -14,7 +12,6 @@
         </div>
 
         <div v-show="currentTab === 'HomeLives'">
-            
                 <div v-for="live in lives" :key="live.id">
                         <h1>[[ live.label ]]</h1>
                         <h3>Streamer:</h3> 
@@ -37,14 +34,10 @@
                             Modifier le live
                         </button>
                         <h4 v-else> Live non modifiable, prévu dans moins d'un jour </h4>
-                           
-                   
                 </div>
-
         </div>  
 
         <div v-show="currentTab === 'FirstTab'">
-            
             <form class="creationForm" method="POST">
                 <input type="hidden" name="live_id" v-model="live.id">
                 {% csrf_token %}
@@ -53,19 +46,16 @@
                     [[ isEditMode ? 'Modifier le formulaire' : 'Valider le formulaire' ]]
                 </button>
                 <div v-if="isEditMode" @click="cancelEditing()">
-                    <button>
-                        Annuler
-                    </button>
+                    <button>Annuler</button>
                 </div>
-                
             </form>
-            
-            
-
         </div>
 
         <div v-show="currentTab === 'UserRegistration'">
-            <p id="streamersCount">Chargement...</p>
+            <div class="chart">
+                <canvas id="myChart"></canvas>
+            </div>
+            
         </div>
         
 
