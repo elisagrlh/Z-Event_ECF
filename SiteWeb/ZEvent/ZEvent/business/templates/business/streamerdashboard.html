@@ -50,7 +50,6 @@
                 </div>
             </form>
         </div>
-
         <div v-show="currentTab === 'UserRegistration'">
             <div class="chart">
                 <canvas id="myChart"></canvas>
@@ -58,9 +57,12 @@
             
         </div>
         
-
         <div v-show="currentTab === 'Statistic'">
-            <p id="streamersCount">Chargement...</p>
+            <div v-for="livestat in livestats" :key="livestat.id">
+                <h1>[[ livestat.label ]]</h1>
+                    <p>Nombre de clics : [[ livestat.click_nb ]]</p>
+                <p>Date : [[ livestat.start_date ]]</p>
+            </div>
         </div>
 
     </div>

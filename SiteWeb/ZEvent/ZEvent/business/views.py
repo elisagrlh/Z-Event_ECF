@@ -5,39 +5,24 @@ from django.contrib.auth.models import User
 import json
 #from django.conf import settings
 
-from django.contrib.auth.hashers import make_password
-from .forms import CreateUserForm
-from .forms import AgeForm
-from .forms import MultiSelectForm
+from .forms import CreateUserForm, AgeForm, MultiSelectForm, LiveRegistrationForm
 from django.core.mail import send_mail
-import secrets
-import string
-from mailjet_rest import Client
 from django.http import HttpResponseForbidden
-from .models import UserData
 from .models import Live, LiveRegistration
 
+
 # Create your views here.
-from django.http import HttpResponse
-from django.template import loader
 #from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
-from django.shortcuts import get_object_or_404
-from .utils import get_specific_live
-from .utils import get_lives, get_registration_lives
-from django.http import Http404
+from .utils import get_lives, get_specific_live, get_registration_lives, increment_click_stats, get_live_stats
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Live
-from .forms import LiveRegistrationForm
-from .serializers import LiveSerializer
+from .serializers import LiveSerializer, LiveStatsSerializer
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count, DateField
 from django.db.models.functions import Trunc
-
 
 def index(request):
     return render(request, "business/index.html")
@@ -92,13 +77,12 @@ def streamers(request):
 
 def globalLives(request):
     lives = get_lives()
-    #lives = Live.objects.select_related('streamer_name').all() # select_related est utilisé pour optimiser la requête
-    #user = User.objects.all()
     return render(request, "business/global-lives.html", {"lives": lives})
 
 def detailLive(request, id):
     live = get_specific_live(id)
     form = LiveRegistrationForm()
+    #increment_click_stats(id)
     if request.method == "POST":
         form = LiveRegistrationForm(request.POST)
         if form.is_valid():
@@ -219,4 +203,15 @@ def streamer_dashboard_page(request):
             form = MultiSelectForm(instance=live)
         #return render(request, "business/streamerdashboard.html", {"form": form})
     return render(request, "business/streamerdashboard.html", {"form": form})
+
+
+def increment_click(request, id):
+    increment_click_stats(id)
+    return redirect("detailLive", id=id)   
+
+@api_view(['GET'])
+def stats(request):
+    livestats = get_live_stats()
+    serializer = LiveStatsSerializer(livestats, many=True)
+    return Response(serializer.data)
 
