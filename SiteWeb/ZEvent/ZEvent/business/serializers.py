@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Live
+from .models import Live, LiveStats
 from .models import UserData
 from .models import OptionsTheme
 from .models import OptionsMaterial
@@ -39,3 +39,12 @@ class LiveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Live
         fields = ['id', 'label', 'streamer_pseudo', 'theme', 'start_date', 'end_date', 'pegi', 'material']
+
+class LiveStatsSerializer(serializers.ModelSerializer):
+    #start_date = LiveSerializer(source="start_date.start_date")
+    #start_date = serializers.DateTimeField(source='live.start_date', read_only=True)
+
+    class Meta:
+        model = LiveStats
+        fields = ['live_id', 'click_nb', 'label', 'streamer_pseudo', 'start_date']
+

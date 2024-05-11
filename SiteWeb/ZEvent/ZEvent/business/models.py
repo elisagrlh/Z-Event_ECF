@@ -9,6 +9,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from djongo import models
 
 # Create your models here
 
@@ -58,3 +59,10 @@ class Live(models.Model):
 class LiveRegistration(models.Model):
     email = models.EmailField(max_length=254, unique=True)
     live = models.ForeignKey(Live, on_delete=models.CASCADE)
+
+class LiveStats(models.Model):
+    live_id = models.PositiveIntegerField(primary_key=True)
+    click_nb = models.PositiveIntegerField()
+    label = models.CharField(max_length=50)
+    streamer_pseudo = models.CharField(max_length=50)
+    start_date = models.DateTimeField()

@@ -1,3 +1,4 @@
+
 let app = Vue.createApp({
     delimiters: ['[[', ']]'],
     //name: 'ChartComponent',
@@ -20,12 +21,14 @@ let app = Vue.createApp({
             live_label: "[[ live.label ]]",
             isEditMode: false,
             live: {},
+            livestats: [],
             chart: null,
 
         }
     },
     mounted() {
         this.fetchLives();
+        this.fetchLiveStats();
     },
     watch: {
         currentTab(newVal) {
@@ -82,6 +85,26 @@ let app = Vue.createApp({
                     this.lives = data;
                 })
                 .catch(err => console.error(err));
+        },
+        fetchLiveStats() {
+            // Faire une requête pour récupérer les données
+            fetch('/api/stats/') // Utilisez l'URL configurée dans Django
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.length > 0) { // Vérifie que data est non nul et non vide
+                    this.livestats = data; // Stockage des données dans la propriété livestats
+                } else {
+                    console.log('No live stats data received');
+                }
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
         },
 
         fetchLivesReg() {

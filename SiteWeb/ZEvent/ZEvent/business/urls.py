@@ -24,5 +24,8 @@ urlpatterns = [
     path("logout/", views.logout_user, name="logout"),
     path('api/streamerdashboard/', views.streamerdashboard, name='streamerdashboard-api'),
     path('api/registration/', views.registration_live, name='registration-api'),
+    path('incrementClick/<int:id>/', views.increment_click, name='increment-click'),
+    path('api/stats/', views.stats, name='stats-api')
+
 
 ]
