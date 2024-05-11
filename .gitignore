@@ -618,3 +618,5 @@ bower_components/
 
 build/
 dist/
+
+business/settings.py
