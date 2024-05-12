@@ -4,6 +4,7 @@ from .models import UserData
 from .models import OptionsTheme
 from .models import OptionsMaterial
 from django.contrib.auth.models import User
+import logging
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -47,4 +48,12 @@ class LiveStatsSerializer(serializers.ModelSerializer):
     class Meta:
         model = LiveStats
         fields = ['live_id', 'click_nb', 'label', 'streamer_pseudo', 'start_date']
+
+
+class StreamerLivesSerializer(serializers.ModelSerializer):
+    lives = LiveSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = UserData
+        fields = ['pseudo', 'lives']        
 

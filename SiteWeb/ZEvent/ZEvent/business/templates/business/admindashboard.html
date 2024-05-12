@@ -37,7 +37,26 @@
         <div v-show="currentTab === 'materialList'">
             <ul id="materialList">
                 <!-- Les éléments de la liste seront injectés ici par JavaScript -->
-                pouet
+
+                    <div v-for="live in lives" :key="live.id" v-show="live.material && live.material.length > 0">
+                        <h2>[[ live.label ]]</h2>
+                        <h3>Streamer:</h3> 
+                            <p>[[ live.streamer_pseudo ]] </p>
+                        <h3>Matériel:</h3> 
+                            <div v-for="material in live.material" :key="material.id">
+                                <p>[[ material.label ]] ([[ material.brand ]])</p>
+                            </div>
+                        <h3>Date de début:</h3>
+                            <p>[[ live.start_date ]]</p>
+                        <h3>Date de fin:</h3>
+                            <p>[[ live.end_date ]]</p>
+
+                    </div>
+
+                    <h1>Matériel total à acheter :</h1>
+                    <li v-for="material in calculateMaterials(lives)" :key="material.label + material.brand">
+                        [[ material.label ]] ([[ material.brand  ]])
+                    </li>
             </ul>
         </div>
 

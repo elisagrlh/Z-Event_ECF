@@ -22,6 +22,7 @@ let app = Vue.createApp({
             isEditMode: false,
             live: {},
             livestats: [],
+            streamers: [],
             chart: null,
 
         }
@@ -29,6 +30,7 @@ let app = Vue.createApp({
     mounted() {
         this.fetchLives();
         this.fetchLiveStats();
+        this.fetchLiveStreamers();
     },
     watch: {
         currentTab(newVal) {
@@ -105,6 +107,17 @@ let app = Vue.createApp({
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
             });
+        },
+
+
+        fetchLiveStreamers(){
+            fetch('/api/streamers/')
+            .then(response => response.json())
+            .then(data => {
+                this.streamers = data;
+            })
+            .catch(err => console.error(err));
+
         },
 
         fetchLivesReg() {
@@ -212,7 +225,8 @@ let app = Vue.createApp({
               }
             });
           },
-          initializeChart(ctx, dates, userCounts) { 
+
+        initializeChart(ctx, dates, userCounts) { 
             if (this.chart) {
               this.chart.destroy();
             }
@@ -252,7 +266,50 @@ let app = Vue.createApp({
               }
               
             });
-        }
+        },
+
+        calculateMaterials(lives) {
+            let allMaterials = [];
+            let materialsToBuy = [];
+          
+            // Collecter tous les matériels de tous les lives
+            lives.forEach(live => {
+              live.material.forEach(material => {
+                allMaterials.push({
+                  label: material.label,
+                  brand: material.brand,
+                  start_date: new Date(live.start_date),
+                  end_date: new Date(live.end_date)
+                });
+              });
+            });
+          
+            // Traitement des matériels pour déterminer le nombre nécessaire
+            allMaterials.forEach(current => {
+              let overlaps = 0;
+          
+              allMaterials.forEach(other => {
+                if (current.label === other.label && current.brand === other.brand) {
+                  if (!(current.end_date <= other.start_date || current.start_date >= other.end_date)) {
+                    overlaps++;
+                  }
+                }
+              });
+          
+              let existingCount = materialsToBuy.filter(m => m.label === current.label && m.brand === current.brand).length;
+          
+              if (existingCount < overlaps) {
+                for (let i = existingCount; i < overlaps; i++) {
+                  materialsToBuy.push({
+                    label: current.label,
+                    brand: current.brand
+                  });
+                }
+              }
+            });
+          
+            return materialsToBuy;
+          }
 
     }    
     })
