@@ -8,7 +8,7 @@ import json
 from .forms import CreateUserForm, AgeForm, MultiSelectForm, LiveRegistrationForm
 from django.core.mail import send_mail
 from django.http import HttpResponseForbidden
-from .models import Live, LiveRegistration
+from .models import Live, LiveRegistration, UserData
 
 
 # Create your views here.
@@ -19,10 +19,12 @@ from .utils import get_lives, get_specific_live, get_registration_lives, increme
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import LiveSerializer, LiveStatsSerializer
+from .serializers import LiveSerializer, LiveStatsSerializer, StreamerLivesSerializer
 from django.http import JsonResponse
 from django.db.models import Count, DateField
 from django.db.models.functions import Trunc
+from django.db.models import Prefetch
+
 
 def index(request):
     return render(request, "business/index.html")
@@ -71,8 +73,13 @@ def login_user(request):
 def news(request):
     return render (request, "business/news.html")
 
+
+
+
 def streamers(request):
     return render(request, "business/streamers.html")
+
+
 
 
 def globalLives(request):
@@ -215,3 +222,9 @@ def stats(request):
     serializer = LiveStatsSerializer(livestats, many=True)
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+def streamer_lives_view(request):
+    users_with_lives = UserData.objects.all()
+    serializer = StreamerLivesSerializer(users_with_lives, many=True)
+    return Response(serializer.data)
