@@ -83,9 +83,30 @@ def streamers(request):
 
 
 def globalLives(request):
-    lives = get_lives()
-    return render(request, "business/global-lives.html", {"lives": lives})
+    return render(request, "business/global-lives.html")
 
+
+@api_view(['GET'])
+def filterLives(request):
+    lives = Live.objects.all()
+    date = request.GET.get('date')
+    theme = request.GET.get('theme')
+    streamer = request.GET.get('streamer')
+                
+    if date:
+       lives = lives.filter(start_date__date=date)
+    if theme:
+        lives = lives.filter(theme__name=theme)
+    if streamer:
+        lives = lives.filter(streamer_pseudo__pseudo=streamer)
+        
+    serializer = LiveSerializer(lives, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
+
+
+@api_view(['GET'])
 def detailLive(request, id):
     live = get_specific_live(id)
     form = LiveRegistrationForm()
@@ -163,16 +184,12 @@ def count_users(request):
     user_count = User.objects.count()  # Compte tous les utilisateurs dans auth_user
     return render(request, 'count_users.html', {'user_count': user_count})
 
-#@never_cache
+
 @api_view(['GET'])
 def streamerdashboard(request):
-    if request.method == 'GET':
-        lives = get_lives()
-        registrations = get_registration_lives()
-        
-        live_reg_data = []
-        serializer = LiveSerializer(lives, many=True)
-        return Response(serializer.data)
+    lives = Live.objects.all()
+    serializer = LiveSerializer(lives, many=True)
+    return JsonResponse(serializer.data, safe=False)
     
 @api_view(['GET'])
 def registration_live(request):
@@ -191,7 +208,10 @@ def registration_live(request):
 
 
 def streamer_dashboard_page(request):
+    lives = get_lives()
+
     if request.method == "POST":
+        lives = get_lives()
         live_id = request.POST.get('live_id')
         if live_id:
             live = Live.objects.get(id=live_id)
@@ -209,7 +229,7 @@ def streamer_dashboard_page(request):
             live = Live.objects.get(id=live_id)
             form = MultiSelectForm(instance=live)
         #return render(request, "business/streamerdashboard.html", {"form": form})
-    return render(request, "business/streamerdashboard.html", {"form": form})
+    return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives})
 
 
 def increment_click(request, id):
@@ -228,3 +248,4 @@ def streamer_lives_view(request):
     users_with_lives = UserData.objects.all()
     serializer = StreamerLivesSerializer(users_with_lives, many=True)
     return Response(serializer.data)
+

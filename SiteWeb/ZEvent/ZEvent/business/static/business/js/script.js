@@ -9,6 +9,11 @@ let app = Vue.createApp({
             currentTab: "FirstTab",
             showDropdown: false,
             lives: [],
+            themes: [],
+            theme:'',
+            date:'',
+            streamer:'',
+            //streamers: [],
             selectedLive: {  // Initialisation de l'objet selectedLive
                 label: '',
                 streamer_pseudo: '',
@@ -22,6 +27,7 @@ let app = Vue.createApp({
             isEditMode: false,
             live: {},
             livestats: [],
+            filter_lives: [],
             streamers: [],
             chart: null,
 
@@ -31,6 +37,7 @@ let app = Vue.createApp({
         this.fetchLives();
         this.fetchLiveStats();
         this.fetchLiveStreamers();
+        //this.filterLives();
     },
     watch: {
         currentTab(newVal) {
@@ -80,17 +87,59 @@ let app = Vue.createApp({
             }
         },
 
+        
         fetchLives() {
             fetch('/api/streamerdashboard/')
                 .then(response => response.json())
                 .then(data => {
                     this.lives = data;
+                    this.themes = [...new Set(data.flatMap(live => live.theme.map(t => t.name)))];  // Unique themes
+                    this.streamers = [...new Set(data.map(live => live.streamer_pseudo))];  // Unique streamers
+ 
+                })
+                .catch(err => console.error(err));
+           
+        },
+
+
+        filterLives(){
+            console.log("filterLives called");
+            let params = new URLSearchParams({
+                date: this.date,
+                theme: this.theme,
+                streamer: this.streamer
+            });
+            console.log("streamer", this.streamer)
+            if (this.theme) {
+                params.set('theme', this.theme.toString());
+            }
+            console.log(params.toString());  // Inspecter les paramètres
+            console.log("URL with parameters:", `/api/filterlives/?${params.toString()}`);   
+            
+            fetch(`/api/filterlives/?${params.toString()}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Data received from API:", data);
+                    this.lives = data;
+                    
+                    this.themes = [...new Set(data.flatMap(live => live.theme.map(t => t.name)))];  // Unique themes
+                    this.streamers = [...new Set(data.map(live => live.streamer_pseudo))];  // Unique streamers
+ 
                 })
                 .catch(err => console.error(err));
         },
+
+        clearFilters() {
+            this.date = '';
+            this.theme = '';
+            this.streamer = '';
+            this.fetchLives();  // Recharger les données initiales
+        },
+
+
         fetchLiveStats() {
             // Faire une requête pour récupérer les données
-            fetch('/api/stats/') // Utilisez l'URL configurée dans Django
+            fetch('/api/stats/') 
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -185,7 +234,6 @@ let app = Vue.createApp({
             this.live = {...live};
             this.isEditMode = true;
             this.selectedLive = live;
-            console.log(live.id);
             this.currentTab = 'FirstTab';  // Change l'onglet
             this.$nextTick(() => { // Attend que VueJS ait fini de mettre à jour le DOM
                 document.getElementById('id_label').value = this.selectedLive.label;
