@@ -3,45 +3,66 @@
 {% block content %}
 
 <div id="app">
-
     <div class="content">
-
         <div class="buttonsTab">
-            <button @click="currentTab = 'FirstTab'">Saisie</button>
-            <button @click="currentTab = 'HomeLives'">Page d'accueil</button>
-            <button @click="currentTab = 'UserRegistration'">Inscriptions Utilisateurs</button>
-            <button @click="currentTab = 'Statistic'">Statistiques</button>
+            <button @click="changeTab('FirstTab')">Saisie</button>
+            <button @click="changeTab('HomeLives')">Page d'accueil</button>
+            <button @click="changeTab('UserRegistration')">Inscriptions Utilisateurs</button>
+            <button @click="changeTab('Statistic')">Statistiques</button>
         </div>
 
-            <div v-show="currentTab === 'HomeLives'">
-                {% for live in lives %}
-                    <h1>{{ live.label }}</h1>
-                    <p>Streamer: {{ live.streamer_name.first_name }} {{ live.streamer_name.last_name }}</p>
-                    <p>Date de début: {{ live.start_date }}</p>
-                    <p>Date de fin: {{ live.end_date }}</p>
-                    <p>PEGI: {{ live.pegi }}</p>
-                {% endfor %}
+        <div v-show="currentTab === 'HomeLives'">
+                <div v-for="live in lives" :key="live.id">
+                        <h1>[[ live.label ]]</h1>
+                        <h3>Streamer:</h3> 
+                            <p>[[ live.streamer_pseudo ]] </p>
+                        <h3>Thème(s):</h3>
+                            <p v-for="theme in live.theme" :key="theme.id"> [[ theme.name ]] </p>
+                        <h3>Date de début:</h3>
+                            <p>[[ live.start_date ]]</p>
+                        <h3>Date de fin:</h3>
+                            <p>[[ live.end_date ]]</p>
+                        <h3>PEGI:</h3> 
+                            <p>[[ live.pegi ]]</p>
+                        <h3>Matériel:</h3> 
+                        <div v-for="material in live.material" :key="material.id">
+                            <p>[[ material.label ]] ([[ material.brand ]])</p>
+                        </div>
 
-            </div>  
+                        <button v-if="new Date(live.start_date) > new Date(new Date().setDate(new Date().getDate() + 1))"
+                            @click="enableEditing(live)">
+                            Modifier le live
+                        </button>
+                        <h4 v-else> Live non modifiable, prévu dans moins d'un jour </h4>
+                </div>
+        </div>  
 
-        <div v-show="currentTab === 'FirstTab'" :class="{'is-active': currentTab === 'LivesEntry'}">
-            
+        <div v-show="currentTab === 'FirstTab'">
             <form class="creationForm" method="POST">
+                <input type="hidden" name="live_id" v-model="live.id">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit">Valider le formulaire</button>
-                
+                <button type="submit">
+                    [[ isEditMode ? 'Modifier le formulaire' : 'Valider le formulaire' ]]
+                </button>
+                <div v-if="isEditMode" @click="cancelEditing()">
+                    <button>Annuler</button>
+                </div>
             </form>
-
         </div>
-
         <div v-show="currentTab === 'UserRegistration'">
-            <p id="streamersCount">Chargement...</p>
+            <div class="chart">
+                <canvas id="myChart"></canvas>
+            </div>
+            
         </div>
         
-
         <div v-show="currentTab === 'Statistic'">
-            <p id="streamersCount">Chargement...</p>
+            <div v-for="livestat in livestats" :key="livestat.id">
+                <h1>[[ livestat.label ]]</h1>
+                    <p>Nombre de clics : [[ livestat.click_nb ]]</p>
+                <p>Date : [[ livestat.start_date ]]</p>
+            </div>
         </div>
 
     </div>

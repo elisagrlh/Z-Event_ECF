@@ -4,8 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from .models import UserData
 from .models import Live
-
-
+from .models import LiveRegistration
 
 
 class CreateUserForm(forms.ModelForm):
@@ -27,8 +26,11 @@ class CreateUserForm(forms.ModelForm):
 class AgeForm(forms.ModelForm):
     class Meta:
         model = UserData
-        fields = ['age']
-        labels = {'Age': 'age'}
+        fields = ['age', "pseudo"]
+        labels = {
+           'Age': 'age',
+            'Pseudo': 'pseudo'
+        }
 
 
 
@@ -37,7 +39,7 @@ class AgeForm(forms.ModelForm):
 class MultiSelectForm(forms.ModelForm):
    class Meta:
        model = Live
-       fields = ["label", "streamer_name", "theme", "start_date", "end_date", "pegi", "material"]
+       fields = ["label", "streamer_pseudo", "theme", "start_date", "end_date", "pegi", "material"]
        widgets = {
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
@@ -48,12 +50,13 @@ class MultiSelectForm(forms.ModelForm):
        
        labels = {
             'label': 'Libellé',
-            'streamer_name': 'Streamer',
+            'streamer_pseudo': 'Streamer pseudo',
             'theme': 'Thème',
             'start_date': 'Date et heure de début',
             'end_date': 'Date et heure de fin',
             'pegi': 'PEGI',
-            'material': 'Matériel'
+            'material': 'Libellé matériel',
+
         }
        
        def __init__(self, *args, **kwargs):
@@ -66,31 +69,10 @@ class MultiSelectForm(forms.ModelForm):
 
 
 
-
-
-
-
-
-
-'''
-class CreateUserForm(UserCreationForm):
-    age = forms.IntegerField(min_value=0, label="Âge")
-
+class LiveRegistrationForm(forms.ModelForm):
     class Meta:
-        model = User
-        fields = ['email', 'first_name', 'last_name', 'username', 'age']
-        labels = {
-            'email': 'Adresse email',
-            'first_name': 'Prénom',
-            'last_name': 'Nom',
-            'username': 'Nom d’utilisateur',
+      model = LiveRegistration
+      fields = ["email"]
+      labels = {
+       "email": "Adresse email"
         }
-
-    def save(self, commit=True):
-        user = super(CreateUserForm, self).save(commit=False)
-        User.age = self.cleaned_data["age"]
-        if commit:
-            user.save() 
-        return user
-
-'''

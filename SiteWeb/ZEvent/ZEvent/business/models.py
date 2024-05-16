@@ -9,6 +9,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from djongo import models
 
 # Create your models here
 
@@ -16,8 +17,9 @@ from django.utils import timezone
 class UserData(models.Model):
    user = models.OneToOneField(User, on_delete=models.CASCADE)
    age = models.PositiveIntegerField()
+   pseudo = models.CharField(max_length=50)
    def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name}"
+        return self.pseudo
     
 
 def validate_future_date(value):
@@ -26,10 +28,13 @@ def validate_future_date(value):
     
     
 class OptionsMaterial(models.Model):
-    name = models.CharField(max_length=300)
+    label = models.CharField(max_length=300)
+    brand = models.CharField(max_length=100)
     def __str__(self):
-        return self.name
-    
+        return f"{self.label} ({self.brand})"
+
+
+
 class OptionsTheme(models.Model):
     name = models.CharField(max_length=300)
     def __str__(self):
@@ -43,15 +48,21 @@ class Live(models.Model):
         (18, '18'),
     ]
     label = models.CharField(max_length=50)
-    streamer_name = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
+    streamer_pseudo = models.ForeignKey(UserData, null=False, blank=False, on_delete=models.CASCADE)
     theme = models.ManyToManyField(OptionsTheme)
     start_date = models.DateTimeField(validators=[validate_future_date])
     end_date = models.DateTimeField(validators=[validate_future_date])
     pegi = models.IntegerField(choices=PEGI_CHOICES, null=True, blank=True)
-    material = models.ManyToManyField(OptionsMaterial)
-    def __str__(self):
-        # Si streamer_name est None (pas d'utilisateur lié), afficher un texte par défaut
-        if self.streamer_name:
-            return f"{User.first_name} {User.last_name}"
-        else:
-            return "No streamer assigned"
+    material = models.ManyToManyField(OptionsMaterial, blank=True)
+
+
+class LiveRegistration(models.Model):
+    email = models.EmailField(max_length=254, unique=True)
+    live = models.ForeignKey(Live, on_delete=models.CASCADE)
+
+class LiveStats(models.Model):
+    live_id = models.PositiveIntegerField(primary_key=True)
+    click_nb = models.PositiveIntegerField()
+    label = models.CharField(max_length=50)
+    streamer_pseudo = models.CharField(max_length=50)
+    start_date = models.DateTimeField()

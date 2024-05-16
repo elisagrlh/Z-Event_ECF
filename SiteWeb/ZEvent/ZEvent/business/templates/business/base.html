@@ -42,16 +42,15 @@
     {% endblock %}
 
         <header>
-            <!--  menu de navigation ici -->
-            <div class="titre" style="display: block">
-                <a @click="openBtn" > 
+            <!-- <div class="titre" style="display: block"> -->
+                <a class="burgerIconBtn" @click="openBtn" > 
                     <span class="burger-icon">
                         <span></span>
                         <span></span>
                         <span></span>
                     </span>    
                 </a>
-            </div>
+            <!-- </div> -->
 
 
             <div class="menu" :class="{ 'active': hasNewClassMenu }"> 
@@ -92,7 +91,10 @@
     </div>
     {% block javascript %}
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="{% static 'business/js/script.js' %}"></script>
+    <script src="{% static 'business/js/chart.umd.js' %}"></script>
+    <script src="{% static 'business/js/script.js' %}"> </script>
+    
+
     {% endblock %}
 
 </body>
