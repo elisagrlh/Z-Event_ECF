@@ -3,39 +3,139 @@
 -------------------------------------------------------------------*/
 
 header{
+  display: block;
   width:100%;
-  height: 20%;
+  height: auto;
+  background-image: url("images/Zevent_logo.png");
+  /* width: 750px;
+  height: 250px; */
+  align-self: center;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  /* position : fixed; */
+  padding: 60px;
+  background-color: #051f22; 
 }
-.background{
-  width: 1903px;
-  height: 950px;
+/* .background{
+  /* width: 1903px;
+  height: 950px; 
+  width: 100%;
+  height: auto;
   background-image: url("images/florian-olivo-Mf23RF8xArY-unsplash.jpg") ;
   background-repeat: no-repeat;
   background-size : cover;
-  background-color: #074f57; /*Security in case the image doesn't load*/
+  background-position: 70% 70%;
+  background-color: #074f57; /*Security in case the image doesn't load
 
-}
+} */
 
 .hero {
     
- 
+  /* height: 100%; */
   display : flex;
-  
+  min-height: 90vh;
+
   color : white;
   flex-direction: column;
-  padding-top : 10px;
-  padding-bottom: 150px;
-  /*background-image: url("images/florian-olivo-Mf23RF8xArY-unsplash.jpg") ;
+  /* padding-top : 10px; */
+  /* padding-bottom: 150px; */
+  background-image: url("images/florian-olivo-Mf23RF8xArY-unsplash.jpg") ;
   background-repeat: no-repeat;
-  background-size : cover;*/
-
+  background-size : cover;
+  /* z-index: 1; */
     
 }
+
+.burgerIconBtn {
+  top: 10px; 
+  left: 10px;
+  position : fixed;
+} 
+
 
 /*.hero.activee{
   padding-left: 9%;
   transition: left 0.5s ease;
 }*/
+
+/* .titre {
+  background-image: url("images/Zevent_logo.png");
+  width: 750px;
+  height: 250px;
+  align-self: center;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  /*position : fixed;
+
+} */
+.contenu
+{
+  /*height: 100%;*/
+  display : flex;
+  background-color: #011001; /*Security in case the image doesn't load*/
+  color : white;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* margin-top: 100vh; */
+  
+}
+
+.assoTitre
+{
+  color : white;
+  text-decoration: underline overline #0f922bda;
+  
+}
+
+.asso
+{
+  display: flex;
+  flex-wrap: nowrap;
+  text-align: center;
+  /*margin-top: 50px;*/
+  justify-content: space-around;
+  width: 80%;
+  height: 250px;
+  text-align: justify;
+  font : caption;
+  font-size: 1.3rem;
+  transition: margin-top 0.2s ease;
+  
+  
+  
+}
+.asso p{
+  width: 100%;
+  height: 100%;
+}
+
+.asso img{
+  height: 60%;
+  width: auto;
+  background-repeat: no-repeat;
+}
+/*.asso.scroll {
+  margin-top: 70px; /* Nouvelle position du texte lorsqu'il est défilé 
+}*/
+
+body {
+    margin: 0px;
+}
+
+
+#AssosButton{
+    width: 100px;
+}
+
+#NewsButton{
+    width: 100px;
+    align-self: center ;
+}
+
+
+
+
 
 
 
@@ -138,29 +238,24 @@ header{
   transform: translateY(2px);
 }
 
-.titre {
-    background-image: url("images/Zevent_logo.png");
-    width: 750px;
-    height: 250px;
-    align-self: center;
-    background-repeat: no-repeat;
-    background-position-x: center;
-    /*position : fixed;*/
 
-}
 .presentation {
     /*margin-left: 200px;
     margin-right: 200px;
     margin-top: 200px;*/
     /*display : flex;
     flex-direction: column;*/
-    width: 600px;
+    /* width: 600px;
     padding-top: 50px;
     padding-left: 100px;
     padding-right: 200px;
-    padding-bottom: 75px;
+    padding-bottom: 75px; */
     /*position : absolute;*/
     /*top : 200px;*/
+    width : 40%;
+    padding-top: 10%;
+    padding-left: 2%;
+    padding-bottom: 15%;
     text-align: justify;
     font : caption;
     transition: left 0.5s ease;
@@ -173,8 +268,8 @@ header{
 
 .buttons {
     /*margin-top: 500px;*/
-    width: 1903px;
-    height: 100px;
+    /* width: 1903px;
+    height: 100px; */
     display : flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -283,78 +378,6 @@ header{
     line-height: 88px;
   }
 }
-
-
-.contenu
-{
-  /*height: 100%;*/
-  display : flex;
-  background-color: #011001; /*Security in case the image doesn't load*/
-  color : white;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  
-}
-
-.assoTitre
-{
-  color : white;
-  text-decoration: underline overline #0f922bda;
-  
-}
-
-.asso
-{
-  display: flex;
-  flex-wrap: nowrap;
-  text-align: center;
-  /*margin-top: 50px;*/
-  justify-content: space-around;
-  width: 80%;
-  height: 250px;
-  text-align: justify;
-  font : caption;
-  font-size: 1.3rem;
-  transition: margin-top 0.2s ease;
-  
-  
-  
-}
-.asso p{
-  width: 100%;
-  height: 100%;
-}
-
-.asso img{
-  height: 60%;
-  width: auto;
-  background-repeat: no-repeat;
-}
-/*.asso.scroll {
-  margin-top: 70px; /* Nouvelle position du texte lorsqu'il est défilé 
-}*/
-
-body {
-    margin: 0px;
-}
-
-
-#AssosButton{
-    width: 100px;
-}
-
-#NewsButton{
-    width: 100px;
-    align-self: center ;
-}
-
-
-
-
-
-
-
 
 
 
@@ -490,7 +513,7 @@ input{
   flex-direction: row;
   justify-content: space-evenly;
   flex-wrap: nowrap;
-  gap: 20px;
+  gap: 40px;
 }
 
 /*.buttonTab {
@@ -542,4 +565,10 @@ input{
 
 label{
   display: block;
+}
+
+.chart{
+  display: block;
+  height: 500px;
+  width: 800px;
 }

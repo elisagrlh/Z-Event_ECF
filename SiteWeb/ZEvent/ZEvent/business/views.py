@@ -2,31 +2,28 @@ from django.shortcuts import render, redirect
 from django.contrib. auth import authenticate, login, logout
 from django.contrib import messages 
 from django.contrib.auth.models import User
+import json
 #from django.conf import settings
 
-from django.contrib.auth.hashers import make_password
-from .forms import CreateUserForm
-from .forms import AgeForm
-from .forms import MultiSelectForm
+from .forms import CreateUserForm, AgeForm, MultiSelectForm, LiveRegistrationForm
 from django.core.mail import send_mail
-import secrets
-import string
-from mailjet_rest import Client
 from django.http import HttpResponseForbidden
-from .models import UserData
-from .models import Live
+from .models import Live, LiveRegistration, UserData
+
 
 # Create your views here.
-from django.http import HttpResponse
-from django.template import loader
 #from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
-#from django.shortcuts import get_object_or_404
-from .utils import get_specific_live
-from .utils import get_lives
-from django.http import Http404
+from .utils import get_lives, get_specific_live, get_registration_lives, increment_click_stats, get_live_stats
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import LiveSerializer, LiveStatsSerializer, StreamerLivesSerializer
+from django.http import JsonResponse
+from django.db.models import Count, DateField
+from django.db.models.functions import Trunc
+from django.db.models import Prefetch
 
 
 def index(request):
@@ -76,20 +73,62 @@ def login_user(request):
 def news(request):
     return render (request, "business/news.html")
 
+
+
+
 def streamers(request):
     return render(request, "business/streamers.html")
 
 
-def globalLives(request):
-    lives = get_lives()
-    #lives = Live.objects.select_related('streamer_name').all() # select_related est utilisé pour optimiser la requête
-    #user = User.objects.all()
-    return render(request, "business/global-lives.html", {"lives": lives})
 
+
+def globalLives(request):
+    return render(request, "business/global-lives.html")
+
+
+@api_view(['GET'])
+def filterLives(request):
+    lives = Live.objects.all()
+    date = request.GET.get('date')
+    theme = request.GET.get('theme')
+    streamer = request.GET.get('streamer')
+                
+    if date:
+       lives = lives.filter(start_date__date=date)
+    if theme:
+        lives = lives.filter(theme__name=theme)
+    if streamer:
+        lives = lives.filter(streamer_pseudo__pseudo=streamer)
+        
+    serializer = LiveSerializer(lives, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
+
+
+@api_view(['GET'])
 def detailLive(request, id):
     live = get_specific_live(id)
-    #user = User.objects.all()
-    return render(request, 'business/detail-live.html', {'live': live})
+    form = LiveRegistrationForm()
+    #increment_click_stats(id)
+    if request.method == "POST":
+        form = LiveRegistrationForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            registration = form.save(commit=False)
+            registration.live = live 
+            registration.save()
+            send_mail(
+                    "Inscription Live",
+                    f"Vous vous êtes inscrit.e au live {live}",
+                    "elisa.gerlach@efrei.net",  # Expéditeur
+                    [email],  # Destinataire
+                    fail_silently=False,
+                )
+            return redirect("index")    
+        return render(request, 'business/detail-live.html', {'live': live, "form": form})
+    return render(request, 'business/detail-live.html', {'live': live, "form": form})
+
 
 def logout_user(request):
     logout(request)
@@ -98,7 +137,6 @@ def logout_user(request):
 
 @never_cache
 def admindashboard(request):
-    #User = settings.AUTH_USER_MODEL
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         ageForm = AgeForm(request.POST)
@@ -146,34 +184,67 @@ def count_users(request):
     user_count = User.objects.count()  # Compte tous les utilisateurs dans auth_user
     return render(request, 'count_users.html', {'user_count': user_count})
 
-#@never_cache
-def streamerdashboard(request):
-    '''
-    try:
-        # Convertir id en int, cela lève une ValueError si ce n'est pas possible
-        live_id = int(id)
-    except ValueError:
-        raise Http404("ID non valide")
 
+@api_view(['GET'])
+def streamerdashboard(request):
+    lives = Live.objects.all()
+    serializer = LiveSerializer(lives, many=True)
+    return JsonResponse(serializer.data, safe=False)
+    
+@api_view(['GET'])
+def registration_live(request):
+    live_reg_data = (
+        LiveRegistration.objects
+        .annotate(date=Trunc('live__start_date', 'day', output_field=DateField()))
+        .values('date')
+        .annotate(user_count=Count('id'))
+        .order_by('date')
+    )
+    data = [
+        {'date': reg['date'].strftime('%Y-%m-%d'), 'user_count': reg['user_count']}
+        for reg in live_reg_data
+    ]
+    return JsonResponse({'data': data})
+
+
+def streamer_dashboard_page(request):
     lives = get_lives()
-    live = get_specific_live(live_id)
-'''
     if request.method == "POST":
-        form = MultiSelectForm(request.POST)
+        lives = get_lives()
+        live_id = request.POST.get('live_id')
+        if live_id:
+            live = Live.objects.get(id=live_id)
+            form = MultiSelectForm(request.POST, instance=live)
+        else:
+            form = MultiSelectForm(request.POST)
+
         if form.is_valid():
             form.save()
             return redirect("index")    
     else:
         form = MultiSelectForm()
-        return render(request, "business/streamerdashboard.html", {"form": form})
-    return render(request, "business/streamerdashboard.html", {"form": form})
+        live_id = request.GET.get('live_id')
+        if live_id:
+            live = Live.objects.get(id=live_id)
+            form = MultiSelectForm(instance=live)
+        #return render(request, "business/streamerdashboard.html", {"form": form})
+    return render(request, "business/streamerdashboard.html", {"form": form, "lives": lives})
 
-'''
-def some_view(request):
-    user_profile = UserData.objects.get(user=request.user)
-    login_count = user_profile.login_count
-    # Maintenant, vous pouvez passer `login_count` à votre template
-    return render(request, 'some_template.html', {'login_count': login_count})
-'''
 
-    
+def increment_click(request, id):
+    increment_click_stats(id)
+    return redirect("detailLive", id=id)   
+
+@api_view(['GET'])
+def stats(request):
+    livestats = get_live_stats()
+    serializer = LiveStatsSerializer(livestats, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def streamer_lives_view(request):
+    users_with_lives = UserData.objects.all()
+    serializer = StreamerLivesSerializer(users_with_lives, many=True)
+    return Response(serializer.data)
+
