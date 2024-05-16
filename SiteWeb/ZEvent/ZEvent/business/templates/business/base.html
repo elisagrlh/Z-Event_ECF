@@ -42,16 +42,15 @@
     {% endblock %}
 
         <header>
-            <!--  menu de navigation ici -->
-            <div class="titre" style="display: block">
-                <a @click="openBtn" > 
+            <!-- <div class="titre" style="display: block"> -->
+                <a class="burgerIconBtn" @click="openBtn" > 
                     <span class="burger-icon">
                         <span></span>
                         <span></span>
                         <span></span>
                     </span>    
                 </a>
-            </div>
+            <!-- </div> -->
 
 
             <div class="menu" :class="{ 'active': hasNewClassMenu }"> 
