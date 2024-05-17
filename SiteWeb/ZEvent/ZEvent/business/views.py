@@ -106,7 +106,7 @@ def filterLives(request):
 
 
 
-@api_view(['GET'])
+@api_view(['GET',  "POST"])
 def detailLive(request, id):
     live = get_specific_live(id)
     form = LiveRegistrationForm()
@@ -126,7 +126,7 @@ def detailLive(request, id):
                     fail_silently=False,
                 )
             return redirect("index")    
-        return render(request, 'business/detail-live.html', {'live': live, "form": form})
+        #return render(request, 'business/detail-live.html', {'live': live, "form": form})
     return render(request, 'business/detail-live.html', {'live': live, "form": form})
 
 
