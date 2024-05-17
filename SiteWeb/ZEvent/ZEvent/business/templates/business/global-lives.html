@@ -2,70 +2,40 @@
 
 {% block content %}
 
-<div class="content">
+<div class="container">
 
-     <form @submit.prevent="filterLives">
-        <input type="date" v-model="date">
-        <select v-model="theme">
-            <option value="">Theme</option>
-            <option v-for="option in themes" :key="option" :value="option">[[ option ]]</option>
-        </select>
-        <select v-model="streamer">
-            <option value="">Streamer</option>
-            <option v-for="option in streamers" :key="option" :value="option">[[ option ]]</option>
-        </select>
-        <br>
-        <button type="submit">Filtrer</button>
-        <button type="button" @click="clearFilters">Effacer les filtres</button>
+
+
+    <form @submit.prevent="filterLives" class="form-inline justify-content-center mb-4">
+        <div class="form-group mx-2">
+            <input type="date" v-model="date" class="form-control">
+        </div>
+        <div class="form-group mx-2">
+            <select v-model="theme" class="form-control">
+                <option value="">Thème</option>
+                <option v-for="option in themes_filter" :key="option" :value="option">[[ option ]]</option>
+            </select>
+        </div>
+        <div class="form-group mx-2">
+            <select v-model="streamer" class="form-control">
+                <option value="">Streamer</option>
+                <option v-for="option in streamers_filter" :key="option" :value="option">[[ option ]]</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success mx-1">Filtrer</button>
+        <button type="button" @click="clearFilters" class="btn btn-outline-secondary mx-1">Effacer les filtres</button>
     </form>
-
-
-    <ul>
-        <li v-for="live in lives" :key="live.id">
-            <a :href="`/api/incrementClick/${live.id}/`">
-                [[ live.label ]] par [[ live.streamer_pseudo ]]
-            </a>
-        </li>
-    </ul>
-
-
-
-
-
-
-
-
-
-<!-- 
-    <ul>
-        <li v-for="live in lives" :key="live.id">
-            [[ live.label ]] par [[ live.streamer_pseudo ]]
-        </li>
-    </ul>
-
-    {% for live in lives %}
-    <li>
-        <button href="{% url 'increment-click' live.id %}">hey
-        <br> </br>
-    </li>
-    {% endfor %} -->
-
-    <!-- <ul>
-        <li v-for="live in lives" :key="live.id">
-            <a href="#" @click.prevent="fetchLiveStats(live.id)">
-                [[ live.label ]] par [[ live.streamer_pseudo ]]
-            </a>
-        </li>
-    </ul> -->
-
-
-
-
-
-
-    <!-- <li v-for="live in lives" :key="live.id">
-        [[ live.label ]] par {{ live.streamer_pseudo__pseudo }}
-    </li> -->
+    <div class="row">
+        <div class="col-md-4 mb-3" v-for="live in lives" :key="live.id">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">[[ live.label ]]</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Par [[ live.streamer_pseudo ]]</h6>
+                    <a :href="`/api/incrementClick/${live.id}/`" class="card-link">Détails</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

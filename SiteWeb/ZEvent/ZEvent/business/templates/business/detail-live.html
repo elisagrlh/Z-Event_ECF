@@ -1,21 +1,31 @@
 {% extends "business/base.html" %}
 
 {% block content %}
-    <div id="app"></div>
-        <div class="content">
-            <h1>{{ live.label }}</h1>
-            <p>Thème(s): {% for theme in live.theme.all %}{{ theme.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-            <p>Streamer: {{ live.streamer_pseudo.pseudo }} {{ live.streamer_name.last_name }}</p>
-            <p>Date de début: {{ live.start_date }}</p>
-            <p>Date de fin: {{ live.end_date }}</p>
-            <p>PEGI: {{ live.pegi }}</p>
-            <p>Matériel: {% for material in live.material.all %}{{ material.label }} ({{ material.brand }}){% if not forloop.last %}, {% endif %}{% endfor %}</p>
-            <form class="creationForm" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="live_id" value="{{ live.id }}">
-                {{ form.as_p }}
-                <button type="submit">Submit</button>
-            </form>
+    <div id="app">
+
+        <div class="container mt-5">
+            <div class="container">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title">{{ live.label }}</h1>
+                        <p><strong>Thème(s):</strong> {% for theme in live.theme.all %}{{ theme.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+                        <p><strong>Streamer:</strong> {{ live.streamer_pseudo.pseudo }}</p>
+                        <p><strong>Date de début:</strong> {{ live.start_date }}</p>
+                        <p><strong>Date de fin:</strong> {{ live.end_date }}</p>
+                        <p><strong>PEGI:</strong> {{ live.pegi }}</p>
+                        <p><strong>Matériel:</strong> {% for material in live.material.all %}{{ material.label }} ({{ material.brand }}){% if not forloop.last %}, {% endif %}{% endfor %}</p>
+                        <form method="POST" class="mt-4">
+                            {% csrf_token %}
+                            <input type="hidden" name="live_id" value="{{ live.id }}">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Inscrivez-vous à ce live !</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">S'inscrire</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         
     </div>

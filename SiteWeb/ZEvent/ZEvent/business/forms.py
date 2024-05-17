@@ -43,9 +43,9 @@ class MultiSelectForm(forms.ModelForm):
        widgets = {
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
-            'options': forms.SelectMultiple(attrs={'class': 'my-multiselect-class'}),
+            #'options': forms.SelectMultiple(attrs={'class': 'my-multiselect-class'}),
             'theme': forms.CheckboxSelectMultiple(attrs={'class': 'multiSelection'}),
-            'material': forms.CheckboxSelectMultiple(attrs={'class': 'multiSelection'}),
+            'material': forms.SelectMultiple(attrs={'class': 'multiSelection'}),
         }
        
        labels = {
@@ -55,7 +55,7 @@ class MultiSelectForm(forms.ModelForm):
             'start_date': 'Date et heure de début',
             'end_date': 'Date et heure de fin',
             'pegi': 'PEGI',
-            'material': 'Libellé matériel',
+            'material': 'Matériel (shift multisélection)',
 
         }
        

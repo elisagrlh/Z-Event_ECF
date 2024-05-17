@@ -1,0 +1,24 @@
+{% extends "business/base.html" %}
+
+{% block content %}
+    <div id="app"></div>
+        <div class="content">
+            <h1>{{ live.label }}</h1>
+            <p>Thème(s): {% for theme in live.theme.all %}{{ theme.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <p>Streamer: {{ live.streamer_pseudo.pseudo }} {{ live.streamer_name.last_name }}</p>
+            <p>Date de début: {{ live.start_date }}</p>
+            <p>Date de fin: {{ live.end_date }}</p>
+            <p>PEGI: {{ live.pegi }}</p>
+            <p>Matériel: {% for material in live.material.all %}{{ material.label }} ({{ material.brand }}){% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <form class="creationForm" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="live_id" value="{{ live.id }}">
+                {{ form.as_p }}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        
+    </div>
+
+{% endblock %}
+

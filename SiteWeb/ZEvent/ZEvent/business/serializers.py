@@ -52,8 +52,13 @@ class LiveStatsSerializer(serializers.ModelSerializer):
 
 class StreamerLivesSerializer(serializers.ModelSerializer):
     lives = LiveSerializer(many=True, read_only=True)
+    email = serializers.EmailField(source='user.email', read_only=True)
+    first_name = serializers.CharField(source='user.first_name', read_only=True)
+    last_name = serializers.CharField(source='user.last_name', read_only=True)
+
+
 
     class Meta:
         model = UserData
-        fields = ['pseudo', 'lives']        
+        fields = ['pseudo', 'email', 'first_name', 'last_name', 'lives']        
 

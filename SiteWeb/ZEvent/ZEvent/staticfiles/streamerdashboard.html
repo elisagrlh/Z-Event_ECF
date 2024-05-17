@@ -1,0 +1,95 @@
+{% extends "business/base.html" %}
+
+{% block content %}
+
+<div id="app">
+    <div class="content">
+        <div class="buttonsTab">
+            <button class="btn btn-success" @click="changeTab('FirstTab')">Saisie</button>
+            <button class="btn btn-success" @click="changeTab('HomeLives')">Page d'accueil</button>
+            <button class="btn btn-success" @click="changeTab('UserRegistration')">Inscriptions Utilisateurs</button>
+            <button class="btn btn-success" @click="changeTab('Statistic')">Statistiques</button>
+        </div>
+
+        <div v-show="currentTab === 'HomeLives'">
+                <div v-for="live in lives" :key="live.id">
+                        <h1>[[ live.label ]]</h1>
+                        <h3>Streamer:</h3> 
+                            <p>[[ live.streamer_pseudo ]] </p>
+                        <h3>Thème(s):</h3>
+                            <p v-for="theme in live.theme" :key="theme.id"> [[ theme.name ]] </p>
+                        <h3>Date de début:</h3>
+                            <p>[[ live.start_date ]]</p>
+                        <h3>Date de fin:</h3>
+                            <p>[[ live.end_date ]]</p>
+                        <h3>PEGI:</h3> 
+                            <p>[[ live.pegi ]]</p>
+                        <h3>Matériel:</h3> 
+                        <div v-for="material in live.material" :key="material.id">
+                            <p>[[ material.label ]] ([[ material.brand ]])</p>
+                        </div>
+
+                        <button v-if="new Date(live.start_date) > new Date(new Date().setDate(new Date().getDate() + 1))"
+                            @click="enableEditing(live)">
+                            Modifier le live
+                        </button>
+                        <h4 v-else> Live non modifiable, prévu dans moins d'un jour </h4>
+                </div>
+        </div>  
+
+        <div v-show="currentTab === 'FirstTab'">
+            <!--<form class="creationForm" method="POST">
+                 <input type="hidden" name="live_id" v-model="live.id">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">
+                    [[ isEditMode ? 'Modifier le formulaire' : 'Valider le formulaire' ]]
+                </button>
+                <div v-if="isEditMode" @click="cancelEditing()">
+                    <button>Annuler</button>
+                </div>
+
+            </form> -->
+
+            <form class="creationForm" method="POST">
+
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    <!-- {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %} -->
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-success">[[ isEditMode ? 'Modifier le formulaire' : 'Valider le formulaire'  ]] </button>
+                <button v-if="isEditMode" @click="cancelEditing()" class="btn btn-secondary">Annuler</button>
+
+            </form>
+            
+
+        </div>
+        
+        <div v-show="currentTab === 'UserRegistration'">
+            <div class="chart">
+                <canvas id="myChart"></canvas>
+            </div>
+            
+        </div>
+        
+        <div v-show="currentTab === 'Statistic'">
+            <div v-for="livestat in livestats" :key="livestat.id">
+                <h1>[[ livestat.label ]]</h1>
+                    <p>Nombre de clics : [[ livestat.click_nb ]]</p>
+                <p>Date : [[ livestat.start_date ]]</p>
+            </div>
+        </div>
+
+    </div>
+ 
+</div>
+
+{% endblock %}

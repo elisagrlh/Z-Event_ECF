@@ -1,0 +1,102 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %} | Games{% endblock %}</title>
+</head>
+<body>
+    
+    
+    {% for field in form %}
+    <div class="form-group">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+    </div>
+    {% endfor %}
+
+
+    
+</body>
+</html>
+
+-->
+
+<!DOCTYPE html>
+<head>
+    <!-- Métadonnées, liens CSS, scripts JS... -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Connexion</title>
+    <!-- <link href="style.css" rel="stylesheet" type="text/css" />-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href= "{% static 'business/style.css' %}">
+    <link rel="stylesheet" href="{% static 'business/bootstrap.min.css' %}">
+</head>
+
+<body>
+
+    {% block background %}
+    <div id="app">
+    {% endblock %}
+
+        <header>
+            <!-- <div class="titre" style="display: block"> -->
+                <a class="burgerIconBtn" @click="openBtn" > 
+                    <span class="burger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>    
+                </a>
+            <!-- </div> -->
+
+
+            <div class="menu" :class="{ 'active': hasNewClassMenu }"> 
+                <a @click="closeBtn" href="#" class="close">x</a>
+                <ul>
+                    <li><a id="homeBtn" href="{% url 'index' %}">Accueil</a></li>
+                    <li><a id="newsBtn" href="{% url 'news' %}">Fil d'actualités</a></li>
+                    <li><a id="streamersBtn" href="{% url 'streamers' %}">Streamers</a></li>
+                    <li><a id="livesBtn" href="{% url 'globalLives' %}">Lives</a></li>
+                    {% if user.is_authenticated %}
+                        {% if user.is_superuser %}
+                            <a id="dashboardBtn" href="{% url 'admindashboard' %}">Mon espace</a>
+                            <a id="logoutBtn" href="{% url 'logout' %}">Déconnexion</a>
+                        {% else %}
+                            <a id="dashboardBtn" href="{% url 'streamerdashboard' %}">Mon espace</a>
+                            <a id="logoutBtn" href="{% url 'logout' %}">Déconnexion</a>
+                        {% endif %}
+                    {% else %}
+                        <a id="connexionBtn" href="{% url 'login' %}">Connexion</a>
+                    {% endif %}
+                </ul>
+            </div>
+
+    
+
+
+
+        </header>
+        <main>
+            {% block content %}
+            <!-- Contenu spécifique à la page ici -->
+            {% endblock %}
+
+            {% block loginform %}
+            
+            {% endblock %}
+        </main>
+    </div>
+    {% block javascript %}
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="{% static 'business/js/chart.umd.js' %}"></script>
+    <script src="{% static 'business/js/script.js' %}"> </script>
+    
+
+    {% endblock %}
+
+</body>
+</html>

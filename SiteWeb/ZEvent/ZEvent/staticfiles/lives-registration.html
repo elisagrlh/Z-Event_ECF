@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+{% block html %}
+
+<form class="login-container" method="POST">
+{% block form %}
+{% csrf_token %}
+    <!-- <h1>Saisie live</h1>
+    <label for="label">Libellé</label>
+    <input type="label" name='label' id='label'v-model="labelInput"/>
+
+    <label for="streamer">nom d'utilisateur streamer</label>
+    <input type="streamer" name='streamer' id='streamer'v-model="streamerInput"/>
+
+    <label for="theme">Thématique</label>
+    <select type="theme" name='theme' id='theme' v-select="themeInput">
+
+    <label for="startDate">Date début</label>
+    <input type="startDate" name='startDate' id='startDate' v-model="startDateInput"/>
+
+    <label for="endDate">Date fin</label>
+    <input type="endDate" name='endDate' id='endDate' v-model="endDateInput"/>
+
+    <label for="PEGI">PEGI</label>
+    <select name='PEGIDate' id='PEGI' v-select="PEGIInput">
+
+    <label for="material">Matériel</label>
+    <select name='material' id="material" v-select="materialInput"></select>
+    </select>
+
+
+
+    <div class="dropdown">
+        <button class="dropbtn">PEGI</button>
+        <div class="dropdown-content">
+          <a href="#">-12</a>
+          <a href="#">-16</a>
+          <a href="#">-18</a>
+        </div>
+        
+        <br>
+        <br>
+        <br>
+
+        <button class="dropbtn">Matériel</button>
+        <div class="dropdown-content">
+          <a href="#">Moniteur</a>
+          <a href="#">Clavier</a>
+          <a href="#">Souris</a>
+        </div>
+    </div> -->
+
+
+    <!-- <div class="dropdown" @click="toggleDropdown('pegi')">
+      <button class="dropbtn">PEGI</button>
+      <div class="dropdown-content" v-show="dropdowns.pegi">
+        <a href="#">12</a>
+        <a href="#">16</a>
+        <a href="#">18</a>
+      </div>
+    </div> -->
+
+
+
+
+
+    <button>Se connecter</button>
+{% endblock %}   
+</form>
+{% endblock %}
+
+<div class='container'>
+    {% if messages %}
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    {% endif %}
+
+</div>
