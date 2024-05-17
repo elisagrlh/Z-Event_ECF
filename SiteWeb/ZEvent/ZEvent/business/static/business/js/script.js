@@ -7,13 +7,13 @@ let app = Vue.createApp({
             hasNewClassMenu: false,
             hasNewClassPresentation: false,
             currentTab: "FirstTab",
+            activeTab: 'FirstTab',
             showDropdown: false,
             lives: [],
             themes: [],
             theme:'',
             date:'',
             streamer:'',
-            //streamers: [],
             selectedLive: {  // Initialisation de l'objet selectedLive
                 label: '',
                 streamer_pseudo: '',
@@ -29,6 +29,8 @@ let app = Vue.createApp({
             livestats: [],
             filter_lives: [],
             streamers: [],
+            streamers_filter: [],
+            themes_filter:[],
             chart: null,
 
         }
@@ -82,6 +84,7 @@ let app = Vue.createApp({
         },
         changeTab(tabName) {
             this.currentTab = tabName;
+            this.activeTab = tabName;
             if (tabName === 'HomeLives') {
                 this.fetchLives();
             }
@@ -93,8 +96,8 @@ let app = Vue.createApp({
                 .then(response => response.json())
                 .then(data => {
                     this.lives = data;
-                    this.themes = [...new Set(data.flatMap(live => live.theme.map(t => t.name)))];  // Unique themes
-                    this.streamers = [...new Set(data.map(live => live.streamer_pseudo))];  // Unique streamers
+                    this.themes_filter = [...new Set(data.flatMap(live => live.theme.map(t => t.name)))];  // Unique themes
+                    this.streamers_filter = [...new Set(data.map(live => live.streamer_pseudo))];  // Unique streamers
  
                 })
                 .catch(err => console.error(err));
@@ -122,8 +125,8 @@ let app = Vue.createApp({
                     console.log("Data received from API:", data);
                     this.lives = data;
                     
-                    this.themes = [...new Set(data.flatMap(live => live.theme.map(t => t.name)))];  // Unique themes
-                    this.streamers = [...new Set(data.map(live => live.streamer_pseudo))];  // Unique streamers
+                    this.themes_filter = [...new Set(data.flatMap(live => live.theme.map(t => t.name)))];  // Unique themes
+                    this.streamers_filter = [...new Set(data.map(live => live.streamer_pseudo))];  // Unique streamers
  
                 })
                 .catch(err => console.error(err));

@@ -178,7 +178,7 @@ def admindashboard(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
     else:
-        return render(request, "business/admindashboard.html", {"form": form, "ageForm": ageForm, "users": User.objects.count()})
+        return render(request, "business/admindashboard.html", {"form": form, "ageForm": ageForm, "users": UserData.objects.count()})
 
 def count_users(request):
     user_count = User.objects.count()  # Compte tous les utilisateurs dans auth_user

@@ -1,0 +1,71 @@
+{% extends "business/base.html" %}
+
+{% block content %}
+
+<div class="content">
+
+     <form @submit.prevent="filterLives">
+        <input type="date" v-model="date">
+        <select v-model="theme">
+            <option value="">Theme</option>
+            <option v-for="option in themes" :key="option" :value="option">[[ option ]]</option>
+        </select>
+        <select v-model="streamer">
+            <option value="">Streamer</option>
+            <option v-for="option in streamers" :key="option" :value="option">[[ option ]]</option>
+        </select>
+        <br>
+        <button type="submit">Filtrer</button>
+        <button type="button" @click="clearFilters">Effacer les filtres</button>
+    </form>
+
+
+    <ul>
+        <li v-for="live in lives" :key="live.id">
+            <a :href="`/api/incrementClick/${live.id}/`">
+                [[ live.label ]] par [[ live.streamer_pseudo ]]
+            </a>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+<!-- 
+    <ul>
+        <li v-for="live in lives" :key="live.id">
+            [[ live.label ]] par [[ live.streamer_pseudo ]]
+        </li>
+    </ul>
+
+    {% for live in lives %}
+    <li>
+        <button href="{% url 'increment-click' live.id %}">hey
+        <br> </br>
+    </li>
+    {% endfor %} -->
+
+    <!-- <ul>
+        <li v-for="live in lives" :key="live.id">
+            <a href="#" @click.prevent="fetchLiveStats(live.id)">
+                [[ live.label ]] par [[ live.streamer_pseudo ]]
+            </a>
+        </li>
+    </ul> -->
+
+
+
+
+
+
+    <!-- <li v-for="live in lives" :key="live.id">
+        [[ live.label ]] par {{ live.streamer_pseudo__pseudo }}
+    </li> -->
+</div>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "business/base.html" %}
+
+<!DOCTYPE html>
+
+<html>
+
+<body>
+        
+
+  {% block loginform %}
+    {% include "business/login-form.html" %}
+  {% endblock %}
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <script>
+      let app = Vue.createApp({
+          data: function(){
+              return{
+
+                
+              }
+          },
+
+          methods: {
+          },
+
+      })
+
+      app.mount('#app')
+
+  </script>
+
+
+
+</body>
+
+</html>
