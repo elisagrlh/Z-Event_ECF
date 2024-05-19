@@ -92,6 +92,7 @@
                           {% for field in form %}
                             <div class="form-group">
                               <label>{{ field.label_tag }}</label>
+                              {% csrf_token %}
                               {{ field }}
                               {% if field.help_text %}
                                 <small class="form-text text-muted">{{ field.help_text }}</small>
