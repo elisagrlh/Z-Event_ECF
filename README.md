@@ -81,7 +81,7 @@ Si vous utilisez PostgreSQL en tant que service, assurez vous que le service est
 Assurez vous de mettre à jour les paramètres de la base de données dans le fichier `.env` avec les informations de connexion appropriées.
 
 ## Configuration du service Mongodb Atlas
-1. Il vous faudra créer un compte Mondb Atlas.
+1. Il vous faudra créer un compte Mongodb Atlas.
 
 Si vous souhaitez utiliser votre propre base de données :
 2. Créez une organisation, un projet et une base de données
@@ -154,7 +154,11 @@ Remplacez `'nom_de_votre_base_de_donnees'`, `'votre_utilisateur'` et `'votre_mot
 
 Après avoir configuré la base de données, vous pouvez créer un superutilisateur Django pour accéder à l'interface d'administration et effectuer des opérations administratives.
 
-1.  Dans votre terminal, exécutez la commande suivante :
+1. Créer d'abord les tables dans la base de données  avec la commande suivante :
+
+`python manage.py migrate`
+
+1.  Exécutez la commande suivante :
 
 `python manage.py createsuperuser` 
 
