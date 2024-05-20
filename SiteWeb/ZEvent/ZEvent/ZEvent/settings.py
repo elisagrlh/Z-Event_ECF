@@ -108,10 +108,10 @@ DATABASES = {
     },
     'mongodb': {
         'ENGINE': 'djongo',
-        'NAME': 'Zeventdbdeploy',
+        'NAME': 'your_name_here',
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': 'mongodb+srv://elisa:user123@zevent0.b4gz6jb.mongodb.net/?retryWrites=true&w=majority&appName=ZEvent0'
+            'host': 'your_host_here'
         }
     },
 }
