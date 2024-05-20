@@ -75,7 +75,7 @@ SMTP_PASSWORD='eebe476df7603af61fe60dff5395f392'`
 
 Si vous utilisez PostgreSQL en tant que service, assurez vous que le service est en cours d'exécution et que vous avez les informations de connexion nécessaires.
 
-1.  Assurez vous que le service PostgreSQL est en cours d'exécution sur votre système.
+1.  Assurez vous que le service PostgreSQL est en cours d'exécution sur votre système. Vous pouvez l'installer à partir de ce lien : https://www.postgresql.org/download/
 2.  Obtenez les informations de connexion nécessaires, telles que le nom d'utilisateur, le mot de passe, l'hôte et le port du service.
 
 Assurez vous de mettre à jour les paramètres de la base de données dans le fichier `.env` avec les informations de connexion appropriées.
