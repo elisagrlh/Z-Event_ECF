@@ -620,3 +620,4 @@ build/
 dist/
 
 */settings.py
+.my_pgpass
