@@ -1,0 +1,140 @@
+{% extends "business/base.html" %}
+
+{% block content %}
+
+<div id="app">
+  
+  <!-- Buttons section -->
+  <div class="content">
+
+    <div class="buttonsTab">
+      <button class="btn btn-outline-success" :class="{ 'active': activeTab === 'FirstTab' }"
+        @click="changeTab('FirstTab')">Créer un compte Streamer</button>
+      <button class="btn btn-outline-success" :class="{ 'active': activeTab === 'materialList' }"
+        @click="changeTab('materialList')">Liste de matériel demandé</button>
+      <button class="btn btn-outline-success" :class="{ 'active': activeTab === 'streamerCount' }"
+        @click="changeTab('streamerCount')">Nombre de Streamers présents</button>
+    </div>
+
+    <!-- Streamer creation -->
+    <div class="container" v-show="currentTab === 'FirstTab'">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <div class="card">
+            <div class="card-header">
+              Création d'un streamer
+            </div>
+            <div class="card-body">
+              <form class="creationForm" method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                  <label>{{ field.label_tag }}</label>
+                  {{ field }}
+                  {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                  {% endif %}
+                  {% for error in field.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                  {% endfor %}
+                </div>
+                {% endfor %}
+
+                {% for field in addInfoForm %}
+                <div class="form-group">
+                  <label>{{ field.label_tag }}</label>
+                  {{ field }}
+                  {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                  {% endif %}
+                  {% for error in field.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                  {% endfor %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-success">
+                  Créer le streamer
+                </button>
+
+                <ul class="messages">
+                  {% for message in messages %}
+                  <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                  <p>
+                    {% endfor %}
+                </ul>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Material to buy -->
+    <div class="container" v-show="currentTab === 'materialList'">
+      <h1 class="h5 mt-4">Matériel total à acheter :</h1>
+      <ul class="list-group">
+        <li v-for="material in calculateMaterials(lives)" :key="material.label + material.brand"
+          class="list-group-item">
+          [[ material.label ]] ([[ material.brand ]])
+        </li>
+      </ul>
+      <h1 class="h5 mt-4">Détail :</h1>
+      <ul class="list-unstyled" id="materialList">
+        <div class="card mb-4" v-for="live in lives" :key="live.id" v-show="live.material && live.material.length > 0">
+          <div class="card-header">
+            <h2 class="h5">[[ live.label ]]</h2>
+          </div>
+          <div class="card-body">
+            <h3 class="h6">Streamer:</h3>
+            <p>[[ live.streamer_pseudo ]]</p>
+            <h3 class="h6">Matériel:</h3>
+            <div v-for="material in live.material" :key="material.id">
+              <p>[[ material.label ]] ([[ material.brand ]])</p>
+            </div>
+            <h3 class="h6">Date de début:</h3>
+            <p>[[ live.start_date ]]</p>
+            <h3 class="h6">Date de fin:</h3>
+            <p>[[ live.end_date ]]</p>
+          </div>
+        </div>
+      </ul>
+
+    </div>
+
+
+
+    <!-- Streamers who will be at the event -->
+    <div v-show="currentTab === 'streamerCount'" class="container mt-3">
+      <h1 class="h5 mt-4">Statistiques des streamers</h1>
+      <div class="card">
+        <div class="card-body">
+          <p class="card-text">Nombre de streamers: <strong>{{ users }}</strong></p>
+        </div>
+      </div>
+      <h1 class="h5 mt-4">Détail :</h1>
+      <ul class="list-unstyled" id="streamerCount">
+        <div class="card mb-4" v-for="streamer in streamers" :key="streamer.id">
+          <div class="card-header">
+            <h2 class="h5">[[ streamer.pseudo ]]</h2>
+          </div>
+          <div class="card-body">
+            <h3 class="h6">Matricule:</h3>
+            <p>[[ streamer.id ]]</p>
+            <h3 class="h6">Prénom:</h3>
+            <p>[[ streamer.first_name ]]</p>
+            <h3 class="h6">Nom:</h3>
+            <p>[[ streamer.last_name ]]</p>
+            <h3 class="h6">Email:</h3>
+            <p>[[ streamer.email ]]</p>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+</div>
+{% endblock %}

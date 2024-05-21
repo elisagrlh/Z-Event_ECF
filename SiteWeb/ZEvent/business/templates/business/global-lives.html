@@ -1,0 +1,43 @@
+{% extends "business/base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <!-- Filter lives -->
+    <form @submit.prevent="filterLives" class="form-inline justify-content-center mb-4">
+        <div class="form-group mx-2">
+            <input type="date" v-model="date" class="form-control">
+        </div>
+        <div class="form-group mx-2">
+            <select v-model="theme" class="form-control">
+                <option value="">Thème</option>
+                <option v-for="option in themes_filter" :key="option" :value="option">[[ option ]]</option>
+            </select>
+        </div>
+        <div class="form-group mx-2">
+            <select v-model="streamer" class="form-control">
+                <option value="">Streamer</option>
+                <option v-for="option in streamers_filter" :key="option" :value="option">[[ option ]]</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success mx-1">Filtrer</button>
+        <button type="button" @click="clearFilters" class="btn btn-outline-secondary mx-1">Effacer les filtres</button>
+    </form>
+
+    <!-- Display all lives -->
+    <div class="row">
+        <div class="col-md-4 mb-3" v-for="live in lives" :key="live.id">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">[[ live.label ]]</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Par [[ live.streamer_pseudo ]]</h6>
+                    <!-- API call to increment click -->
+                    <a :href="`/api/incrementClick/${live.id}/`" class="card-link">Détails</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

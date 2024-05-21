@@ -1,0 +1,196 @@
+{% extends "business/base.html" %}
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Zevent</title>
+    <!-- <link href="style.css" rel="stylesheet" type="text/css" />-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'business/style.css' %}">
+</head>
+
+
+<style>
+    h2 {
+        color: darkblue;
+    }
+</style>
+
+
+<body>
+
+    {% block background %}
+    <div id="app" class="background">
+        {% endblock %}
+
+        {% block content %}
+
+        <div id="hero" class="hero">
+
+            <div id="presentation" class="presentation" :class="{ 'active': hasNewClassPresentation }">
+                <h1> Qu'est ce que le ZEvent ?</h1>
+                <p>
+                    Z Event est un projet caritatif créé par Adrien Nougaret et Alexandre Dachary.
+                    Divisé en 2 parties, l'événement se compose d'un showcase qui fait office d'amorce et est suivi par
+                    un marathon de streaming jeux vidéo lors duquel de nombreux animateurs spécialisés se rassemblent
+                    tout au long du weekend.
+                    Pendant plus de 50h, les participants diffusent du contenu en direct tous ensemble et encouragent
+                    les spectateurs à se mobiliser pour soutenir une association caritative.
+                </p>
+            </div>
+
+            <div class="buttons">
+                <button @click="scrollToAsso" id="assoButton" class="AssosButton" role="button">Association</button>
+                <button @click="scrollToActus" id="actusBtn" class="AssosButton" role="button">Actualités</button>
+            </div>
+
+
+
+        </div>
+
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-mb-3" id="asso">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="display-4">Association choisie</h2>
+                        </div>
+
+                        <div class="card-body">
+                            <!-- <section ref="asso" class="asso" > -->
+
+                            <div class="row">
+                                <!-- Texte et bouton association choisie -->
+                                <div class="col-md-8">
+                                    <h5 class="card-title">Association choisie</h5>
+                                    <p class="card-text">
+                                        Le WWF c'est une (très) grosse équipe de pandas qui travaille dans plus de
+                                        100
+                                        pays partout dans le monde pour protéger la planète, c'est-à-dire protéger
+                                        la
+                                        nature et tous ses êtres vivants. Une mission ambitieuse et vitale qui
+                                        nécessite
+                                        d'agir sur tous les fronts: climat, énergie, alimentation, forêt, vie
+                                        sauvage,
+                                        océans.
+                                    </p>
+                                    <button @click="redirectWWF" class="AssosButton"> En savoir plus </button>
+                                </div>
+
+                                <!-- Image -->
+                                <div class="col-md-4">
+                                    <img src="../static/business/images/1200px-WWF_logo_2000.svg.png" class="img-fluid"
+                                        alt="WWF Logo" style="max-height: 300px;">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="container mt-5" id="actus">
+                    <!-- Carte Principale pour l'Actualité -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="display-4">Dernières Actualités</h2>
+                        </div>
+
+
+                        <div class="card-body">
+                            <!-- Carte pour l'annonce des T-shirts -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Participez au Giveaway</h5>
+                                            <ul>
+                                                <p>Nous avons quelques t-shirts DORÉS à vous faire gagner ! Ils ne
+                                                    sont
+                                                    pas en vente sur la boutique, c'est une exclu à ce giveaway.</p>
+                                                <li>Partagez votre setup pour suivre l'événement.</li>
+                                                <li>Répondez avec VOTRE TAILLE de tshirt et le #ZEVENT2024.</li>
+                                                <li>Suivez @ZEventfr sur X.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!-- Carte pour la livraison des T-shirts -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Livraison T-shirts</h5>
+                                            <p class="card-text">Si vous n'avez pas encore reçu vos t-shirts
+                                                ZEVENT2024,
+                                                rendez-vous sur boutique.zevent.fr et faites une requête au support.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Carte pour la réception de T-shirts -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Réception des T-shirts</h5>
+                                            <p class="card-text">Bonjour ! Nous vous remercions de contacter le
+                                                support uniquement via boutique.zevent.fr et non Twitter. Ne vous
+                                                inquiétez pas, nous traiterons toutes les demandes. Nous sommes
+                                                conscients des délais et nous faisons le maximum. Veuillez nous
+                                                excuser pour la gêne occasionnée.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Carte pour le giveaway spécial musiciens -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Giveaway pour Musiciens</h5>
+                                            <p class="card-text">Nous avons un giveaway très spécial pour les
+                                                musiciens parmi vous : cette guitare unique du #ZEVENT2024 !
+
+                                                Pour l'emporter, répondez à ce tweet avec une vidéo de vous nous
+                                                jouant un morceau à la guitare, avec une preuve que la vidéo a été
+                                                prise pour ce Z Event.
+
+                                                A vous ! ♫ ♪</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <img src="../static/business/images/guitare.png" class="img-fluid"
+                                                alt="Guitare" style="max-height: 300px;">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+        {% endblock %}
+
+</body>
+
+
+
+</html>

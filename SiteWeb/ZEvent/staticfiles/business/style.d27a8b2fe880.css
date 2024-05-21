@@ -1,0 +1,551 @@
+/*------------------------------------------------------------------
+                          INDEX FILE
+-------------------------------------------------------------------*/
+
+header{
+  display: block;
+  width:100%;
+  height: auto;
+  background-image: url("images/Zevent_logo.ba1a273e5729.png");
+  align-self: center;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  padding: 60px;
+  background-color: #051f22; 
+}
+
+
+.hero {
+  display : flex;
+  min-height: 100vh;
+  color : white;
+  flex-direction: column;
+  background-image: url("images/florian-olivo-Mf23RF8xArY-unsplash.44eceb3e2837.jpg") ;
+  background-repeat: no-repeat;
+  background-size : cover;
+  position: relative;
+    
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #051f22;
+}
+
+.burgerIconBtn {
+  top: 10px; 
+  left: 10px;
+  position : fixed;
+  opacity: 100%;
+} 
+
+.contenu
+{
+  height: 100vh;
+  display : flex;
+  background-color: #051f22; /*Security in case the image doesn't load*/
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+
+.assoTitre
+{
+  color : white;
+  text-decoration: underline overline #0f922bda;
+  
+}
+
+.asso
+{
+  display: flex;
+  flex-wrap: nowrap;
+  text-align: center;
+  justify-content: space-around;
+  width: 80%;
+  height: 250px;
+  text-align: justify;
+  font : caption;
+  font-size: 1.3rem;
+  transition: margin-top 0.2s ease;
+  
+}
+.asso p{
+  width: 100%;
+  height: 100%;
+}
+
+.asso img{
+  height: 60%;
+  width: auto;
+  background-repeat: no-repeat;
+}
+/*.asso.scroll {
+  margin-top: 70px; /* Nouvelle position du texte lorsqu'il est défilé 
+}*/
+
+body {
+    margin: 0px;
+}
+
+
+#AssosButton{
+    width: 100px;
+}
+
+#NewsButton{
+    width: 100px;
+    align-self: center ;
+}
+
+
+
+
+
+
+
+.menu {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: -250px;
+  background-color: #f0f0f0;
+  padding-top: 60px;
+  transition: left 0.5s ease;
+}
+
+.menu a{
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: rgb(117, 116, 116);
+  display: block;
+  transition: 0.5s;
+}
+
+.menu a:hover {
+  color: rgb(22, 135, 2)
+}
+
+.menu ul{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu.active{
+  left: 0;
+  /*display: 'block';*/
+}
+
+.menu .close {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+}
+
+
+.burger-icon span{
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 3px auto;
+} 
+
+.burger-icon {
+
+  align-items: center;
+  appearance: none;
+  background-color: #0c7923da;
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#56995e 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #e9eaeb;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  /*font-family: "JetBrains Mono",monospace;*/
+  height: 40px;
+  justify-content: center;
+  /*line-height: 1;*/
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: fixed;
+  text-align: left;
+  /*text-decoration: none;*/
+  transition: box-shadow .15s,transform .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  /*white-space: nowrap;*/
+  will-change: box-shadow,transform;
+  /*font-size: 18px;*/
+}
+
+.burger-icon:focus {
+  box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+.burger-icon:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #56995e 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.burger-icon:active {
+  box-shadow: #D6D6E7 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+
+.presentation {
+    width : 40%;
+    padding-top: 10%;
+    padding-left: 2%;
+    padding-bottom: 15%;
+    text-align: justify;
+    font : caption;
+    transition: left 0.5s ease;
+    
+}
+.presentation.active{
+  padding-left: 15%;
+  transition: left 0.5s ease;
+}
+
+.buttons {
+    display : flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+.AssosButton,
+.AssosButton:after {
+  width: 150px;
+  height: 76px;
+  line-height: 78px;
+  font-size: 20px;
+  font-family: 'Bebas Neue', sans-serif;
+  background: linear-gradient(45deg, transparent 5%, #0f922bda 5%);
+  border: 0;
+  color: #fff;
+  letter-spacing: 3px;
+  box-shadow: 6px 0px 0px #0f922b8b;
+  outline: transparent;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+.AssosButton:after {
+  --slice-0: inset(50% 50% 50% 50%);
+  --slice-1: inset(80% -6px 0 0);
+  --slice-2: inset(50% -6px 30% 0);
+  --slice-3: inset(10% -6px 85% 0);
+  --slice-4: inset(40% -6px 43% 0);
+  --slice-5: inset(80% -6px 5% 0);
+  
+  content: 'ZEVENT';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 3%, #00E6F6 3%, #00E6F6 5%, #0f922bda 5%);
+  text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6;
+  clip-path: var(--slice-0);
+}
+
+.AssosButton:hover:after {
+  animation: 1s glitch;
+  animation-timing-function: steps(2, end);
+}
+
+@keyframes glitch {
+  0% {
+    clip-path: var(--slice-1);
+    transform: translate(-20px, -10px);
+  }
+  10% {
+    clip-path: var(--slice-3);
+    transform: translate(10px, 10px);
+  }
+  20% {
+    clip-path: var(--slice-1);
+    transform: translate(-10px, 10px);
+  }
+  30% {
+    clip-path: var(--slice-3);
+    transform: translate(0px, 5px);
+  }
+  40% {
+    clip-path: var(--slice-2);
+    transform: translate(-5px, 0px);
+  }
+  50% {
+    clip-path: var(--slice-3);
+    transform: translate(5px, 0px);
+  }
+  60% {
+    clip-path: var(--slice-4);
+    transform: translate(5px, 10px);
+  }
+  70% {
+    clip-path: var(--slice-2);
+    transform: translate(-10px, 10px);
+  }
+  80% {
+    clip-path: var(--slice-5);
+    transform: translate(20px, -10px);
+  }
+  90% {
+    clip-path: var(--slice-1);
+    transform: translate(-10px, 0px);
+  }
+  100% {
+    clip-path: var(--slice-1);
+    transform: translate(0);
+  }
+}
+
+@media (min-width: 768px) {
+  .AssosButton,
+  .AssosButton:after {
+    width: 200px;
+    height: 86px;
+    line-height: 88px;
+  }
+}
+
+
+
+@media all and (max-width: 1900px)
+{
+  .hero{
+    width: 100%;
+  }
+
+  .buttons{
+    width: 100%;
+  }
+
+  .presentation.active
+  {
+    width: 600px;
+    padding-top: 50px;
+    padding-left: 285px;
+    padding-right: 200px;
+    padding-bottom: 75px;
+  }
+}
+
+@media all and (max-width: 900px)
+{
+
+  .presentation.active
+  {
+  padding: 0px;
+  width: 60%;
+  padding-right: 10%;
+  /*padding-left: 35%;*/
+  margin-left: 280px;
+  }
+
+}
+
+@media all and (max-width: 750px)
+{
+
+  .presentation{
+    padding: 0px;
+    width: 70%;
+    padding-right: 20%;
+    padding-left: 10%;
+
+  }
+
+  .presentation.active
+  {
+  padding: 0px;
+  width: 55%;
+  padding-right: 10%;
+  /*padding-left: 35%;*/
+  margin-left: 280px;
+  }
+
+}
+
+@media all and (max-width: 650px)
+{
+  .presentation.active
+  {
+  padding: 0px;
+  width: 45%;
+  padding-right: 5%;
+  /*padding-left: 35%;*/
+  margin-left: 280px;
+  }
+
+}
+
+
+@media all and (max-width: 600px)
+{
+  .presentation.active
+  {
+  padding: 0px;
+  width: 40%;
+  padding-right: 5%;
+  /*padding-left: 35%;*/
+  margin-left: 280px;
+  }
+
+}
+
+
+
+/*------------------------------------------------------------------
+                          LOGIN FILE
+-------------------------------------------------------------------*/
+
+.login-container {
+  width: 100%;
+  height: 100%; /* Définit la hauteur du conteneur parent à 100% */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centre horizontalement */
+  justify-content: center; /* Centre verticalement */
+}
+
+  
+  /*------------------------------------------------------------------
+                          DASHBOARD FILE
+-------------------------------------------------------------------*/
+
+input{
+  display: block;
+}
+
+
+.content {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  
+}
+
+.buttonsTab {
+  display: flex;
+  width: 60%;
+  justify-content:center;
+  margin-bottom: 20px; 
+}
+
+.creationForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around; 
+  align-items: center;
+  width: 100%; 
+  height: 50vh;
+
+}
+
+.informations {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around; 
+  align-items: center;
+  /*width: 100%;*/ 
+  height: 50vh;
+  width: 70vh;
+
+}
+.container{
+  height: 70vh
+}
+
+.card {
+  margin-bottom: 20px; /* Ajoute de l'espace entre les cartes */
+  /* Limite la hauteur de chaque carte si nécessaire */
+  height: auto; /* ou vous pouvez utiliser max-height: Xpx pour une hauteur maximale */
+}
+
+.multiSelection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: nowrap;
+  gap: 40px;
+}
+
+
+/* Dropdown Button */
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+
+ .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: block;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content div {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content div:hover {
+  background-color: #ddd;
+}
+
+.show {display: block;}
+
+label{
+  display: block;
+}
+
+
+[v-cloak] {
+  display: none;
+}

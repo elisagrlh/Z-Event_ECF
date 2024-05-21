@@ -14,22 +14,8 @@ header{
   background-position-x: center;
   /* position : fixed; */
   padding: 60px;
-  background-color: rgba(5, 17, 34, 0.8);  
-  z-index: -1;
+  background-color: #051f22; 
 }
-
-/* header::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%; /* S'assure qu'il couvre uniquement le header 
-  background-color: rgba(5, 17, 34, 0.5); /* Opacité réglée ici 
-  z-index: -1; /* Garde le fond derrière le contenu 
-} */
-
-
 /* .background{
   /* width: 1903px;
   height: 950px; 
@@ -505,18 +491,18 @@ input{
 
 
 .content {
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center; 
   align-items: center;
-  height: 90vh;
-
+  
 }
 
 .buttonsTab {
   display: flex;
-  width: 40%;
-  justify-content: space-around; 
+  width: 60%;
+  justify-content:center;
   margin-bottom: 20px; 
 }
 
@@ -528,6 +514,26 @@ input{
   width: 100%; 
   height: 50vh;
 
+}
+
+.informations {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around; 
+  align-items: center;
+  /*width: 100%;*/ 
+  height: 50vh;
+  width: 70vh;
+
+}
+.container{
+  height: 70vh
+}
+
+.card {
+  margin-bottom: 20px; /* Ajoute de l'espace entre les cartes */
+  /* Limite la hauteur de chaque carte si nécessaire */
+  height: auto; /* ou vous pouvez utiliser max-height: Xpx pour une hauteur maximale */
 }
 
 .multiSelection {
@@ -589,34 +595,7 @@ label{
   display: block;
 }
 
-.chart{
-  display: block;
-  height: 500px;
-  width: 800px;
-}
 
-.dropdown-checkbox {
-  display: none;  /* Masquer les checkboxes */
-}
-
-
-.dropdown-btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 8px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.dropdown-content {
+[v-cloak] {
   display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-  z-index: 1;
-  width: 100%;
 }
