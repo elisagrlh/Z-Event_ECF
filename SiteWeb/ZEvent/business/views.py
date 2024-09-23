@@ -43,8 +43,7 @@ def adminLogin(request):
             return redirect("index")
         else:
             messages.success(request, "there was an error loggin in, try again")
-            return redirect("hidden_admin_login")
-            
+            return redirect("hidden_admin_login")    
     else:
         return render(request, "business/adminlogin.html")
 
