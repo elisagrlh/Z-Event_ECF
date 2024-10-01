@@ -23,5 +23,6 @@ urlpatterns = [
     path('api/incrementClick/<int:id>/', views.increment_click, name='increment-click'),
     path('api/stats/', views.stats, name='stats-api'),
     path('api/filterlives/', views.filterLives, name='filterlives-api'),
+    path('dashboard-tabs', views.tabs, name='tabs'),
 
 ]

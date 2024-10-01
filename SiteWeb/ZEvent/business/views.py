@@ -272,3 +272,5 @@ def streamer_lives_view(request):
     serializer = StreamerLivesSerializer(users_with_lives, many=True)
     return Response(serializer.data)
 
+def tabs(request):
+    return render(request, "business/dashboard-tabs.html")   

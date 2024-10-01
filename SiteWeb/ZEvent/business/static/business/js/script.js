@@ -349,18 +349,23 @@ let app = Vue.createApp({
                     }
                 });
 
-                let existingCount = materialsToBuy.filter(m => m.label === current.label && m.brand === current.brand).length;
+                        // Vérifie si l'élément existe déjà dans materialsToBuy
+                        let existingItem = materialsToBuy.find(
+                            m => m.label === current.label && m.brand === current.brand
+                        );
 
-                if (existingCount < overlaps) {
-                    for (let i = existingCount; i < overlaps; i++) {
-                        materialsToBuy.push({
-                            label: current.label,
-                            brand: current.brand
-                        });
-                    }
-                }
+                        if (existingItem) {
+                            // Si l'élément existe, on additionne les overlaps
+                            existingItem.overlaps = Math.max(existingItem.overlaps, overlaps);
+                        } else {
+                            // Sinon, on l'ajoute avec les overlaps
+                            materialsToBuy.push({
+                                overlaps: overlaps,
+                                label: current.label,
+                                brand: current.brand
+                            });
+                        }
             });
-
             return materialsToBuy;
         }
 
