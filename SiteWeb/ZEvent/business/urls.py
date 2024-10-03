@@ -24,5 +24,6 @@ urlpatterns = [
     path('api/stats/', views.stats, name='stats-api'),
     path('api/filterlives/', views.filterLives, name='filterlives-api'),
     path('dashboard-tabs', views.tabs, name='tabs'),
+    path('deletelive/<int:live_id>/', views.delete_live, name="delete_live")
 
 ]

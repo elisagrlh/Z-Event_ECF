@@ -8,6 +8,7 @@ let app = Vue.createApp({
             hasNewClassPresentation: false,
             currentTab: "FirstTab",
             activeTab: 'FirstTab',
+            currentAdminTab: "streamerCreation",
             showDropdown: false,
             lives: [],
             themes: [],
@@ -87,6 +88,7 @@ let app = Vue.createApp({
         },
         changeTab(tabName) {
             this.currentTab = tabName;
+            this.currentAdminTab = tabName
             this.activeTab = tabName;
             if (tabName === 'HomeLives') {
                 this.fetchLives();
@@ -242,6 +244,7 @@ let app = Vue.createApp({
             this.isEditMode = true;
             this.selectedLive = live;
             this.currentTab = 'FirstTab';  // Change l'onglet
+            this.currentAdminTab = 'LiveCreation';
             this.$nextTick(() => { // Attend que VueJS ait fini de mettre à jour le DOM
                 document.getElementById('id_label').value = this.selectedLive.label;
                 document.getElementById('id_streamer_pseudo').value = this.selectedLive.streamer_pseudo;
@@ -268,6 +271,54 @@ let app = Vue.createApp({
             document.getElementById('id_pegi').value = null;
             document.getElementById('id_material').value = null;
             this.uncheckCheckboxes();
+        },
+
+        destroyLive(live) {
+            // Affiche une boîte de confirmation
+            const isConfirmed = window.confirm(`Êtes-vous sûr de vouloir supprimer le live "${live.label}" ?`);
+            const liveId = live.id;
+
+            if (isConfirmed) {
+                // Appel à l'API pour supprimer le live côté serveur
+                fetch(`/deletelive/${liveId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': this.getCookie('csrftoken')  // Inclure le CSRF token si nécessaire
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Supprime le live du tableau "lives" côté client
+                        this.lives = this.lives.filter(l => l.id !== liveId);
+                    } else {
+                        console.error("Erreur lors de la suppression du live :", data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la requête de suppression :", error);
+                });
+            }
+            else{
+                
+            }
+        },
+        // Méthode pour obtenir le CSRF token
+        getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Ne compare que les cookies qui commencent par le nom du cookie
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
         },
 
         displayChart(data) {

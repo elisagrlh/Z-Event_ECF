@@ -1,13 +1,13 @@
 <div class="buttonsTab">
     <button class="btn btn-outline-success" :class="{ 'active': activeTab === 'FirstTab' }"
-      @click="changeTab('FirstTab')">Créer un compte Streamer</button>
+      @click="changeTab('streamerCreation')">Créer un compte Streamer</button>
     <button class="btn btn-outline-success" :class="{ 'active': activeTab === 'materialList' }"
       @click="changeTab('materialList')">Liste de matériel demandé</button>
     <button class="btn btn-outline-success" :class="{ 'active': activeTab === 'streamerCount' }"
       @click="changeTab('streamerCount')">Nombre de Streamers présents</button>
     
       <button class="btn btn-outline-success" :class="{ 'active': activeTab === 'LiveCreation' }"
-      @click="changeTab('FirstTab')">Saisie</button>
+      @click="changeTab('LiveCreation')">Saisie</button>
     <button class="btn btn-outline-success" :class="{ 'active': activeTab === 'HomeLives' }"
       @click="changeTab('HomeLives')">Lives prévus</button>
     <button class="btn btn-outline-success" :class="{ 'active': activeTab === 'UserRegistration' }"

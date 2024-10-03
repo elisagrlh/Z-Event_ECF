@@ -33,6 +33,9 @@
               </p>
               <button v-if="new Date(live.start_date) > new Date(new Date().setDate(new Date().getDate() + 1))"
                 @click="enableEditing(live)" class="btn btn-outline-success">Modifier le live</button>
+                <br></br>
+              <button v-if="new Date(live.start_date) > new Date(new Date().setDate(new Date().getDate() + 1))"
+                @click="destroyLive(live)" class="btn btn-outline-danger">Annuler le live</button>
               <p v-else class="text-muted">Live non modifiable, prévu dans moins d'un jour</p>
             </div>
           </div>
@@ -65,7 +68,6 @@
                     [[ isEditMode ? 'Modifier le formulaire' : 'Valider le formulaire' ]]
                   </button>
                   <button v-if="isEditMode" @click="cancelEditing()" class="btn btn-secondary">Annuler</button>
-                  
                 </form>
               </div>
           </div>

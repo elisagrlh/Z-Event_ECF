@@ -20,7 +20,7 @@
 
 
     <!-- Streamer creation -->
-    <div class="container" v-show="currentTab === 'FirstTab'">
+    <div class="container" v-show="currentAdminTab === 'streamerCreation'">
       <div class="row">
         <div class="col-md-8 offset-md-2">
           <div class="card">
@@ -30,6 +30,7 @@
             <div class="card-body">
               <form class="creationForm" method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="form_type" value="create_streamer_form">
                 {% for field in form %}
                 <div class="form-group">
                   <label>{{ field.label_tag }}</label>
@@ -131,6 +132,9 @@
         </div>
       </ul>
     </div>
+
+    {% include "business/shared-dashboard.html" %}
+
   </div>
 </div>
 

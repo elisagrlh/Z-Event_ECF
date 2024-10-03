@@ -130,49 +130,74 @@ def logout_user(request):
 
 @never_cache
 def admindashboard(request):
-    if request.method == "POST":
+
+
+    # Obtenir le formulaire à partir de streamer_dashboard_page
+    #if request.method == 'GET':
+    #    liveForm = streamer_dashboard_page(request)
+
+    #elif request.method == 'POST':
+    # Importer le formulaire utilisé dans streamer_dashboard_page
+    #from .views import streamer_dashboard_page
+    if request.method == 'POST':
+        liveForm = MultiSelectForm(request.POST)
         form = CreateUserForm(request.POST)
         addInfoForm = AddInfoForm(request.POST)
-    
-        if form.is_valid() and addInfoForm.is_valid():
-            email = form.cleaned_data["email"]
-            if User.objects.filter(email=email).exists():
-                messages.error(request, "Un compte avec cette adresse e-mail existe déjà.")
-                return render(request, "business/admindashboard.html", {"form": form, "addInfoForm": addInfoForm})
+        form_type = request.POST.get('form_type')  # Identifier le formulaire soumis
+
+        if form_type == 'create_streamer_form':
+            print(form_type)
+            if form.is_valid() and addInfoForm.is_valid():
+                email = form.cleaned_data["email"]
+                if User.objects.filter(email=email).exists():
+                    messages.error(request, "Un compte avec cette adresse e-mail existe déjà.")
+                    return render(request, "business/admindashboard.html", {"form": form, "addInfoForm": addInfoForm})
+
+                else:
+                    username=form.cleaned_data['username']
+
+                    new_user = form.save(commit=False)
+                    password = User.objects.make_random_password()
+                    new_user.set_password(password)
+                    new_user.save()
+
+                    # Création du profil associé avec l'âge
+                    user_data = addInfoForm.save(commit=False)
+                    user_data.user = new_user
+                    user_data.save()
+
+                    # Envoyer l'e-mail
+                    send_mail(
+                        "Vos informations de connexion",
+                        f"Votre nom d\'utilisateur est: {username}\nVotre mot de passe est: {password}\nVous pouvez vous connecter via: http://127.0.0.1:8000/login/",
+                        "elisa.gerlach@efrei.net",  # Expéditeur
+                        [email],  # Destinataire
+                        fail_silently=False,
+                    )
+                    form = CreateUserForm()
+                    addInfoForm = AddInfoForm()
+                    messages.success(request, "Utilisateur créé avec succès.")
+        elif form_type == 'live_form':
+            print(form_type)
+            if liveForm.is_valid():
+                print("form valiiiiiid")
+                liveForm.save()
+                return redirect('index')  # Redirige après validation du formulaire
 
             else:
-                username=form.cleaned_data['username']
-
-                new_user = form.save(commit=False)
-                password = User.objects.make_random_password()
-                new_user.set_password(password)
-                new_user.save()
-
-                # Création du profil associé avec l'âge
-                user_data = addInfoForm.save(commit=False)
-                user_data.user = new_user
-                user_data.save()
-
-                # Envoyer l'e-mail
-                send_mail(
-                    "Vos informations de connexion",
-                    f"Votre nom d\'utilisateur est: {username}\nVotre mot de passe est: {password}\nVous pouvez vous connecter via: http://127.0.0.1:8000/login/",
-                    "elisa.gerlach@efrei.net",  # Expéditeur
-                    [email],  # Destinataire
-                    fail_silently=False,
-                )
-                form = CreateUserForm()
-                addInfoForm = AddInfoForm()
-                messages.success(request, "Utilisateur créé avec succès.")
- 
+                print("form invaliiiiiiid")
     else:
         form = CreateUserForm()
         addInfoForm = AddInfoForm()
+        #liveForm = streamer_dashboard_page(request)
+        liveForm = MultiSelectForm()
+
     
     if not request.user.is_superuser:
         return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
     else:
-        return render(request, "business/admindashboard.html", {"form": form, "addInfoForm": addInfoForm, "users": UserData.objects.count()})
+        print("tyyyyyyyyyyyyype", type(liveForm))
+        return render(request, "business/admindashboard.html", {"form": form, "addInfoForm": addInfoForm, "liveForm": liveForm, "users": UserData.objects.count()})
 
 def count_users(request):
     user_count = User.objects.count()  # Compte tous les utilisateurs dans auth_user
@@ -252,9 +277,6 @@ def registration_live(request):
     ]
     return JsonResponse({'data': data})
 
-
-
-
 def increment_click(request, id):
     increment_click_stats(id)
     return redirect("detailLive", id=id)   
@@ -274,3 +296,14 @@ def streamer_lives_view(request):
 
 def tabs(request):
     return render(request, "business/dashboard-tabs.html")   
+
+def delete_live(request, live_id):
+    if request.method == 'POST':  # Vérifie que la méthode est bien POST (ou DELETE)
+        try:
+            live = Live.objects.get(id=live_id)
+            live.delete()  # Supprime le live de la base de données
+            return JsonResponse({'success': True, 'message': 'Live supprimé avec succès'})
+        except Live.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Live non trouvé'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Méthode non autorisée'})    
